@@ -9,7 +9,7 @@ namespace Kodhier.Data
 {
     public class KodhierDbContext : DbContext
     {
-        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Pizza> Pizzas { get; set; }
 
         public KodhierDbContext(DbContextOptions<KodhierDbContext> options) : base(options)
         {

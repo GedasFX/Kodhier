@@ -19,8 +19,8 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+    <ul class="nav navbar-nav ml-auto" style="text-transform:uppercase;">
+        <li class="nav-item" role="presentation"><a class="nav-link active" asp-area="" asp-controller="Account" asp-action="Login" style="text-align:center;background-color:#aab705;border-radius:30px;margin:0px 5px 0px 0px;"><strong>Log in</strong></a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link active" asp-area="" asp-controller="Account" asp-action="Register" style="text-align:center;background-color:#8e5739;border-radius:30px;"><strong>REGISTER</strong></a></li>
     </ul>
 }

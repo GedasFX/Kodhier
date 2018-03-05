@@ -22,8 +22,8 @@ namespace Kodhier
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("UsersConnection")));
+            //services.AddDbContext<UserDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("UsersConnection")));
             services.AddDbContext<KodhierDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationConnection")));
 
@@ -34,7 +34,7 @@ namespace Kodhier
                 o.Password.RequireUppercase = false;
                 o.Password.RequiredLength = 6;
                 o.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<UserDbContext>()
+            }).AddEntityFrameworkStores<KodhierDbContext>()
               .AddDefaultTokenProviders();
 
             // Add application services.

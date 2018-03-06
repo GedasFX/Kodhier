@@ -16,8 +16,8 @@
                 </header>
                
                     <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-                        <hr />
-
+                        <hr />  
+                        <div asp-validation-summary="All"></div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
                                 <label asp-for="FirstName"></label>

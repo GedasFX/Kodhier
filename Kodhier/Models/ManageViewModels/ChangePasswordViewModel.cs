@@ -25,5 +25,6 @@ namespace Kodhier.Models.ManageViewModels
         public string ConfirmPassword { get; set; }
 
         public string StatusMessage { get; set; }
+       
     }
 }

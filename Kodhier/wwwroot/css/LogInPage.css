@@ -1,55 +1,26 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
     background-image: url("../images/loginBackgr1.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
-
 
 .main {
     position: relative;
     width: 480px;
     height: 600px;
     padding: 10px;
-    margin: 100px auto;
+    margin: 40px auto;
     background: rgba(0,0,0,0.6);
     border-radius: 10px;
     box-shadow: 0 0 5px 0 #000;
 }
 
-/*places an icon in the middle*/
 header {
     position: relative;
     text-align: center;
@@ -60,8 +31,8 @@ img {
     width: 100px;
     height: auto;
 }
-/*Log in text*/
-h2 {
+
+h4 {
     font-size: 25px;
     color: #fff;
     text-shadow: 1px 1px 1px #000;
@@ -100,4 +71,3 @@ label {
     .btn:hover {
         background: linear-gradient(#b71c1c,#f44336);
     }
-

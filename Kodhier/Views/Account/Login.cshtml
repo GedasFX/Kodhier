@@ -10,49 +10,52 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/LogInPage.css" />
-<div class="row ">
 
-    <div class="main">
-        <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="login-box">
-                <header>
-                    <div class="icon"><img src="~/images/icon.png"></div>
-                    <h2>@ViewData["Title"]</h2>
-                </header>
-               
-                <div asp-validation-summary="All"  class= "text-danger" ></div>
-                <div class="form-group">
-                    <label asp-for="Username"></label>
-                    <input asp-for="Username" class="form-control" type="text" placeholder="Enter Username" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" placeholder="Enter Password" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
+<body id="mainsec">
+
+    <div class="row ">
+
+        <div class="main">
+            <section>
+                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="login-box">
+                    <header>
+                        <div class="icon"><img src="~/images/icon.png"></div>
+                        <h2>@ViewData["Title"]</h2>
+                    </header>
+
+                    <div asp-validation-summary="All"></div>
+                    <div class="form-group">
+                        <label asp-for="Username"></label>
+                        <input asp-for="Username" class="form-control" type="text" placeholder="Enter Username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" placeholder="Enter Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Log in</button>
+                    </div>
+                    <div class="form-group">
 
-                    <a asp-action="ForgotPassword">Forgot your password?</a>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                        <a asp-action="ForgotPassword">Forgot your password?</a>
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
 
-                </div>
-            </form>
-        </section>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
-</div>
-
+</body>
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

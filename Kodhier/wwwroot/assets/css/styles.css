@@ -1,12 +1,12 @@
 #mainsec {
   width:100%;
-  height:100vh;
+  height:auto;
 }
 
 @media (min-width: 768px) {
-  #mainsec {
-    background-image:url("../../assets/img/mainsc2.jpg");
-  }
+    #mainsec {
+        background-image: url("../../assets/img/mainsc2.jpg");
+        }
 }
 
 @media (max-width: 767px) {
@@ -25,3 +25,7 @@
   }
 }
 
+bgtrans{
+    background-color:antiquewhite;
+    opacity:0.8;
+}

@@ -13,7 +13,7 @@
 .main {
     position: relative;
     width: 480px;
-    height: 600px;
+    height: 480px;
     padding: 10px;
     margin: 40px auto;
     background: rgba(0,0,0,0.6);
@@ -41,6 +41,7 @@ h4 {
 #login-box {
     padding: 20px;
 }
+
 label {
     color: #fff;
     font-size: 20px;

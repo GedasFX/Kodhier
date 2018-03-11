@@ -7,6 +7,7 @@ namespace Kodhier.Data
     public class KodhierDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public KodhierDbContext(DbContextOptions<KodhierDbContext> options) : base(options)
         {

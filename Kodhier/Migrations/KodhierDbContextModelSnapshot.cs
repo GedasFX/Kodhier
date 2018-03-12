@@ -77,6 +77,42 @@ namespace Kodhier.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Kodhier.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<Guid?>("PaymentTypeId");
+
+                    b.Property<Guid?>("PizzaId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.HasIndex("PizzaId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Kodhier.Models.PaymentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentType");
+                });
+
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
                 {
                     b.Property<Guid>("Id")
@@ -203,6 +239,21 @@ namespace Kodhier.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Kodhier.Models.Order", b =>
+                {
+                    b.HasOne("Kodhier.Models.ApplicationUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("Kodhier.Models.PaymentType", "PaymentType")
+                        .WithMany()
+                        .HasForeignKey("PaymentTypeId");
+
+                    b.HasOne("Kodhier.Models.Pizza", "Pizza")
+                        .WithMany()
+                        .HasForeignKey("PizzaId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>

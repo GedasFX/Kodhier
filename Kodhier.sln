@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kodhier", "Kodhier\Kodhier.csproj", "{712610D2-0281-4FA0-8396-D4A50639302C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodhier.Tests", "Kodhier.Tests\Kodhier.Tests.csproj", "{A413D6A7-E431-4C84-9BCF-46DC99B779A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{712610D2-0281-4FA0-8396-D4A50639302C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{712610D2-0281-4FA0-8396-D4A50639302C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{712610D2-0281-4FA0-8396-D4A50639302C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A413D6A7-E431-4C84-9BCF-46DC99B779A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A413D6A7-E431-4C84-9BCF-46DC99B779A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A413D6A7-E431-4C84-9BCF-46DC99B779A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A413D6A7-E431-4C84-9BCF-46DC99B779A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

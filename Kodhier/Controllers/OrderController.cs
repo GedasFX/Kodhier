@@ -54,6 +54,10 @@ namespace Kodhier.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Illegal argument check
+                if (order.Quantity < 1)
+                    return View(order);
+
                 order.Id = Guid.NewGuid();
                 _context.Add(order);
                 await _context.SaveChangesAsync();

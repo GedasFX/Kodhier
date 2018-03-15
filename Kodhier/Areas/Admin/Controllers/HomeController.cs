@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Kodhier.Controllers.Admin
 {
-    
-    public class AdminController : Controller
+    [Area("Admin")]
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {

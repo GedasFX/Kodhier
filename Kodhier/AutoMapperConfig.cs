@@ -1,0 +1,18 @@
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Kodhier
+{
+    public static class AutoMapperConfig
+    {
+        public static void RegisterMappings()
+        {
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<Areas.Admin.ViewModels.PizzaViewModel, Models.Pizza>().ReverseMap();
+            });
+        }
+    }
+}

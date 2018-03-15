@@ -23,7 +23,7 @@ namespace Kodhier.Controllers.Admin
         // GET: Pizza
         public IActionResult Index()
         {
-            return View(_context.Pizzas.ToListAsync().Result.Select(r => new PizzaViewModel() { Price = r.Price, Name = r.Name, ImagePath = r.ImagePath, Id = r.Id }));
+            return View(_context.Pizzas.ToListAsync().Result.Select(r => Mapper.Map<PizzaViewModel>(r)));//new PizzaViewModel() { Price = r.Price, Name = r.Name, ImagePath = r.ImagePath, Id = r.Id }));
         }
 
         // GET: Pizza/Details/5

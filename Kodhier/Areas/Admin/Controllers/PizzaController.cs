@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.Areas.Admin.ViewModels;
+using AutoMapper;
 
 namespace Kodhier.Controllers.Admin
 {
+    [Area("Admin")]
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;
@@ -18,9 +21,9 @@ namespace Kodhier.Controllers.Admin
         }
 
         // GET: Pizza
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Pizzas.ToListAsync());
+            return View(_context.Pizzas.ToListAsync().Result.Select(r => new PizzaViewModel() { Price = r.Price, Name = r.Name, ImagePath = r.ImagePath, Id = r.Id }));
         }
 
         // GET: Pizza/Details/5
@@ -52,11 +55,13 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Size")] Pizza pizza)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Size")] PizzaViewModel pizza)
         {
             if (ModelState.IsValid)
             {
-                pizza.Id = Guid.NewGuid();
+                var dbPizza = Mapper.Map<Pizza>(pizza);
+                dbPizza.Id = Guid.NewGuid();
+
                 _context.Add(pizza);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

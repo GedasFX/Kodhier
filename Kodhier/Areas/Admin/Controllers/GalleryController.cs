@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Kodhier.Areas.Admin.ViewModels;
+using Kodhier.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +16,17 @@ namespace Kodhier.Areas.Admin.Controllers
     public class GalleryController : Controller
     {
         private readonly IHostingEnvironment _env;
+        private readonly KodhierDbContext _context;
 
-        public GalleryController(IHostingEnvironment env)
+        public GalleryController(KodhierDbContext dbContext, IHostingEnvironment env)
         {
+            _context = dbContext;
             _env = env;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
         }
 
         [HttpPost]

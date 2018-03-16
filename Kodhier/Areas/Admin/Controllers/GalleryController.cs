@@ -33,7 +33,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return View();
             }
 
-            if (imgfile.ContentType != "text/jpeg")
+            if (imgfile.ContentType != "image/jpeg")
             {
                 ModelState.AddModelError(string.Empty, "Only images allowed");
                 return View();

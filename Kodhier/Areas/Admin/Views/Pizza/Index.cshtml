@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.Models.Pizza>
+﻿@model IEnumerable<Kodhier.Areas.Admin.ViewModels.PizzaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Size)
+                @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th></th>
         </tr>
@@ -27,7 +27,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="@Html.DisplayFor(modelItem => item.Id)">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -35,12 +35,10 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Size)
+                    @Html.DisplayFor(modelItem => item.ImagePath)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Create" asp-route-id="@item.Id">Details</a> | <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

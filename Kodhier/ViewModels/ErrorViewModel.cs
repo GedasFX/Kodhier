@@ -1,6 +1,4 @@
-using System;
-
-namespace Kodhier.Models
+namespace Kodhier.ViewModels
 {
     public class ErrorViewModel
     {

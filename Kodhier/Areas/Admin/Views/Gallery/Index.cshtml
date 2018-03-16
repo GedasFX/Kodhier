@@ -21,6 +21,14 @@
                 </div>
             </div>
         </header>
+        <div>
+            <h3>Image Upload:</h3>
+            @Html.ValidationSummary()
+            <form method="post" enctype="multipart/form-data" asp-controller="Gallery" asp-action="Index">
+                <input type="file" name="imgfile" />
+                <input type="submit" value="Upload" /><br /><br />
+            </form>
+        </div>
         <div class="toolbar">
             <div class="toolbar__label"><span class="hidden-xs-down">Total</span> N Photos</div>
             <div class="actions">

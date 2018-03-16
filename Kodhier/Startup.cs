@@ -15,6 +15,7 @@ namespace Kodhier
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AutoMapperConfig.RegisterMappings();
         }
 
         public IConfiguration Configuration { get; }
@@ -61,6 +62,13 @@ namespace Kodhier
 
             app.UseAuthentication();
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "area",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

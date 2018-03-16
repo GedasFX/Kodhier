@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Kodhier.Models.AccountViewModels
+namespace Kodhier.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {

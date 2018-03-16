@@ -1,4 +1,4 @@
-﻿@model Kodhier.Models.Pizza
+﻿@model Kodhier.Areas.Admin.ViewModels.PizzaViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -23,14 +23,28 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Size)
+            @Html.DisplayNameFor(model => model.ImagePath)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Size)
+            @Html.DisplayFor(model => model.ImagePath)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </form>
+    <a asp-action="Create" asp-route-id="@Model.Id">Create</a> |
     <a asp-action="Index">Back to List</a>
 </div>

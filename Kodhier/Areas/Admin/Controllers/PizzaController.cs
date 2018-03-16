@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.Areas.Admin.ViewModels;
+using AutoMapper;
 
 namespace Kodhier.Controllers.Admin
 {
+    [Area("Admin")]
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;
@@ -18,9 +21,9 @@ namespace Kodhier.Controllers.Admin
         }
 
         // GET: Pizza
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Pizzas.ToListAsync());
+            return View(_context.Pizzas.Select(r => Mapper.Map<PizzaViewModel>(r)));
         }
 
         // GET: Pizza/Details/5
@@ -37,8 +40,7 @@ namespace Kodhier.Controllers.Admin
             {
                 return NotFound();
             }
-
-            return View(pizza);
+            return View(Mapper.Map<PizzaViewModel>(pizza));
         }
 
         // GET: Pizza/Create
@@ -52,12 +54,14 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Size")] Pizza pizza)
+        public async Task<IActionResult> Create([Bind("Name,Price,Size,ImagePath")] PizzaViewModel pizza)
         {
             if (ModelState.IsValid)
             {
-                pizza.Id = Guid.NewGuid();
-                _context.Add(pizza);
+                var dbPizza = Mapper.Map<Pizza>(pizza);
+                dbPizza.Id = Guid.NewGuid();
+
+                _context.Add(dbPizza);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -77,7 +81,7 @@ namespace Kodhier.Controllers.Admin
             {
                 return NotFound();
             }
-            return View(pizza);
+            return View(Mapper.Map<PizzaViewModel>(pizza));
         }
 
         // POST: Pizza/Edit/5
@@ -85,15 +89,16 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Price,Size")] Pizza pizza)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Price,Size,ImagePath")] PizzaViewModel model)
         {
-            if (id != pizza.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var pizza = Mapper.Map<Pizza>(model);
                 try
                 {
                     _context.Update(pizza);
@@ -112,7 +117,7 @@ namespace Kodhier.Controllers.Admin
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pizza);
+            return View(model);
         }
 
         // GET: Pizza/Delete/5
@@ -130,7 +135,7 @@ namespace Kodhier.Controllers.Admin
                 return NotFound();
             }
 
-            return View(pizza);
+            return View(Mapper.Map<PizzaViewModel>(pizza));
         }
 
         // POST: Pizza/Delete/5

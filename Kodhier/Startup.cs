@@ -15,6 +15,7 @@ namespace Kodhier
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AutoMapperConfig.RegisterMappings();
         }
 
         public IConfiguration Configuration { get; }

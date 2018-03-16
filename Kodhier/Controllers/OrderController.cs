@@ -27,7 +27,7 @@ namespace Kodhier.Controllers
             return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
         }
 
-        // GET: Order/Details
+        [Authorize]
         public async Task<IActionResult> Create(Guid? id)
         {
             if (id == null)
@@ -43,6 +43,15 @@ namespace Kodhier.Controllers
             }
 
             return View(new OrderCreateViewModel {Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price });
+        }
+
+        [Authorize]
+        public IActionResult History()
+        {
+            return View(_context.Orders
+                .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                .Where(o => o.IsPaymentSuccessful)
+                .Select(o => Mapper.Map<OrderViewModel>(o)));
         }
 
         [HttpPost]

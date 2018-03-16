@@ -13,7 +13,6 @@ using Kodhier.ViewModels.AccountViewModels;
 namespace Kodhier.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

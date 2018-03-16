@@ -1,4 +1,4 @@
-﻿@model Kodhier.Models.Pizza
+﻿@model Kodhier.Areas.Admin.ViewModels.PizzaViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -23,10 +23,10 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Size)
+            @Html.DisplayNameFor(model => model.ImagePath)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Size)
+            @Html.DisplayFor(model => model.ImagePath)
         </dd>
     </dl>
 </div>

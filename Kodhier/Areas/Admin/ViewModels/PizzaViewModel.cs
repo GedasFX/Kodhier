@@ -15,6 +15,8 @@ namespace Kodhier.Areas.Admin.ViewModels
 
         [Required]
         [Display(Name = "Price")]
+        [Range(0, (double)decimal.MaxValue, ErrorMessage = "Price field must be a positive number")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         public Guid Id { get; set; }

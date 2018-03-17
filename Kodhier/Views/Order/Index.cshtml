@@ -3,41 +3,30 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
 <h2>Index</h2>
+<div class="col-md-8 offset-md-2">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="row">
+
         @foreach (var item in Model)
         {
-            <tr id="@Html.DisplayFor(modelItem => item.Id)">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImagePath)
-                </td>
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
+            <div class="col-sm-4 col-md-3">
+                <form method="post" id="@Html.DisplayFor(modelItem => item.Id)">
+                    <div class="=products">
+                        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" class="img-fluid" />"
+                        <h4 class="text-info">@Html.DisplayFor(modelItem => item.Name)</h4>
+                        <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
+                        <input type="text" name="quantity" class="form-control" value="1" />
+                        <input type="hidden" name="name" value="@Html.DisplayFor(modelItem => item.Name)" />
+                        <input type="hidden" name="price" value="@Html.DisplayFor(modelItem => item.Price)" />
+                        <input type="submit" name="add_to_cart" style="margin-top:5px" class="btn btun-info" value="Add to Cart" />
+                    </div>
+                </form>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
+
+

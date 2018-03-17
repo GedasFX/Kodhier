@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -42,31 +44,31 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Index">
                             <i class="typcn typcn-home-outline">
-                            </i><strong>&nbsp;HOME</strong>
+                            </i><strong>&nbsp;@Localizer["HOME"]</strong>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Index">
                             <i class="typcn typcn-gift"></i>
-                            <strong>&nbsp;BEST OFFERS</strong>
+                            <strong>&nbsp;@Localizer["BEST OFFERS"]</strong>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Order" asp-action="Index">
                             <i class="typcn typcn-clipboard"></i>
-                            <strong>&nbsp;MENIU</strong>
+                            <strong>&nbsp;@Localizer["MENIU"]</strong>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="About">
                             <i class="typcn typcn-compass"></i>
-                            <strong>&nbsp;ABOUT</strong>
+                            <strong>&nbsp;@Localizer["ABOUT"]</strong>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Contact">
                             <i class="typcn typcn-location-outline"></i>
-                            <strong>&nbsp;CONTACT</strong>
+                            <strong>&nbsp;@Localizer["CONTACT"]</strong>
                         </a>
                     </li>
                 </ul>

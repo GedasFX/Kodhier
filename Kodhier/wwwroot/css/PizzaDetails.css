@@ -1,0 +1,24 @@
+﻿body {
+}
+
+.main {
+    position: relative;
+    width: 1200px;
+    height: auto;
+    padding: 10px;
+    margin: 40px auto;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0 #000;
+}
+
+header {
+    position: relative;
+    text-align: center;
+    margin-top: -55px;
+}
+h1 {
+    position: relative;
+    text-align: center;
+    margin-top: -55px
+}

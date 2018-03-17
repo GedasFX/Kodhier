@@ -3,9 +3,16 @@
 }
 
 .products {
-    border: 1px solid #333;
-    background-color: #f1f1f1;
+  
+}
+form {
+    background-color: #ffffff;
     border-radius: 10px;
-    padding: 16px;
+    padding: 10px 10px 10px 10px;
     margin-bottom: 20px;
+    background: rgba(0,0,0,0.6);
+}
+header {
+    text-align: center;
+    padding: 0px 30px 0px 30px;
 }

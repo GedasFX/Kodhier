@@ -4,29 +4,58 @@
     ViewData["Title"] = "Index";
 }
 <link rel="stylesheet" type="text/css" href="~/css/Order.css" />
-<h2>Index</h2>
 <div class="col-md-8 offset-md-2">
-
+    <header>
+        <h1>MENIU</h1>
+    </header>
     <div class="row">
-
         @foreach (var item in Model)
         {
             <div class="col-sm-4 col-md-3">
                 <form method="post" id="@Html.DisplayFor(modelItem => item.Id)">
-                    <div class="=products">
-                        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" class="img-fluid" />"
-                        <h4 class="text-info">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
-                        <input type="text" name="quantity" class="form-control" value="1" />
+                    <div class="products">
+                        <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
+                        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
+                        <h4 class="text-white">@Html.DisplayFor(modelItem => item.Price)</h4>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button">Submit</button>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect03">
+                                <option selected>Choose size</option>
+                                <option value="1">20cm</option>
+                                <option value="2">30cm</option>
+                                <option value="3">50cm</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button">Submit</button>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect03">
+                                <option selected>Choose quantity</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="1">4</option>
+                                <option value="2">5</option>
+                                <option value="3">6</option>
+                                <option value="1">7</option>
+                                <option value="2">8</option>
+                                <option value="3">9</option>
+                                <option value="1">10</option>
+                                <option value="2">11</option>
+                                <option value="3">12</option>
+                            </select>
+                        </div>
                         <input type="hidden" name="name" value="@Html.DisplayFor(modelItem => item.Name)" />
                         <input type="hidden" name="price" value="@Html.DisplayFor(modelItem => item.Price)" />
-                        <input type="submit" name="add_to_cart" style="margin-top:5px" class="btn btun-info" value="Add to Cart" />
+                        <input type="submit" name="add_to_cart" style="margin-top:5px" class="btn btn-outline-success" value="Add to Cart" />
+                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
                     </div>
                 </form>
             </div>
         }
     </div>
 </div>
-
-
 

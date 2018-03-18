@@ -25,7 +25,7 @@
             <h3>Image Upload:</h3>
             @Html.ValidationSummary()
             <form method="post" enctype="multipart/form-data" asp-controller="Gallery" asp-action="Index">
-                <input type="file" name="imgfile" />
+                <input type="file" name="imgfile" accept="image/jpeg" />
                 <input type="submit" value="Upload" /><br /><br />
             </form>
         </div>
@@ -110,6 +110,15 @@
                     <img src="~/uploads/img/gallery/thumbs/12.jpg" alt="" />
                 </div>
             </a>
+
+            @foreach (var item in (IEnumerable<string>)ViewData["ImgEnum"])
+            {
+              <a href="@Url.Content(item)" class="col-md-2 col-4">
+                  <div class="lightbox__item photos__item">
+                      <img src="@Url.Content(item)" alt=""/>
+                  </div>
+              </a>
+            }
         </div>
     </div>
 </section>

@@ -21,6 +21,12 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            List<string> imgList = new List<string>();
+            foreach (var item in Directory.EnumerateFiles(Path.Combine(_env.WebRootPath, "uploads/img/gallery/"), "*.jpg"))
+            {
+                imgList.Add("~/uploads/img/gallery/" + Path.GetFileName(item));
+            }
+            ViewData["ImgEnum"] = imgList;
             return View();
         }
 

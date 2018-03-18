@@ -57,7 +57,7 @@ namespace Kodhier.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("Order,Pizza")] OrderCreateViewModel model)
+        public async Task<IActionResult> Create(Guid id, [Bind("Order,Name,Price,ImagePath")] OrderCreateViewModel model)
         {
             var pizza = _context.Pizzas.SingleOrDefault(i => i.Id == id);
             if (pizza == null)

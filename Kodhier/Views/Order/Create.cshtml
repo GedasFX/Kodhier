@@ -33,31 +33,36 @@
                         <dt>Cheese, tomato sauce, minced meat, red onion, sweet peppers, canned chilli, steak sauce, mayonnaise and sour cream sauce.</dt>
                     </dl>
                     </div>
-                    <form asp-action="Create">
+                <form asp-action="Create">
 
-                        <div class="col-md-3">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="Order.Quantity" class="control-label"></label>
-                                <input asp-for="Order.Quantity" class="form-control" />
-                                <span asp-validation-for="Order.Quantity" class="text-danger"></span>
-                            </div>
+
+                    <div class="col-md-3">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Order.Quantity" class="control-label"></label>
+                            <input asp-for="Order.Quantity" class="form-control" />
+                            <span asp-validation-for="Order.Quantity" class="text-danger"></span>
                         </div>
-                        <div class="col-md-2">
-                            <label asp-for="Order.Size" class="control-label"></label>
-                            <select class="dropdown-header" name="Order.Size">
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="50">50</option>
-                            </select>
-                            <span asp-validation-for="Order.Size" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Order.Size" class="control-label"></label>
+                        <select class="dropdown-header" name="Order.Size">
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span asp-validation-for="Order.Size" class="text-danger"></span>
+                    </div>
+                    <input name="Name" value="@Html.DisplayFor(model => model.Name)" type="hidden" />
+                    <input name="Price" value="@Html.DisplayFor(model => model.Price)" type="hidden" />
+                    <input name="ImagePath" value="@Html.DisplayFor(model => model.ImagePath)" type="hidden" />
+                
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="submit" value="Order" style="margin-top:5px" class="btn btn-outline-success" />
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <input type="submit" value="Order" style="margin-top:5px" class="btn btn-outline-success" />
-                            </div>
-                        </div>
-                    </form>
+                    </div>
+                </form>
                     <div class="col-md-6">
                         <a asp-action="Index">Back to List</a>
                     </div>

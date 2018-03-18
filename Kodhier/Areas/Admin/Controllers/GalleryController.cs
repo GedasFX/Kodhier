@@ -31,18 +31,18 @@ namespace Kodhier.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(IFormFile imgfile)
+        public async Task<IActionResult> Upload(IFormFile imgfile)
         {
             if (imgfile.Length > 512000)
             {
                 ModelState.AddModelError(string.Empty, "Max file size 512 KB");
-                return View();
+                return RedirectToAction("Index");
             }
 
             if (imgfile.ContentType != "image/jpeg")
             {
                 ModelState.AddModelError(string.Empty, "Only images allowed");
-                return View();
+                return RedirectToAction("Index");
             }
             
             var filePath = Path.Combine(_env.WebRootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
@@ -50,8 +50,8 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 await imgfile.CopyToAsync(stream);
             }
-            
-            return View();
+
+            return RedirectToAction("Index");
         }
     }
 }

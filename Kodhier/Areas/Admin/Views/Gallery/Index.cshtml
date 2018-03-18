@@ -24,7 +24,7 @@
         <div>
             <h3>Image Upload:</h3>
             @Html.ValidationSummary()
-            <form method="post" enctype="multipart/form-data" asp-controller="Gallery" asp-action="Index">
+            <form method="post" enctype="multipart/form-data" asp-controller="Gallery" asp-action="Upload">
                 <input type="file" name="imgfile" accept="image/jpeg" />
                 <input type="submit" value="Upload" /><br /><br />
             </form>

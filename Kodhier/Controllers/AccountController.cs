@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Kodhier.Models;
-using Kodhier.Models.AccountViewModels;
 using Kodhier.Services;
+using Kodhier.ViewModels.AccountViewModels;
 
 namespace Kodhier.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

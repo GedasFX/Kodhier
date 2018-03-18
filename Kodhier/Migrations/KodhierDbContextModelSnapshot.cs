@@ -84,11 +84,17 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("ClientId");
 
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<bool>("IsPaymentSuccessful");
+
                     b.Property<Guid?>("PaymentTypeId");
 
                     b.Property<Guid?>("PizzaId");
 
                     b.Property<int>("Quantity");
+
+                    b.Property<int>("Size");
 
                     b.HasKey("Id");
 
@@ -120,11 +126,11 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("CreatorId");
 
+                    b.Property<string>("ImagePath");
+
                     b.Property<string>("Name");
 
                     b.Property<decimal>("Price");
-
-                    b.Property<int>("Size");
 
                     b.HasKey("Id");
 

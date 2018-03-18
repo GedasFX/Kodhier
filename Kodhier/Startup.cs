@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Kodhier.Data;
 using Kodhier.Models;
 using Kodhier.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Options;
 
 namespace Kodhier
 {
@@ -15,6 +19,7 @@ namespace Kodhier
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AutoMapperConfig.RegisterMappings();
         }
 
         public IConfiguration Configuration { get; }
@@ -41,11 +46,42 @@ namespace Kodhier
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+
+            // Add the localization services to the services container
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            // Add application services.
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            // Configure supported cultures and localization options
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("lt-LT")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+
+                // These are the cultures the app supports for formatting numbers, dates, etc.
+                options.SupportedCultures = supportedCultures;
+                // These are the cultures the app supports for UI strings, i.e. we have localized resources for.
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -61,6 +97,12 @@ namespace Kodhier
 
             app.UseAuthentication();
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "area",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

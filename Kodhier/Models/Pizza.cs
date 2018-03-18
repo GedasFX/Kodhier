@@ -7,10 +7,8 @@ namespace Kodhier.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public int Size { get; set; }
+        public string ImagePath { get; set; }
 
-        public ApplicationUser Creator { get; set; }
-
-
+        public virtual ApplicationUser Creator { get; set; }
     }
 }

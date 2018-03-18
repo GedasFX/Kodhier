@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @using Microsoft.AspNetCore.Identity
 @using Kodhier.Models
 @inject SignInManager<ApplicationUser> SignInManager
@@ -13,17 +15,17 @@
             </a>
             <ul class=" dropdown-menu">
                 <li class="nav-itemlogg">
-                    <a class="nav-link active" asp-controller="Manage" asp-action="Index">Profile</a>
+                    <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>
                 </li>
                 <li class="nav-itemlogg">
-                    <a class="nav-link active" href="#">order history</a>
+                    <a class="nav-link active" href="#">@Localizer["Order history"]</a>
                 </li>
                 <li class="nav-itemlogg">
-                    <a class="nav-link active" asp-controller="Admin" asp-action="Index">Admin cp</a>
+                    <a class="nav-link active" asp-controller="Admin" asp-action="Index">@Localizer["Admin cp"]</a>
                 </li>
                 <li class="nav-itemlog">
                     <form class="form-display" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                        <button class="nav-link active btn btn-link" type="submit">Log out</button>
+                        <button class="nav-link active btn btn-link" type="submit">@Localizer["Log out"]</button>
                     </form>
                 </li>
             </ul>
@@ -35,12 +37,12 @@ else
     <ul class="nav navbar-nav mx-auto">
         <li class="nav-itemlog" role="presentation">
             <a class="nav-link active" asp-controller="Account" asp-action="Login">
-                <strong>Log in</strong>
+                <strong>@Localizer["Log in"]</strong>
             </a>
         </li>
         <li class="nav-itemreg" role="presentation">
             <a class="nav-link active" asp-controller="Account" asp-action="Register">
-                <strong>REGISTER</strong>
+                <strong>@Localizer["REGISTER"]</strong>
             </a>
         </li>
     </ul>

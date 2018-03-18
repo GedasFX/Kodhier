@@ -18,7 +18,7 @@
                     <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>
                 </li>
                 <li class="nav-itemlogg">
-                    <a class="nav-link active" href="#">@Localizer["Order history"]</a>
+                    <a class="nav-link active" asp-controller="Order" asp-action="History">@Localizer["Order history"]</a>
                 </li>
                 <li class="nav-itemlogg">
                     <a class="nav-link active" asp-controller="Admin" asp-action="Index">@Localizer["Admin cp"]</a>
@@ -42,7 +42,7 @@ else
         </li>
         <li class="nav-itemreg" role="presentation">
             <a class="nav-link active" asp-controller="Account" asp-action="Register">
-                <strong>@Localizer["REGISTER"]</strong>
+                <strong>@Localizer["Register"]</strong>
             </a>
         </li>
     </ul>

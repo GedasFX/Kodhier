@@ -3,18 +3,28 @@
     ViewData["Title"] = "Profile";
     ViewData.AddActivePage(ManageNavPages.Index);
 }
+<link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
 
-<h4>@ViewData["Title"]</h4>
 @Html.Partial("_StatusMessage", Model.StatusMessage)
-<div class="row">
-    <div class="col-md-6">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card-header">
+                <h4>@ViewData["Title"]</h4>
             </div>
-            <div class="form-group">
+            <div class="card-body">
+                <img class="rounded-circle" src="~/images/profileImage.jpg">
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card-header">User Details</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-control" disabled />
+                </div>
                 <label asp-for="Email"></label>
                 @if (Model.IsEmailConfirmed)
                 {
@@ -29,16 +39,17 @@
                     <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
                 }
                 <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    @await Html.PartialAsync("_ManageNav")
+                </div>
+                <button type="submit" class="btn btn-outline-success">Update profile</button>
             </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Save</button>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

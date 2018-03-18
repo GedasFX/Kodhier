@@ -52,9 +52,9 @@ namespace Kodhier.Tests
         {
             var pizza = _mock.Pizzas.Single(e => e.Name == "Havaian");
             var user = _mock.Users.Single(e => e.UserName == "AwDcV");
-            var order = new OrderViewModel() { Pizza = pizza, Quantity = 3, Size = 5 };
-            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true)) ;
-            _controller.ModelState.AddModelError("err", "Error");
+            var order = new OrderViewModel() { Pizza = pizza, Quantity = 3, Size = 22 };
+            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
+                _controller.ModelState.AddModelError("err", "Error");
             var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
 
             Assert.IsType<RedirectToActionResult>(res);
@@ -67,7 +67,7 @@ namespace Kodhier.Tests
             var pizza = _mock.Pizzas.Single(e => e.Name == "Havaian");
             var user = _mock.Users.Single(e => e.UserName == "AwDcV");
             var order = new OrderViewModel() { Pizza = pizza, Quantity = -9 };
-            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true));
+            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
             var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
 

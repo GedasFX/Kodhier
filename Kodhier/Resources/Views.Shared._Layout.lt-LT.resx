@@ -117,16 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ABOUT" xml:space="preserve">
+  <data name="About" xml:space="preserve">
     <value>Apie</value>
   </data>
-  <data name="BEST OFFERS" xml:space="preserve">
+  <data name="Best Offers" xml:space="preserve">
     <value>Geriausi pasiūlymai</value>
   </data>
-  <data name="CONTACT" xml:space="preserve">
+  <data name="Contact" xml:space="preserve">
     <value>Kontaktai</value>
   </data>
-  <data name="HOME" xml:space="preserve">
+  <data name="Home" xml:space="preserve">
     <value>Pagrindinis</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Meniu</value>
   </data>
 </root>

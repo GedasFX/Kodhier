@@ -44,33 +44,33 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Index">
                             <i class="typcn typcn-home-outline">
-                            </i><strong>&nbsp;@Localizer["HOME"]</strong>
+                            </i><strong>&nbsp;@Localizer["Home"]</strong>
                         </a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    @*<li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Index">
                             <i class="typcn typcn-gift"></i>
                             <strong>&nbsp;@Localizer["BEST OFFERS"]</strong>
                         </a>
-                    </li>
+                    </li>*@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Order" asp-action="Index">
                             <i class="typcn typcn-clipboard"></i>
-                            <strong>&nbsp;@Localizer["MENIU"]</strong>
+                            <strong>&nbsp;@Localizer["Menu"]</strong>
                         </a>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    @*<li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="About">
                             <i class="typcn typcn-compass"></i>
-                            <strong>&nbsp;@Localizer["ABOUT"]</strong>
+                            <strong>&nbsp;@Localizer["About"]</strong>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Contact">
                             <i class="typcn typcn-location-outline"></i>
-                            <strong>&nbsp;@Localizer["CONTACT"]</strong>
+                            <strong>&nbsp;@Localizer["Contact"]</strong>
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
                 <ul class="nav navbar-nav mx-auto">
                     @await Html.PartialAsync("_LoginPartial")

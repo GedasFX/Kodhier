@@ -10,12 +10,11 @@ namespace Kodhier.ViewModels
         public Guid Id { get; set; }
 
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a positive number")]
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
         public int Quantity { get; set; }
 
         [Required]
-        [ValidValues(new[] { 22, 23 }, ErrorMessage = "Invalid pizza size")]
-        [Range(0, int.MaxValue, ErrorMessage = "Size must be a positive number")]
+        [ValidValues(new[] { 20, 30, 50 }, ErrorMessage = "Invalid pizza size")]
         public int Size { get; set; }
 
         public bool IsPaymentSuccessful { get; set; }
@@ -38,5 +37,6 @@ namespace Kodhier.ViewModels
                 return new ValidationResult(ErrorMessage);
             }
         }
+
     }
 }

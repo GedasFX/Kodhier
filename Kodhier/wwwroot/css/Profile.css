@@ -1,0 +1,16 @@
+﻿body {
+}
+img {
+    width: 100px;
+    height: auto;
+}
+form {
+    position: relative;
+    width: 480px;
+    height: auto;
+    padding: 10px;
+    margin: 38px auto;
+    background: rgba(0,0,1,0.6);
+    box-shadow: 0 0 5px 0 #000;
+}
+

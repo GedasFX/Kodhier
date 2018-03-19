@@ -1,10 +1,12 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Home Page"];
 }
 
 <section>
     <div id="location" class="intro">
-        <h2 class="text-center" id="best">This week's best offers</h2>
+        <h2 class="text-center" id="best">@Localizer["This week's best offers"]</h2>
     </div>
 </section>
 <div class="carousel slide" data-ride="carousel" id="carousel-1">
@@ -40,17 +42,18 @@
 </div>
 <div class="container" id="contain">
     <div id="location" class="intro">
-        <h2 class="text-center">We're located</h2>
-    </div>
+        <h2 class="text-center">@Localizer["We're located"]</h2>
+
+</div>
 </div>
 <div>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/phone.png">Contacts&nbsp;</h2>
+                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/phone.png">@Localizer["Contacts"]&nbsp; </h2>
                 <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
                 <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
-                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/email60x60.png">&nbsp;Email&nbsp;</h2>
+                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/email60x60.png">&nbsp;@Localizer["Email"]&nbsp;</h2>
                 <h3 class="text-center" style="background-color:red;">orders@kodhier.com</h3>
                 <h3 class="text-center" style="background-color:red;">info@kodhier.com</h3>
             </div>

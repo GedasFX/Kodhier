@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -41,34 +43,34 @@
                 <ul class="nav navbar-nav mx-auto">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                            <i class="typcn typcn-home-outline">
-                            </i><strong>&nbsp;HOME</strong>
+                            <i class="typcn typcn-home-outline"></i>
+                            <strong>&nbsp;@Localizer["Home"]</strong>
                         </a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                            <i class="typcn typcn-gift"></i>
-                            <strong>&nbsp;BEST OFFERS</strong>
-                        </a>
-                    </li>
+                    @*<li class="nav-item" role="presentation">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                                <i class="typcn typcn-gift"></i>
+                                <strong>&nbsp;@Localizer["BEST OFFERS"]</strong>
+                            </a>
+                        </li>*@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Order" asp-action="Index">
                             <i class="typcn typcn-clipboard"></i>
-                            <strong>&nbsp;MENIU</strong>
+                            <strong>&nbsp;@Localizer["Menu"]</strong>
                         </a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" asp-controller="Home" asp-action="About">
-                            <i class="typcn typcn-compass"></i>
-                            <strong>&nbsp;ABOUT</strong>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" asp-controller="Home" asp-action="Contact">
-                            <i class="typcn typcn-location-outline"></i>
-                            <strong>&nbsp;CONTACT</strong>
-                        </a>
-                    </li>
+                    @*<li class="nav-item" role="presentation">
+                            <a class="nav-link active" asp-controller="Home" asp-action="About">
+                                <i class="typcn typcn-compass"></i>
+                                <strong>&nbsp;@Localizer["About"]</strong>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Contact">
+                                <i class="typcn typcn-location-outline"></i>
+                                <strong>&nbsp;@Localizer["Contact"]</strong>
+                            </a>
+                        </li>*@
                 </ul>
                 <ul class="nav navbar-nav mx-auto">
                     @await Html.PartialAsync("_LoginPartial")
@@ -78,6 +80,14 @@
     </section>
     <div class="body-content">
         @RenderBody()
+        <hr />
+        <footer>
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
+                </div>
+            </div>
+        </footer>
     </div>
 
     <environment include="Development">

@@ -3,41 +3,25 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h2>Index</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
+<div class="col-md-8 offset-md-2">
+    <header>
+        <h1>MENIU</h1>
+    </header>
+    <div class="row">
         @foreach (var item in Model)
         {
-            <tr id="@Html.DisplayFor(modelItem => item.Id)">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImagePath)
-                </td>
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
+            <div class="col-sm-4 col-md-3">
+                <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Id)">
+                    <div class="products">
+                        <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
+                        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
+                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.Price)</h4>
+                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+

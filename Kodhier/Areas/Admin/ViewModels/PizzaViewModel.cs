@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Kodhier.ViewModels;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kodhier.Areas.Admin.ViewModels
 {
     public class PizzaViewModel
     {
+       
         [Required]
         [Display(Name = "Pizza name")]
         public string Name { get; set; }
@@ -20,5 +22,6 @@ namespace Kodhier.Areas.Admin.ViewModels
         public decimal Price { get; set; }
 
         public Guid Id { get; set; }
+        public OrderViewModel Order { get; set; }
     }
 }

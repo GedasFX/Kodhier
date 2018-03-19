@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +7,18 @@ using Kodhier.Models;
 using AutoMapper;
 using Kodhier.Areas.Admin.ViewModels;
 using Kodhier.ViewModels;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kodhier.Controllers
 {
     public class OrderController : Controller
     {
         private readonly KodhierDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrderController(KodhierDbContext context, UserManager<ApplicationUser> userManager)
+        public OrderController(KodhierDbContext context)
         {
-            _userManager = userManager;
             _context = context;
         }
 
@@ -29,7 +27,7 @@ namespace Kodhier.Controllers
             return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
         }
 
-        // GET: Order/Details
+        [Authorize]
         public async Task<IActionResult> Create(Guid? id)
         {
             if (id == null)
@@ -47,12 +45,19 @@ namespace Kodhier.Controllers
             return View(new OrderCreateViewModel {Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price });
         }
 
-        // POST: Order/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
+        public IActionResult History()
+        {
+            return View(_context.Orders
+                .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                .Where(o => o.IsPaymentSuccessful)
+                .Select(o => Mapper.Map<OrderViewModel>(o)));
+        }
+
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("Order,Pizza")] OrderCreateViewModel model)
+        public async Task<IActionResult> Create(Guid id, [Bind("Order,Name,Price,ImagePath")] OrderCreateViewModel model)
         {
             var pizza = _context.Pizzas.SingleOrDefault(i => i.Id == id);
             if (pizza == null)
@@ -62,7 +67,7 @@ namespace Kodhier.Controllers
                 var order = Mapper.Map<Order>(model.Order);
                 order.Id = Guid.NewGuid();
                 order.Pizza = pizza;
-                order.Client = _context.Users.SingleOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User).ToString());
+                order.Client = _context.Users.SingleOrDefault(u => u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

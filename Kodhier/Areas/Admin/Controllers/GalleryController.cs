@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,12 +37,12 @@ namespace Kodhier.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (imgfile.ContentType != "image/jpeg")
+            if (!(imgfile.ContentType == "image/jpeg" || imgfile.ContentType == "image/png"))
             {
                 ModelState.AddModelError(string.Empty, "Only images allowed");
                 return RedirectToAction("Index");
             }
-            
+
             var filePath = Path.Combine(_env.WebRootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
             using (var stream = new FileStream(filePath, FileMode.Create)) // might be other errors?
             {

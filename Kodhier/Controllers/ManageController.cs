@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -9,15 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Kodhier.Models;
-using Kodhier.Models.ManageViewModels;
 using Kodhier.Services;
+using Kodhier.ViewModels.ManageViewModels;
 
 namespace Kodhier.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

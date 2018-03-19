@@ -1,6 +1,8 @@
 ﻿using Kodhier.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Kodhier.Areas.Admin.ViewModels;
+using Kodhier.ViewModels;
 
 namespace Kodhier.Data
 {

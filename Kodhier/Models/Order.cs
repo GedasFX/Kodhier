@@ -16,6 +16,7 @@ namespace Kodhier.Models
         public DateTime OvenDate { get; set; }
         public DateTime DeliveryDate { get; set; }
 
+        public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }
 
         public virtual Pizza Pizza { get; set; }

@@ -10,9 +10,6 @@ namespace Kodhier.Models
         public int Size { get; set; }
         public string Comment { get; set; }
 
-        public bool IsPaymentSuccessful { get; set; }
-        public bool IsFinished { get; set; }
-
         public DateTime PlacementDate { get; set; }
         public DateTime PaymentDate { get; set; }
         public DateTime CookingDate { get; set; }

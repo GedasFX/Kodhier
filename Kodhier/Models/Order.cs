@@ -11,10 +11,10 @@ namespace Kodhier.Models
         public string Comment { get; set; }
 
         public DateTime PlacementDate { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public DateTime CookingDate { get; set; }
-        public DateTime OvenDate { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public DateTime? CookingDate { get; set; }
+        public DateTime? OvenDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
         public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }

@@ -39,9 +39,9 @@ namespace Kodhier.Tests
         {
             var uId = new Guid("ec04ee08-f434-41d0-a208-15bd2dcb3389");
             var pId = Guid.NewGuid();
-            var user = new ApplicationUser() { Id = uId.ToString(), Age = new DateTime(), Email = "asdf@jkl.lt", FirstName = "ASdF", UserName = "AwDcV" };
+            var user = new ApplicationUser() { Id = uId.ToString(), BirthDate = new DateTime(), Email = "asdf@jkl.lt", FirstName = "ASdF", UserName = "AwDcV" };
             _context.Users.Add(user);
-            _context.Users.Add(new ApplicationUser() { Id = Guid.NewGuid().ToString(), Age = new DateTime(), Email = "dummy@jkdl.lt", FirstName = "dummy", UserName = "dumb" });
+            _context.Users.Add(new ApplicationUser() { Id = Guid.NewGuid().ToString(), BirthDate = new DateTime(), Email = "dummy@jkdl.lt", FirstName = "dummy", UserName = "dumb" });
             _context.Pizzas.Add(new Pizza() { Creator = user, Id = pId, Name = "Havaian", Price = 46.5M });
             _context.SaveChangesAsync();
         }

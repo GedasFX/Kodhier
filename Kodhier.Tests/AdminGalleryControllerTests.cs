@@ -16,21 +16,22 @@ namespace Kodhier.Tests
     public class AdminGalleryControllerTests
     {
         GalleryController _controller;
+        String testRootDir = "../../../uploadTest";
 
         public AdminGalleryControllerTests()
         {
             var mockEnvironment = new Mock<IHostingEnvironment>();
-            mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
+            mockEnvironment.Setup(m => m.WebRootPath).Returns(testRootDir);
 
             _controller = new GalleryController(mockEnvironment.Object);
         }
         
-        [Fact(DisplayName = "Create method add order to db with correct data")]
+        [Fact(DisplayName = "Normal PNG upload")]
         public async Task Upload_Something_Ok()
         {
             // arrange
             var testFile = new Mock<IFormFile>();
-            var sourceFile = File.OpenRead(@"source image path");
+            var sourceFile = File.OpenRead(testRootDir + "/test.png");
 
             var memStream = new MemoryStream();
             var writer = new StreamWriter(memStream);
@@ -38,9 +39,10 @@ namespace Kodhier.Tests
             writer.Flush();
             memStream.Position = 0;
 
-            var fileName = "QQ.png"; // sourceImg.Name
+            var fileName = sourceFile.Name;
             var fileType = "image/png";
-            long fileSize = 100;
+            long fileSize = 500_000;
+
             testFile.Setup(f => f.Length).Returns(fileSize).Verifiable();
             testFile.Setup(f => f.ContentType).Returns(fileType).Verifiable();
             testFile.Setup(f => f.FileName).Returns(fileName).Verifiable();
@@ -54,9 +56,6 @@ namespace Kodhier.Tests
 
             // assert
             testFile.Verify();
-			
-            //Assert.IsType<RedirectToActionResult>(result);
-            //Assert.Equal("Index", ((RedirectToActionResult)result).ActionName);
 			
 			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
 			Assert.Equal("Index", redirectToActionResult.ActionName);

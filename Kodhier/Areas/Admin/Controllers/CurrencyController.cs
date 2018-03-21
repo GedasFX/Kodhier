@@ -22,7 +22,8 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View(new PrepaidCardViewModel { Elements = _context.PrepaidCodes.Select(c => Mapper.Map<PrepaidCardViewModel>(c)) });
+            return View(new PrepaidCardViewModel { Elements = _context.
+                PrepaidCodes.Select(c => Mapper.Map<PrepaidCardViewModel>(c)) });
         }
 
         [HttpPost]

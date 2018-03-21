@@ -80,12 +80,24 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
-            if (!ModelState.IsValid) return View();
-
+            if (!ModelState.IsValid)
+            {
+                ViewData["Error"] = "Such code doesn't exist. Try again.";
+                return View();
+            }
+            
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
 
-            if (code == null || code.RedemptionDate != null) return View();
-
+            if (code == null )
+            {
+                ViewData["Error"] = "Such code doesn't exist. Try again.";
+                return View();
+            }
+            if ( code.RedemptionDate != null)
+            {
+                ViewData["Error"] = "This code is already used.";
+                return View();
+            }
             code.RedemptionDate = DateTime.Now;
 
             var user = _context.Users.SingleOrDefault(u =>
@@ -94,7 +106,7 @@ namespace Kodhier.Controllers
             user.Coins += code.Amount;
 
             await _context.SaveChangesAsync();
-
+            TempData["Success"] = "Your code was successfully converted to coins!";
             return View();
         }
 

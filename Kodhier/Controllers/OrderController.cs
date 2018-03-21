@@ -70,7 +70,7 @@ namespace Kodhier.Controllers
                 order.Client = _context.Users.SingleOrDefault(u => u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Your order was accepted succesfully!";
+                TempData["Success"] = "Your order was accepted successfully!";
                 return RedirectToAction(nameof(Index));
             }
             

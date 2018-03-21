@@ -84,7 +84,7 @@ namespace Kodhier.Controllers
 
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
 
-            if (code == null) return View();
+            if (code == null || code.RedemptionDate != null) return View();
 
             code.RedemptionDate = DateTime.Now;
 

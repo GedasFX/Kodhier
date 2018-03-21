@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
+using Microsoft.Extensions.Caching.Memory;
 using SQLitePCL;
 
 namespace Kodhier.Controllers
@@ -27,6 +28,7 @@ namespace Kodhier.Controllers
 
         private readonly UrlEncoder _urlEncoder;
         private readonly KodhierDbContext _context;
+        private readonly IMemoryCache _cache;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -37,7 +39,8 @@ namespace Kodhier.Controllers
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder,
-          KodhierDbContext context)
+          KodhierDbContext context,
+          IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,6 +48,7 @@ namespace Kodhier.Controllers
             _logger = logger;
             _urlEncoder = urlEncoder;
             _context = context;
+            _cache = cache;
         }
 
         [TempData]
@@ -82,28 +86,29 @@ namespace Kodhier.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Error"] = "Such code doesn't exist. Try again.";
                 return View();
             }
-            
+
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
 
-            if (code == null )
+            if (code == null)
             {
-                ViewData["Error"] = "Such code doesn't exist. Try again.";
+                ViewData["Error"] = "Code doesn't exist.";
                 return View();
             }
-            if ( code.RedemptionDate != null)
+            if (code.RedemptionDate != null)
             {
-                ViewData["Error"] = "This code is already used.";
+                ViewData["Error"] = "The code has already been used.";
                 return View();
             }
+            // Code valid, continue
             code.RedemptionDate = DateTime.Now;
 
             var user = _context.Users.SingleOrDefault(u =>
                 u.Id == User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
             code.Redeemer = user;
             user.Coins += code.Amount;
+            _cache.Remove(user.UserName);
 
             await _context.SaveChangesAsync();
             TempData["Success"] = "Your code was successfully converted to coins!";

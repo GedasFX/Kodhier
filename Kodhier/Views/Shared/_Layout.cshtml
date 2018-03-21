@@ -35,10 +35,10 @@
             </a>
 
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">@Localizer["Toggle navigation"]</span>
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+            
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mx-auto">
                     <li class="nav-item" role="presentation">
@@ -47,30 +47,12 @@
                             <strong>&nbsp;@Localizer["Home"]</strong>
                         </a>
                     </li>
-                    @*<li class="nav-item" role="presentation">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                                <i class="typcn typcn-gift"></i>
-                                <strong>&nbsp;@Localizer["BEST OFFERS"]</strong>
-                            </a>
-                        </li>*@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" asp-controller="Order" asp-action="Index">
                             <i class="typcn typcn-clipboard"></i>
                             <strong>&nbsp;@Localizer["Menu"]</strong>
                         </a>
                     </li>
-                    @*<li class="nav-item" role="presentation">
-                            <a class="nav-link active" asp-controller="Home" asp-action="About">
-                                <i class="typcn typcn-compass"></i>
-                                <strong>&nbsp;@Localizer["About"]</strong>
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Contact">
-                                <i class="typcn typcn-location-outline"></i>
-                                <strong>&nbsp;@Localizer["Contact"]</strong>
-                            </a>
-                        </li>*@
                 </ul>
                 <ul class="nav navbar-nav mx-auto">
                     @await Html.PartialAsync("_LoginPartial")
@@ -96,7 +78,6 @@
             <script src="~/lib/jquery/dist/jquery.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
             <script src="~/assets/js/jquery.min.js"></script>
-            <!-- <script src="~/js/BetterMeniu.js"></script>-->
             <script src="~/js/Submenu.js"></script>
             <script src="~/js/site.js" asp-append-version="true"></script>
         </environment>

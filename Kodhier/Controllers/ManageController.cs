@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Kodhier.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
+using SQLitePCL;
 
 namespace Kodhier.Controllers
 {
@@ -23,6 +25,7 @@ namespace Kodhier.Controllers
         private readonly ILogger _logger;
 
         private readonly UrlEncoder _urlEncoder;
+        private readonly KodhierDbContext _context;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -32,13 +35,15 @@ namespace Kodhier.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          KodhierDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [TempData]
@@ -63,6 +68,18 @@ namespace Kodhier.Controllers
             };
 
             return View(model);
+        }
+
+        public IActionResult Redeem()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Redeem([Bind("Id")] RedeemViewModel model)
+        {
+            var id = Guid.Parse(model.Id);
+            return View();
         }
 
         [HttpPost]

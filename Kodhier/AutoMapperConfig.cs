@@ -9,6 +9,7 @@ namespace Kodhier
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Areas.Admin.ViewModels.PizzaViewModel, Models.Pizza>().ReverseMap();
                 cfg.CreateMap<ViewModels.OrderViewModel, Models.Order>().ReverseMap();
+                cfg.CreateMap<Areas.Admin.ViewModels.PrepaidCardViewModel, Models.PrepaidCode>().ReverseMap();
             });
         }
     }

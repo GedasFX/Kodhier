@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180321140331_CreateCodesTable")]
+    partial class CreateCodesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,11 +148,7 @@ namespace Kodhier.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<DateTime>("CreationDate");
-
                     b.Property<string>("RedeemerId");
-
-                    b.Property<DateTime?>("RedemptionDate");
 
                     b.HasKey("Id");
 

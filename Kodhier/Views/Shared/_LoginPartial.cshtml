@@ -1,7 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@using Microsoft.Extensions.Caching.Memory
 @inject IViewLocalizer Localizer
-@inject IMemoryCache Cache
 @inject SignInManager<ApplicationUser> SignInManager
 
 @if (SignInManager.IsSignedIn(User))

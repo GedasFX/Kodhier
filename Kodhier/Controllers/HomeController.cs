@@ -1,10 +1,9 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 
 namespace Kodhier.Controllers
 {

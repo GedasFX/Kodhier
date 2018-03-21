@@ -8,6 +8,12 @@
     <header>
         <h1>MENIU</h1>
     </header>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <p><strong> @TempData["Success"].ToString()</strong></p>
+        </div>
+    }
     <div class="row">
         @foreach (var item in Model)
         {

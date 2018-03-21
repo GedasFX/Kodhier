@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180320182156_removeRedundantOrderFields")]
+    partial class removeRedundantOrderFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,15 +90,13 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("Comment");
 
-                    b.Property<DateTime?>("CookingDate");
+                    b.Property<DateTime>("CookingDate");
 
-                    b.Property<DateTime?>("DeliveryDate");
+                    b.Property<DateTime>("DeliveryDate");
 
-                    b.Property<bool>("IsPaid");
+                    b.Property<DateTime>("OvenDate");
 
-                    b.Property<DateTime?>("OvenDate");
-
-                    b.Property<DateTime?>("PaymentDate");
+                    b.Property<DateTime>("PaymentDate");
 
                     b.Property<Guid?>("PizzaId");
 

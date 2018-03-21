@@ -50,7 +50,7 @@ namespace Kodhier.Controllers
         {
             return View(_context.Orders
                 .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
-                .Where(o => o.IsPaymentSuccessful)
+                .Where(o => o.IsPaid)
                 .Select(o => Mapper.Map<OrderViewModel>(o)));
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -76,9 +77,24 @@ namespace Kodhier.Controllers
         }
 
         [HttpPost]
-        public IActionResult Redeem([Bind("Id")] RedeemViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
-            var id = Guid.Parse(model.Id);
+            if (!ModelState.IsValid) return View();
+
+            var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
+
+            if (code == null) return View();
+
+            code.RedemptionDate = DateTime.Now;
+
+            var user = _context.Users.SingleOrDefault(u =>
+                u.Id == User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            code.Redeemer = user;
+            user.Coins += code.Amount;
+
+            await _context.SaveChangesAsync();
+
             return View();
         }
 

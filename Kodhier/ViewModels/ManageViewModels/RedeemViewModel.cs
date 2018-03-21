@@ -6,6 +6,7 @@ namespace Kodhier.ViewModels.ManageViewModels
     public class RedeemViewModel
     {
         [GuidValidation(ErrorMessage = "Incorrect input format.")]
+        [Display(Name = "Code")]
         public string Id { get; set; }
     }
 

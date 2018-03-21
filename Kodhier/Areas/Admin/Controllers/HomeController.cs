@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Kodhier.Controllers.Admin
+namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller

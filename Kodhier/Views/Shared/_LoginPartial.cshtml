@@ -1,36 +1,10 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@using Microsoft.AspNetCore.Identity
-@using Kodhier.Models
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
-
-    <ul class="form-display nav navbar-nav mx-auto">
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">
-                <strong>@UserManager.GetUserName(User)</strong>
-            </a>
-            <ul class=" dropdown-menu">
-                <li class="nav-itemlogg">
-                    <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>
-                </li>
-                <li class="nav-itemlogg">
-                    <a class="nav-link active" asp-controller="Order" asp-action="History">@Localizer["Order history"]</a>
-                </li>
-                <li class="nav-itemlogg">
-                    <a class="nav-link active" asp-controller="Admin" asp-action="Index">@Localizer["Admin cp"]</a>
-                </li>
-                <li class="nav-itemlog">
-                    <form class="form-display" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                        <button class="nav-link active btn btn-link" type="submit">@Localizer["Log out"]</button>
-                    </form>
-                </li>
-            </ul>
-        </li>
-    </ul>
+    @await Component.InvokeAsync("Dropdown")
 }
 else
 {

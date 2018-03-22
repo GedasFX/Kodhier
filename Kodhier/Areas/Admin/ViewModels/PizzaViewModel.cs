@@ -21,6 +21,10 @@ namespace Kodhier.Areas.Admin.ViewModels
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
+        [Required]
+        [Display(Name = "Details")]
+        public string Details { get; set; }
+
         public Guid Id { get; set; }
         public OrderViewModel Order { get; set; }
     }

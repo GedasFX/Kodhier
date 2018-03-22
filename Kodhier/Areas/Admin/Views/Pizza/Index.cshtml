@@ -20,6 +20,7 @@
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
                         <h4 class="text-white">from @Html.DisplayFor(modelItem => item.Price)</h4>
+                        <h5 class="text-yellow">@Html.DisplayFor(modelItem => item.Description)</h5>
                         <div class="row">
                             <a asp-action="Details" asp-route-id="@item.Id" style="margin:5px 5px 5px 20px" class="btn btn-outline-success">Details</a>
                             <a asp-action="Delete" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger">Delete</a>

@@ -22,8 +22,8 @@ namespace Kodhier.Areas.Admin.ViewModels
         public decimal Price { get; set; }
 
         [Required]
-        [Display(Name = "Details")]
-        public string Details { get; set; }
+        [Display(Name = "Description")]
+        public string Description { get; set; }
 
         public Guid Id { get; set; }
         public OrderViewModel Order { get; set; }

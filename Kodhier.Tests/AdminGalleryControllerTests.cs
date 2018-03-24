@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -15,8 +12,8 @@ namespace Kodhier.Tests
 {
     public class AdminGalleryControllerTests
     {
-        GalleryController _controller;
-        String testRootDir = "../../../uploadTest";
+        readonly GalleryController _controller;
+        string testRootDir = "../../../uploadTest";
 
         public AdminGalleryControllerTests()
         {
@@ -40,8 +37,8 @@ namespace Kodhier.Tests
 			memStream.Position = 0;
 
 			var fileName = sourceFile.Name;
-			var fileType = "image/png";
-			long fileSize = 500_000;
+			const string fileType = "image/png";
+			const long fileSize = 500_000;
 
 			testFile.Setup(f => f.Length).Returns(fileSize);
 			testFile.Setup(f => f.ContentType).Returns(fileType);

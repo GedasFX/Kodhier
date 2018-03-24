@@ -9,7 +9,7 @@
         </a>
         <ul class=" dropdown-menu">
             <li class="nav-itemlogg">
-                @Model.Coins
+                <a asp-controller="Manage" asp-action="Redeem">@Model.Coins</a>
             </li>
             <li class="nav-itemlogg">
                 <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>

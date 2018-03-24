@@ -1,7 +1,6 @@
 ﻿using Kodhier.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Kodhier.ViewModels
 {
@@ -22,20 +21,16 @@ namespace Kodhier.ViewModels
 
         public Pizza Pizza { get; set; }
 
-        class ValidValuesAttribute : ValidationAttribute
+        private class ValidValuesAttribute : ValidationAttribute
         {
-            int[] values;
+            readonly int[] _values;
             public ValidValuesAttribute(int[] values)
             {
-                this.values = values;
+                _values = values;
             }
 
-            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-            {
-                if (Array.Exists(values, a => (int)value == a))
-                    return ValidationResult.Success;
-                return new ValidationResult(ErrorMessage);
-            }
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext) => 
+                Array.Exists(_values, a => (int)value == a) ? ValidationResult.Success : new ValidationResult(ErrorMessage);
         }
 
     }

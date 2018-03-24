@@ -17,8 +17,7 @@ namespace Kodhier.ViewModels
         [ValidValues(new[] { 20, 30, 50 }, ErrorMessage = "Invalid pizza size")]
         public int Size { get; set; }
 
-        public bool IsPaymentSuccessful { get; set; }
-        public bool IsFinished { get; set; }
+        public bool IsPaid { get; set; }
 
         public Pizza Pizza { get; set; }
 

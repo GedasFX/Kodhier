@@ -11,28 +11,32 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Xunit;
 
 namespace Kodhier.Tests
 {
     public class OrderControlerTests
     {
-        KodhierDbContext _context;
-        OrderController _controller;
+        readonly KodhierDbContext _context;
+        readonly OrderController _controller;
 
         public OrderControlerTests()
         {
-            try { AutoMapperConfig.RegisterMappings(); } catch { };
+            try { AutoMapperConfig.RegisterMappings(); } catch { /* If failed, means already initialized */ }
 
             _context = new KodhierDbContext(new DbContextOptionsBuilder<KodhierDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             GenMockData();
 
             var m_User = new Mock<ClaimsPrincipal>();
+            var m_Data = new Mock<ITempDataProvider>();
+            var httpContext = new DefaultHttpContext { User = m_User.Object };
             m_User.Setup(t => t.Claims).Returns(new[] { new Claim(ClaimTypes.NameIdentifier, "ec04ee08-f434-41d0-a208-15bd2dcb3389") });
             _controller = new OrderController(_context)
             {
-                ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = m_User.Object } }
+                ControllerContext = new ControllerContext { HttpContext = httpContext }
             };
+            _controller.TempData = new TempDataDictionary(httpContext, m_Data.Object);
         }
 
         private void GenMockData()
@@ -50,7 +54,6 @@ namespace Kodhier.Tests
         public async Task Create_Order_success()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var user = _context.Users.Single(e => e.UserName == "AwDcV");
             var order = new OrderViewModel() { Pizza = pizza, Quantity = 3, Size = 20 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
@@ -64,8 +67,7 @@ namespace Kodhier.Tests
         public async Task Create_Order_fail()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var user = _context.Users.Single(e => e.UserName == "AwDcV");
-            var order = new OrderViewModel() { Pizza = pizza, Quantity = -9 };
+            var order = new OrderViewModel { Pizza = pizza, Quantity = -9 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
             var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });

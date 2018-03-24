@@ -10,17 +10,18 @@ namespace Kodhier.Areas.Admin.Controllers
     [Area("Admin")]
     public class GalleryController : Controller
     {
-        private readonly IHostingEnvironment _env;
+        private readonly string rootPath;
+
 
         public GalleryController(IHostingEnvironment env)
         {
-            _env = env;
+            rootPath = env.WebRootPath;
         }
 
         public IActionResult Index()
         {
             List<string> imgList = new List<string>();
-            foreach (var item in Directory.EnumerateFiles(Path.Combine(_env.WebRootPath, "uploads/img/gallery/"), "*.jpg"))
+            foreach (var item in Directory.EnumerateFiles(Path.Combine(rootPath, "uploads/img/gallery/"), "*.jpg"))
             {
                 imgList.Add("~/uploads/img/gallery/" + Path.GetFileName(item));
             }
@@ -43,7 +44,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            var filePath = Path.Combine(_env.WebRootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
+            var filePath = Path.Combine(rootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
             using (var stream = new FileStream(filePath, FileMode.Create)) // might be other errors?
             {
                 await imgfile.CopyToAsync(stream);

@@ -13,22 +13,22 @@
     </p>
     <div class="row">
         @foreach (var item in Model)
-        {
-            <div class="col-sm-4 col-md-3">
+    {
+        <div class="col-sm-4 col-md-3">
+            <div class="container my-5">
                 <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Id)">
                     <div class="products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
-                        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.Price)</h4>
-                        <h5 class="text-yellow">@Html.DisplayFor(modelItem => item.Description)</h5>
-                        <div class="row">
-                            <a asp-action="Details" asp-route-id="@item.Id" style="margin:5px 5px 5px 20px" class="btn btn-outline-success">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger">Delete</a>
-                            <a asp-action="Edit" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-success">Edit</a>
-                        </div>
+                        <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
+                        <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.Price)</div>
+                        <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>
+                        <a asp-action="Details" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text btn-sm-text text-md-center">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text btn-sm-text  text-md-center">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text btn-sm-text  text-md-center">Edit</a>
                     </div>
                 </div>
             </div>
-        }
+        </div>
+}
     </div>
 </div>

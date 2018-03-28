@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.ViewModels.OrderViewModel>
+﻿@model IEnumerable<Kodhier.Models.Order>
 
 @{
     ViewData["Title"] = "Checkout";
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Size)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPaymentSuccessful)
+                @Html.DisplayNameFor(model => model.Pizza.Price)
             </th>
         </tr>
     </thead>
@@ -40,7 +40,7 @@
                     @Html.DisplayFor(modelItem => item.Size)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsPaymentSuccessful)
+                    @Html.DisplayFor(modelItem => item.Pizza.Price)
                 </td>
             </tr>
         }

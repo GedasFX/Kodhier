@@ -22,22 +22,55 @@ namespace Kodhier.Controllers
         public IActionResult Index()
         {
             return View(_context.Orders
-                   .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
-                   .Select(o => Mapper.Map<OrderViewModel>(o)));
+                   .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value));
         }
 
-        public IActionResult Edit() // edit details like amount
-        {
-            return View();
-        }
-
-        public IActionResult Remove(Guid id)
+        public IActionResult Edit(Guid id) // edit details like amount
         {
             var order = _context.Orders
                    .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
                    .Where(o => o.Id == id)
                    .Single();
-            _context.Orders.Remove(order);
+
+            if (order == null) // no such order
+                return RedirectToAction("Index");
+
+            return View(new OrderViewModel{ Pizza = order.Pizza, Size = order.Size, Quantity = order.Quantity });
+        }
+
+        public async Task<IActionResult> Edit(Guid id, OrderViewModel model)
+        {
+            var order = _context.Orders
+                   .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                   .Where(o => o.Id == id)
+                   .Single();
+
+            if (order == null) // no such order
+                return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                order.Size = model.Size;
+                order.Quantity = model.Quantity;
+
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            //TempData["Success"] = "Incorrect data"; // display errors here
+            return View(new OrderViewModel{ Pizza = order.Pizza, Size = order.Size, Quantity = order.Quantity });
+        }
+
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            var order = _context.Orders
+                   .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                   .Where(o => o.Id == id)
+                   .Single();
+
+            if (order != null) {
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index");
         }

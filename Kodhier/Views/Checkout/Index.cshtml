@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.Models.Order>
+﻿@model IEnumerable<Kodhier.ViewModels.CheckoutViewModel>
 
 @{
     ViewData["Title"] = "Checkout";
@@ -28,8 +28,8 @@
 
                         <div class="col-md-2 col-lg-2 col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
                         <div class="col-md-10 col-lg-10 col-sm-10">
-                            <h4 class="nomargin">Product 1 @Html.DisplayFor(modelItem => item.Pizza.Name)</h4>
-                            <p>lalalala lalaa lalala lalalalala @Html.DisplayFor(modelItem => item.Pizza.Description)</p>
+                            <h4 class="nomargin">Product 1 @Html.DisplayFor(modelItem => item.Name)</h4>
+                            <p>lalalala lalaa lalala lalalalala @Html.DisplayFor(modelItem => item.Description)</p>
                         </div>
                     </div>
                 </td>
@@ -38,12 +38,11 @@
                 <td data-th="Quantity">
                     <input type="number" class="form-control text-center" value="@Html.DisplayFor(modelItem => item.Quantity)">
                 </td>
-                <td data-th="Price" class="text-center">111 @Html.DisplayFor(modelItem => item.Pizza.Price)</td>
+                <td data-th="Price" class="text-center">111 @Html.DisplayFor(modelItem => item.Price)</td>
 
 
                 <td class="actions" data-th="">
                     <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-
                 </td>
             </tr>
             }

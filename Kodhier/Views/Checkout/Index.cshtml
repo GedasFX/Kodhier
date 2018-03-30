@@ -24,25 +24,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Pizza.Price)
             </th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Pizza.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Size)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Pizza.Price)
-                </td>
-            </tr>
+        <tr id="@Html.DisplayFor(modelItem => item.Id)">
+            <td>
+                @Html.DisplayFor(modelItem => item.Pizza.ImagePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pizza.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pizza.Price)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
+<tbody>

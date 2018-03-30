@@ -3,56 +3,59 @@
 @{
     ViewData["Title"] = "Checkout";
 }
-<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
+<link rel="stylesheet" type="text/css" href="~/css/Checkout.css" />
 <header>
-    <h1>CHECKOUT</h1>
+    <h1>SHOPPING CART</h1>
 </header>
 
-<div class="table-responsive col-md-8 offset-md-2">
-    <table class="table table-dark table-sm">
-        <thead class="thead-light">
+<div class="container col-md-8 offset-md-2">
+    <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
+        <thead>
             <tr>
-                <th></th>
-                <th>
-                    Pizza
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Size)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pizza.Price)
-                </th>
-                <th></th>
-
+                <th style="width:72%">Product</th>
+                <th style="width:5%" class="text-center">Size</th>
+                <th style="width:8%">Price</th>
+                <th style="width:5%">Quantity</th>
+                <th style="width:10%"></th>
             </tr>
         </thead>
-        <tbody class="card-body">
+        <tbody>
             @foreach (var item in Model)
             {
-                <tr id="@Html.DisplayFor(modelItem => item.Id)">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pizza.ImagePath)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pizza.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Size)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pizza.Price)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td data-th="Product">
+                    <div class="row">
+
+                        <div class="col-md-2 col-lg-2 col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
+                        <div class="col-md-10 col-lg-10 col-sm-10">
+                            <h4 class="nomargin">Product 1 @Html.DisplayFor(modelItem => item.Pizza.Name)</h4>
+                            <p>lalalala lalaa lalala lalalalala @Html.DisplayFor(modelItem => item.Pizza.Description)</p>
+                        </div>
+                    </div>
+                </td>
+                <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
+                <td data-th="Price">111 @Html.DisplayFor(modelItem => item.Pizza.Price)</td>
+                <td data-th="Quantity">
+                    <input type="number" class="form-control text-center" value="@Html.DisplayFor(modelItem => item.Quantity)">
+                </td>
+
+                <td class="actions" data-th="">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+          
+                </td>
+            </tr>
             }
         </tbody>
+        <tfoot>
+            <tr class="visible-xs">
+                <td class="text-center"><strong>Total 1.99</strong></td>
+            </tr>
+            <tr>
+                <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                <td colspan="2" class="hidden-xs"></td>
+                <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
+                <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+            </tr>
+        </tfoot>
     </table>
- </div>
+</div>

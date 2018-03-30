@@ -22,7 +22,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
+            <tr id="@Html.DisplayFor(modelItem => item.Id)">
                 <td data-th="Product">
                     <div class="row">
 
@@ -33,6 +33,7 @@
                         </div>
                     </div>
                 </td>
+     
                 <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
                 <td data-th="Quantity">
                     <input type="number" class="form-control text-center" value="@Html.DisplayFor(modelItem => item.Quantity)">
@@ -41,7 +42,7 @@
 
 
                 <td class="actions" data-th="">
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
 
                 </td>
             </tr>

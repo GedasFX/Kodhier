@@ -1,38 +1,17 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 
 namespace Kodhier.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IStringLocalizer<HomeController> _localizer;
-
-        public HomeController(IStringLocalizer<HomeController> localizer)
-        {
-            _localizer = localizer;
-        }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = _localizer["Your application description page."];
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = _localizer["Your contact page."];
-
             return View();
         }
 

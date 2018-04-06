@@ -218,7 +218,7 @@ namespace Kodhier.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Username,
-                    Age = model.BirthDate,
+                    BirthDate = model.BirthDate,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName

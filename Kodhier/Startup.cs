@@ -44,9 +44,8 @@ namespace Kodhier
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.AddMemoryCache();
             services.AddMvc();
-
 
             // Add the localization services to the services container
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -94,7 +93,6 @@ namespace Kodhier
             }
 
             app.UseStaticFiles();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>

@@ -27,7 +27,6 @@ namespace Kodhier.Controllers
             return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
         }
 
-        [Authorize]
         public async Task<IActionResult> Create(Guid? id)
         {
             if (id == null)
@@ -42,7 +41,7 @@ namespace Kodhier.Controllers
                 return NotFound();
             }
 
-            return View(new OrderCreateViewModel {Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price });
+            return View(new OrderCreateViewModel { Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price, Description = pizza.Description });
         }
 
         [Authorize]
@@ -50,7 +49,7 @@ namespace Kodhier.Controllers
         {
             return View(_context.Orders
                 .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
-                .Where(o => o.IsPaymentSuccessful)
+                .Where(o => o.IsPaid)
                 .Select(o => Mapper.Map<OrderViewModel>(o)));
         }
 
@@ -70,8 +69,10 @@ namespace Kodhier.Controllers
                 order.Client = _context.Users.SingleOrDefault(u => u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Your order was accepted successfully!";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(model);
         }
     }

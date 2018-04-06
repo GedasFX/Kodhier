@@ -10,15 +10,8 @@ namespace Kodhier.Data
     {
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<PrepaidCode> PrepaidCodes { get; set; }
 
-        public KodhierDbContext(DbContextOptions<KodhierDbContext> options) : base(options)
-        {
-
-        }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        public KodhierDbContext(DbContextOptions<KodhierDbContext> options) : base(options) { }
     }
 }

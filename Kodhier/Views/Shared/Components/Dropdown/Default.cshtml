@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Kodhier.ViewModels.DropdownViewModel
+@inject IViewLocalizer Localizer
+
+<ul class="form-display nav navbar-nav mx-auto">
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+            <strong>@Model.Name</strong>
+        </a>
+        <ul class=" dropdown-menu">
+            <li class="nav-itemlogg">
+                <a asp-controller="Manage" asp-action="Redeem">@Model.Coins</a>
+            </li>
+            <li class="nav-itemlogg">
+                <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>
+            </li>
+            <li class="nav-itemlogg">
+                <a class="nav-link active" asp-controller="Order" asp-action="History">@Localizer["Order history"]</a>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-itemlogg">
+                    <a class="nav-link active" asp-area="Admin" asp-controller="Home" asp-action="Index">@Localizer["Admin cp"]</a>
+                </li>
+            }
+            <li class="nav-itemlog">
+                <form class="form-display" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <button class="nav-link active btn btn-link" type="submit">@Localizer["Log out"]</button>
+                </form>
+            </li>
+        </ul>
+    </li>
+</ul>

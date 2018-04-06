@@ -54,7 +54,7 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Price,Size,ImagePath")] PizzaViewModel pizza)
+        public async Task<IActionResult> Create([Bind("Name,Price,Size,ImagePath,Description")] PizzaViewModel pizza)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Price,Size,ImagePath")] PizzaViewModel model)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Price,Size,ImagePath,Description")] PizzaViewModel model)
         {
             if (id != model.Id)
             {

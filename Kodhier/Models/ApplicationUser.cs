@@ -8,6 +8,7 @@ namespace Kodhier.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime Age { get; set; }
+        public DateTime BirthDate { get; set; }
+        public decimal Coins { get; set; }
     }
 }

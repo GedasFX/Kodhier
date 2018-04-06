@@ -117,20 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin cp" xml:space="preserve">
-    <value>Admin Valdymas</value>
-  </data>
   <data name="Log in" xml:space="preserve">
     <value>Prisijungimas</value>
-  </data>
-  <data name="Log out" xml:space="preserve">
-    <value>Atsijungti</value>
-  </data>
-  <data name="Order history" xml:space="preserve">
-    <value>Užsakymų istorija</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Registracija</value>

@@ -27,7 +27,6 @@ namespace Kodhier.Controllers
             return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
         }
 
-        [Authorize]
         public async Task<IActionResult> Create(Guid? id)
         {
             if (id == null)
@@ -42,7 +41,7 @@ namespace Kodhier.Controllers
                 return NotFound();
             }
 
-            return View(new OrderCreateViewModel { Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price });
+            return View(new OrderCreateViewModel { Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price, Description = pizza.Description });
         }
 
         [Authorize]

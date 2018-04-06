@@ -3,67 +3,82 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
+<div class="col-md-10 offset-md-1">
 
-<h2>Index</h2>
-<hr />
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Amount" class="control-label"></label>
-        <input asp-for="Amount" class="form-control" />
-        <span asp-validation-for="Amount" class="text-danger"></span>
+    <header>
+        <h1>GENERATE CODES OF CURRENCY</h1>
+    </header>
+ 
+    <div class="col-md-2 col-sm-12 offset-md-5">
+        <div class="products">
+            <div class="container my-5">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Amount" class="control-label"></label>
+                        <input asp-for="Amount" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                        <div class="form-group">
+                            <input type="submit" value="Create" style="margin-top:10px" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-default" />
+    <div class="table1">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover table-bordered text-md-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreationDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RedemptionDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Redeemer)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Elements)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RedemptionDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Redeemer.UserName)
+                            </td>
+                            <td>
+                                <form asp-action="Delete">
+                                    <input type="hidden" name="Id" value="@item.Id" />
+                                    <input type="submit" onclick="confirm('Are you sure you wish to delete?')" value="Delete" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RedemptionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Redeemer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Elements)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RedemptionDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Redeemer.UserName)
-                </td>
-                <td>
-                    <form asp-action="Delete">
-                        <input type="hidden" name="Id" value="@item.Id" />
-                        <input type="submit" onclick="confirm('Are you sure you wish to delete?')" value="Delete" />
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+</div>

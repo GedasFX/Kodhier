@@ -27,7 +27,7 @@ namespace Kodhier.ViewComponents
                 _cache.Set(name, amount);
             }
 
-            return View(new UserCoinsViewModel(name, amount));
+            return View(new DropdownViewModel(name, amount));
         }
     }
 }

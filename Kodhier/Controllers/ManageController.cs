@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Kodhier.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
+using Microsoft.Extensions.Caching.Memory;
+using SQLitePCL;
 
 namespace Kodhier.Controllers
 {
@@ -23,6 +27,8 @@ namespace Kodhier.Controllers
         private readonly ILogger _logger;
 
         private readonly UrlEncoder _urlEncoder;
+        private readonly KodhierDbContext _context;
+        private readonly IMemoryCache _cache;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -32,13 +38,17 @@ namespace Kodhier.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          KodhierDbContext context,
+          IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
+            _cache = cache;
         }
 
         [TempData]
@@ -63,6 +73,46 @@ namespace Kodhier.Controllers
             };
 
             return View(model);
+        }
+
+        public IActionResult Redeem()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
+
+            if (code == null)
+            {
+                ViewData["Error"] = "Code doesn't exist.";
+                return View();
+            }
+            if (code.RedemptionDate != null)
+            {
+                ViewData["Error"] = "The code has already been used.";
+                return View();
+            }
+            // Code valid, continue
+            code.RedemptionDate = DateTime.Now;
+
+            var user = _context.Users.SingleOrDefault(u =>
+                u.Id == User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            code.Redeemer = user;
+            user.Coins += code.Amount;
+            _cache.Remove(user.UserName);
+
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Your code was successfully converted to coins!";
+            return View();
         }
 
         [HttpPost]

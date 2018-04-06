@@ -41,7 +41,7 @@ namespace Kodhier.Controllers
                 return NotFound();
             }
 
-            return View(new OrderCreateViewModel {Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price, Description = pizza.Description });
+            return View(new OrderCreateViewModel { Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price, Description = pizza.Description });
         }
 
         [Authorize]
@@ -72,7 +72,7 @@ namespace Kodhier.Controllers
                 TempData["Success"] = "Your order was accepted successfully!";
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(model);
         }
     }

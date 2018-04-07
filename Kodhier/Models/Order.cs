@@ -7,7 +7,6 @@ namespace Kodhier.Models
         public Guid Id { get; set; }
 
         public int Quantity { get; set; }
-        public int Size { get; set; }
         public string Comment { get; set; }
 
         public DateTime PlacementDate { get; set; }

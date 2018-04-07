@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using Kodhier.Data;
 using Kodhier.Models;
-using Kodhier.Areas.Admin.ViewModels;
-using AutoMapper;
+using Kodhier.ViewModels.PizzaViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Kodhier.Controllers.Admin
+namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class PizzaController : Controller
@@ -23,30 +23,35 @@ namespace Kodhier.Controllers.Admin
         // GET: Pizza
         public IActionResult Index()
         {
-            return View(_context.Pizzas.Select(r => Mapper.Map<PizzaViewModel>(r)));
+            return View(_context.Pizzas.Include(c => c.PriceCategory)
+                .Select(r => Mapper.Map<PizzaViewModel>(r)).ToArray()
+                .Select(x => x.EnumeratePrices(_context.PizzaPriceInfo)));
         }
 
         // GET: Pizza/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+                .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
             }
-            return View(Mapper.Map<PizzaViewModel>(pizza));
+
+            var modal = Mapper.Map<PizzaViewModel>(pizza);
+            var m1 = modal.EnumeratePrices(_context.PizzaPriceInfo);
+            return View(m1);
         }
 
         // GET: Pizza/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new PizzaViewModel { PriceCategories = _context.PizzaPriceCategories });
         }
 
         // POST: Pizza/Create
@@ -69,19 +74,23 @@ namespace Kodhier.Controllers.Admin
         }
 
         // GET: Pizza/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Id == id);
+            var pizza = await _context.Pizzas.Include(p => p.PriceCategory).SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
             }
-            return View(Mapper.Map<PizzaViewModel>(pizza));
+
+            var vm = Mapper.Map<PizzaViewModel>(pizza).EnumeratePrices(_context.PizzaPriceInfo);
+            vm.PriceCategories = _context.PizzaPriceCategories;
+
+            return View(vm);
         }
 
         // POST: Pizza/Edit/5
@@ -89,9 +98,9 @@ namespace Kodhier.Controllers.Admin
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Price,Size,ImagePath,Description")] PizzaViewModel model)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Price,Size,ImagePath,Description")] PizzaViewModel model)
         {
-            if (id != model.Id)
+            if (id == Guid.Empty)
             {
                 return NotFound();
             }
@@ -110,10 +119,7 @@ namespace Kodhier.Controllers.Admin
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -121,21 +127,21 @@ namespace Kodhier.Controllers.Admin
         }
 
         // GET: Pizza/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+                .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
             }
 
-            return View(Mapper.Map<PizzaViewModel>(pizza));
+            return View(Mapper.Map<PizzaViewModel>(pizza).EnumeratePrices(_context.PizzaPriceInfo));
         }
 
         // POST: Pizza/Delete/5

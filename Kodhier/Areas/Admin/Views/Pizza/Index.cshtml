@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Kodhier.Areas.Admin.ViewModels.PizzaViewModel>
+﻿@using Kodhier.ViewModels.PizzaViewModels
+@model IEnumerable<Kodhier.ViewModels.PizzaViewModels.PizzaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,27 +10,25 @@
         <h1>PIZZA LIST</h1>
     </header>
     <div class="col-md-4 col-sm-6">
-        <a asp-action="Create" style="margin-top:5px 5px 5px 5px" class="btn btn-success">Create New Pizza</a>
+        <a asp-action="Create" style="margin-top:5px" class="btn btn-success">Create New Pizza</a>
     </div>
     <div class="row">
         @foreach (var item in Model)
-    {
-        <div class="col-sm-6 col-md-4">
-            <div class="container my-5">
-                <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Id)">
-                    <div class="products">
+        {
+            <div class="col-sm-6 col-md-4">
+                <div class="container my-5">
+                    <div class="main products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
-                        <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.Price)</div>
+                        <div class="text-white text-md-center text-sm-center">from @Html.Raw(item.Prices.Min(pr => pr.Price))</div>
                         <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>
-                        <a asp-action="Details" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text">Delete</a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Edit</a>
                     </div>
                 </div>
             </div>
-        </div>
-}
+        }
     </div>
 </div>
 

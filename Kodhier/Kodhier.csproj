@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Kodhier-326C2400-DDBA-4A87-96F4-C3B34361E02F</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20180407120542_aa.cs" />
+    <Compile Remove="Migrations\20180407120542_aa.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />

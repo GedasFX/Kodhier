@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Kodhier.Areas.Admin.ViewModels.PizzaViewModel>
+﻿@using Kodhier.ViewModels.PizzaViewModels
+@model IEnumerable<Kodhier.ViewModels.PizzaViewModels.PizzaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,12 +19,12 @@
         @foreach (var item in Model)
         {
             <div class="col-sm-4 col-md-3">
-                <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Id)">
+                <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Description)">
                     <div class="products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.Price)</h4>
-                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
+                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.PriceCategory)</h4>
+                        <a asp-action="Details" asp-route-id="@item.Name" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
                     </div>
                 </div>
             </div>

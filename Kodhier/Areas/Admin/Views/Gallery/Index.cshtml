@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<string>
+@{
     Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
     ViewData["Title"] = "Home Page";
 }
@@ -111,13 +112,13 @@
                 </div>
             </a>
 
-            @foreach (var item in (IEnumerable<string>)ViewData["ImgEnum"])
+            @foreach (var item in Model)
             {
-              <a href="@Url.Content(item)" class="col-md-2 col-4">
-                  <div class="lightbox__item photos__item">
-                      <img src="@Url.Content(item)" alt=""/>
-                  </div>
-              </a>
+                <a href="@Url.Content(item)" class="col-md-2 col-4">
+                    <div class="lightbox__item photos__item">
+                        <img src="@Url.Content(item)" alt="" />
+                    </div>
+                </a>
             }
         </div>
     </div>

@@ -46,7 +46,7 @@ namespace Kodhier.Tests
             var user = new ApplicationUser() { Id = uId.ToString(), BirthDate = new DateTime(), Email = "asdf@jkl.lt", FirstName = "ASdF", UserName = "AwDcV" };
             _context.Users.Add(user);
             _context.Users.Add(new ApplicationUser() { Id = Guid.NewGuid().ToString(), BirthDate = new DateTime(), Email = "dummy@jkdl.lt", FirstName = "dummy", UserName = "dumb" });
-            _context.Pizzas.Add(new Pizza() { Creator = user, Id = pId, Name = "Havaian", Price = 46.5M });
+            _context.Pizzas.Add(new Pizza { Creator = user, Id = pId, Name = "Havaian", PizzaClass = new PizzaClass { Price = 46.5M, Size = 32, Tier = PizzaPriceTier.Low } });
             _context.SaveChangesAsync();
         }
 
@@ -54,10 +54,10 @@ namespace Kodhier.Tests
         public async Task Create_Order_success()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderViewModel() { Pizza = pizza, Quantity = 3, Size = 20 };
+            var order = new OrderViewModel { Pizza = new PizzaAdminViewModel { Name = pizza.Name, Description = pizza.Description, Id = pizza.Id, ImagePath = pizza.ImagePath, Price = pizza.Price }, Quantity = 3, Size = 20 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
+            var res = await _controller.Create(pizza.Name, new OrderCreateViewModel { Order = order });
 
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Index", ((RedirectToActionResult)res).ActionName);
@@ -67,10 +67,10 @@ namespace Kodhier.Tests
         public async Task Create_Order_fail()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderViewModel { Pizza = pizza, Quantity = -9 };
+            var order = new OrderViewModel { Pizza = new PizzaAdminViewModel { Name = pizza.Name, Description = pizza.Description, Id = pizza.Id, ImagePath = pizza.ImagePath, Price = pizza.Price }, Quantity = 3, Size = -1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
+            var res = await _controller.Create(pizza.Name, new OrderCreateViewModel { Order = order });
 
             Assert.IsType<ViewResult>(res);
         }

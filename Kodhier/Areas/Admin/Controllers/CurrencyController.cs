@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Kodhier.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.ViewModels;
 
 namespace Kodhier.Areas.Admin.Controllers
 {
@@ -22,24 +22,27 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View(new PrepaidCardViewModel { Elements = _context.
-                PrepaidCodes.Include(e => e.Redeemer).Select(c => Mapper.Map<PrepaidCardViewModel>(c)) });
+            return View(new PrepaidCardViewModel
+            {
+                Elements = _context.
+                PrepaidCodes.Include(e => e.Redeemer).Select(c => Mapper.Map<PrepaidCardViewModel>(c))
+            });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Amount")] PrepaidCardViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(Index));
+
+            _context.PrepaidCodes.Add(new PrepaidCode
             {
-                _context.PrepaidCodes.Add(new PrepaidCode
-                {
-                    Id = Guid.NewGuid(),
-                    Amount = model.Amount,
-                    CreationDate = DateTime.Now
-                });
-                await _context.SaveChangesAsync();
-            }
+                Id = Guid.NewGuid(),
+                Amount = model.Amount,
+                CreationDate = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

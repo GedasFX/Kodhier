@@ -5,12 +5,12 @@ namespace Kodhier.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "The Email field is required.")]
+        [EmailAddress(ErrorMessage = "The Email field is not a valid e-mail address.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Username field is required.")]
         [Display(Name = "Username")]
         public string Username { get; set; }
 
@@ -20,11 +20,12 @@ namespace Kodhier.ViewModels.AccountViewModels
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "The Birth date field is required.")]
         [DataType(DataType.Date)]
         [Display(Name = "Birth date")]
         public DateTime BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Password field is required.")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]

@@ -1,6 +1,8 @@
-﻿@model IndexViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IndexViewModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = Localizer["Profile"];
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 <link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
@@ -25,13 +27,13 @@
                 </div>
                 <div class="col-md-9">
                     <div class="align-self-md-center">
-                        <div class="card-header">User Details</div>
+                        <div class="card-header">@Localizer["User details"]</div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label asp-for="Username"></label>
+                                <label asp-for="Username">@Localizer["Username"]</label>
                                 <input asp-for="Username" class="form-control" disabled />
                             </div>
-                            <label asp-for="Email"></label>
+                            <label asp-for="Email">@Localizer["Email"]</label>
                             @if (Model.IsEmailConfirmed)
                             {
                                 <div class="input-group">
@@ -42,16 +44,16 @@
                             else
                             {
                                 <input asp-for="Email" class="form-control" />
-                                <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                                <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
                             }
                             <span asp-validation-for="Email" class="text-danger"></span>
                             <div class="form-group">
-                                <label asp-for="PhoneNumber"></label>
+                                <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
                                 <input asp-for="PhoneNumber" class="form-control" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 @await Html.PartialAsync("_ManageNav")
                             </div>
-                            <button type="submit" class="btn btn-outline-success">Update profile</button>
+                            <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>
                         </div>
                     </div>
                 </div>

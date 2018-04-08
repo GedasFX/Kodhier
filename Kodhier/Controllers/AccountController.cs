@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Kodhier.Controllers
 {
@@ -19,17 +21,19 @@ namespace Kodhier.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-
+        private readonly IStringLocalizer<AccountController> _localizer;
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IStringLocalizer<AccountController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _localizer = localizer;
         }
 
         [TempData]
@@ -73,7 +77,7 @@ namespace Kodhier.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                    ModelState.AddModelError(string.Empty, _localizer["Invalid username or password."]);
                     return View(model);
                 }
             }

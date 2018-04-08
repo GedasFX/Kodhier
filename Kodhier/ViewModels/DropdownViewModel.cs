@@ -1,11 +1,11 @@
 ﻿namespace Kodhier.ViewModels
 {
-    public class UserCoinsViewModel
+    public class DropdownViewModel
     {
         public string Name { get; set; }
         public decimal Coins { get; set; }
 
-        public UserCoinsViewModel(string name, decimal coins)
+        public DropdownViewModel(string name, decimal coins)
         {
             Name = name;
             Coins = coins;

@@ -88,6 +88,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
+            TempData["Success"] = false;
             if (!ModelState.IsValid)
             {
                 return View();
@@ -106,6 +107,7 @@ namespace Kodhier.Controllers
                 return View();
             }
             // Code valid, continue
+            TempData["Success"] = true;
             code.RedemptionDate = DateTime.Now;
 
             var user = _context.Users.SingleOrDefault(u =>

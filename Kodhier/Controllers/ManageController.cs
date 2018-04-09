@@ -14,7 +14,8 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
-using SQLitePCL;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Kodhier.Controllers
 {
@@ -29,6 +30,7 @@ namespace Kodhier.Controllers
         private readonly UrlEncoder _urlEncoder;
         private readonly KodhierDbContext _context;
         private readonly IMemoryCache _cache;
+        private readonly IStringLocalizer<ManageController> _localizer;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -40,7 +42,8 @@ namespace Kodhier.Controllers
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder,
           KodhierDbContext context,
-          IMemoryCache cache)
+          IMemoryCache cache,
+          IStringLocalizer<ManageController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -49,6 +52,7 @@ namespace Kodhier.Controllers
             _urlEncoder = urlEncoder;
             _context = context;
             _cache = cache;
+            _localizer = localizer;
         }
 
         [TempData]
@@ -150,7 +154,7 @@ namespace Kodhier.Controllers
                 }
             }
 
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = _localizer["Your profile has been updated"];
             return RedirectToAction(nameof(Index));
         }
 
@@ -174,7 +178,7 @@ namespace Kodhier.Controllers
             var email = user.Email;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));
         }
 
@@ -221,7 +225,7 @@ namespace Kodhier.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = _localizer["Your password has been changed."];
 
             return RedirectToAction(nameof(ChangePassword));
         }

@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Kodhier.Areas.Admin.ViewModels.PizzaViewModel>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Index"];
 }
 <link rel="stylesheet" type="text/css" href="~/css/Order.css" />
 <div class="col-md-8 offset-md-2">
@@ -11,7 +13,7 @@
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success" role="alert">
-            <p><strong> @TempData["Success"].ToString()</strong></p>
+            <p><strong> @Localizer[@TempData["Success"].ToString()]</strong></p>
         </div>
     }
     <div class="row">
@@ -22,8 +24,8 @@
                     <div class="products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.Price)</h4>
-                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
+                        <h4 class="text-white">@Localizer["from"] @Html.DisplayFor(modelItem => item.Price)</h4>
+                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">@Localizer["Details"]</a>
                     </div>
                 </div>
             </div>

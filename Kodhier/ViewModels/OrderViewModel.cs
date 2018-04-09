@@ -16,7 +16,9 @@ namespace Kodhier.ViewModels
         [ValidValues(new[] { 20, 30, 50 }, ErrorMessage = "Invalid pizza size")]
         public int Size { get; set; }
 
+        [Display(Name = "Payment sucessful")]
         public bool IsPaid { get; set; }
+        public OrderStatus Status { get; set; }
 
         public Pizza Pizza { get; set; }
 
@@ -28,7 +30,7 @@ namespace Kodhier.ViewModels
                 _values = values;
             }
 
-            protected override ValidationResult IsValid(object value, ValidationContext validationContext) => 
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext) =>
                 Array.Exists(_values, a => (int)value == a) ? ValidationResult.Success : new ValidationResult(ErrorMessage);
         }
 

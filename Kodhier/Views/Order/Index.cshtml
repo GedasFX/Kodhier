@@ -10,10 +10,10 @@
     <header>
         <h1>MENIU</h1>
     </header>
-    @if (TempData["Success"] != null)
+    @if (TempData["CreateSuccess"] != null && (bool)TempData["CreateSuccess"])
     {
         <div class="alert alert-success" role="alert">
-            <p><strong> @Localizer[@TempData["Success"].ToString()]</strong></p>
+            <strong>Your order was accepted successfully!</strong>
         </div>
     }
     <div class="row">

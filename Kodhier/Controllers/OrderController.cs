@@ -58,6 +58,8 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id, [Bind("Order,Name,Price,ImagePath")] OrderCreateViewModel model)
         {
+            // TempData["CreateSuccess"] - resulting value
+            TempData["CreateSuccess"] = false;
             var pizza = _context.Pizzas.SingleOrDefault(i => i.Id == id);
             if (pizza == null)
                 return View(model);
@@ -69,7 +71,7 @@ namespace Kodhier.Controllers
                 order.Client = _context.Users.SingleOrDefault(u => u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Your order was accepted successfully!";
+                TempData["CreateSuccess"] = true;
                 return RedirectToAction(nameof(Index));
             }
 

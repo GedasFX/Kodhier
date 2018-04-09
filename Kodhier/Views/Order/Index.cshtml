@@ -25,7 +25,7 @@
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
                         <h4 class="text-white">@Localizer["from"] @Html.DisplayFor(modelItem => item.Price)</h4>
-                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">@Localizer["DETAILS"]</a>
+                        <a asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">@Localizer["Details"]</a>
                     </div>
                 </div>
             </div>

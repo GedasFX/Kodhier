@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.Size)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPaymentSuccessful)
+                @Html.DisplayNameFor(model => model.IsPaid)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsFinished)
+                @Html.DisplayNameFor(model => model.Status)
             </th>
         </tr>
     </thead>
@@ -37,10 +37,10 @@
                     @Html.DisplayFor(modelItem => item.Size)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsPaymentSuccessful)
+                    @Html.DisplayFor(modelItem => item.IsPaid)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsFinished)
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
             </tr>
         }

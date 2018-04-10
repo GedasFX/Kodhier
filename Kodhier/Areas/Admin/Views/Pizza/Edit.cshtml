@@ -19,9 +19,9 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PriceCategory" class="control-label"></label>
-                    <select asp-for="PriceCategory" asp-items="new SelectList(Model.PriceCategories)" class="form-control"></select>
-                    <span asp-validation-for="PriceCategory" class="text-danger"></span>
+                    <label asp-for="PriceCategoryId" class="control-label"></label>
+                    <select asp-for="PriceCategoryId" asp-items="@(new SelectList(Model.PriceCategories, "Id", "Description"))" class="form-control"></select>
+                    <span asp-validation-for="PriceCategoryId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ImagePath" class="control-label"></label>

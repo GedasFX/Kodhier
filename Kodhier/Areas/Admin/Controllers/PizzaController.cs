@@ -21,7 +21,8 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Pizzas.Include(c => c.PriceCategory)
+            var pizzas = _context.Pizzas.Include(c => c.PriceCategory).ToArray();
+            return View(pizzas
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.Name,
@@ -69,14 +70,14 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,PriceCategory,ImagePath,Description")] PizzaCreateViewModel model)
+        public async Task<IActionResult> Create([Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaCreateViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             var dbPizza = new Pizza
             {
                 Name = model.Name,
-                PriceCategory = model.PriceCategory,
+                PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == model.PriceCategoryId),
                 Id = Guid.NewGuid(),
                 Description = model.Description,
                 ImagePath = model.ImagePath
@@ -105,7 +106,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
-                PriceCategory = pizza.PriceCategory,
+                PriceCategoryId = pizza.PriceCategory.Id,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories
@@ -119,7 +120,7 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,PriceCategory,ImagePath,Description")] PizzaEditViewModel model)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaEditViewModel model)
         {
             if (id == string.Empty)
             {
@@ -128,15 +129,11 @@ namespace Kodhier.Areas.Admin.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            var pizzaDb = _context.Pizzas.Single(p => p.Name == id);
-            var pizza = new Pizza
-            {
-                Name = model.Name,
-                PriceCategory = model.PriceCategory,
-                Id = pizzaDb.Id,
-                Description = model.Description,
-                ImagePath = model.ImagePath
-            };
+            var pizza = _context.Pizzas.Single(p => p.Name == id);
+            pizza.Name = model.Name;
+            pizza.Description = model.Description;
+            pizza.ImagePath = model.ImagePath;
+            pizza.PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == model.PriceCategoryId);
 
             try
             {

@@ -94,7 +94,10 @@ namespace Kodhier.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var gar = _context.PizzaPriceInfo.Single(g => g.Id == model.SizeId);
+            var gar = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
+            if (gar == null)
+                return View(model);
+
             var order = new Order
             {
                 Id = Guid.NewGuid(),

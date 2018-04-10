@@ -1,9 +1,11 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
 <div class="modal-header">
-    <h2>Manage your account</h2>
+    <h2>@Localizer["Manage your account"]</h2>
 </div>
 <div class="row">
     <div class="col-md-4 offset-md-4">

@@ -84,6 +84,8 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string id, [Bind("Quantity,SizeId,Comment")] OrderCreateViewModel model)
         {
+            // TempData["CreateSuccess"] - resulting value
+            TempData["CreateSuccess"] = false;
             var pizza = _context.Pizzas.Include(p => p.PriceCategory).SingleOrDefault(i => i.Name == id);
             if (pizza == null)
             {
@@ -113,7 +115,7 @@ namespace Kodhier.Controllers
             };
             _context.Add(order);
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Your order was accepted successfully!";
+            TempData["CreateSuccess"] = true;
             return RedirectToAction(nameof(Index));
         }
     }

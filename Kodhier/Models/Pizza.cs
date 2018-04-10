@@ -11,6 +11,5 @@ namespace Kodhier.Models
         public string Description { get; set; }
 
         public virtual PizzaPriceCategory PriceCategory { get; set; }
-        public virtual ApplicationUser Creator { get; set; }
     }
 }

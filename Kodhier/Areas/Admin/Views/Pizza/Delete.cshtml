@@ -1,5 +1,4 @@
-﻿@using Kodhier.ViewModels.PizzaViewModels
-@model Kodhier.ViewModels.PizzaViewModels.PizzaViewModel
+﻿@model Kodhier.ViewModels.Admin.PizzaViewModels.PizzaDeleteViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -23,8 +22,8 @@
         <h5 class="text-white">
             @foreach (var price in Model.Prices)
             {
-                <span>@Html.Raw($"{price.Price} €")</span>
-                <span>@Html.Raw($"{price.Size} cm")</span>
+                <span>@price.Price €</span>
+                <span>@price.Size cm</span>
                 <br/>
             }
         </h5>

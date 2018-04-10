@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Kodhier.ViewModels.Admin.PizzaViewModels;
 using Kodhier.ViewModels.OrderViewModels;
-using Kodhier.ViewModels.PizzaViewModels;
 
 namespace Kodhier
 {

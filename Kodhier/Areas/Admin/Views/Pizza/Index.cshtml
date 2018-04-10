@@ -1,5 +1,4 @@
-﻿@using Kodhier.ViewModels.PizzaViewModels
-@model IEnumerable<Kodhier.ViewModels.PizzaViewModels.PizzaViewModel>
+﻿@model IEnumerable<Kodhier.ViewModels.Admin.PizzaViewModels.PizzaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,7 +19,7 @@
                     <div class="main products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
-                        <div class="text-white text-md-center text-sm-center">from @Html.Raw(item.Prices.Min(pr => pr.Price))</div>
+                        <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.MinPrice)</div>
                         <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>
                         <a asp-action="Details" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Details</a>
                         <a asp-action="Delete" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text">Delete</a>

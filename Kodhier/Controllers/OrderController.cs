@@ -7,8 +7,8 @@ using Kodhier.Models;
 using AutoMapper;
 using System.Linq;
 using System.Security.Claims;
+using Kodhier.ViewModels.Admin.PizzaViewModels;
 using Kodhier.ViewModels.OrderViewModels;
-using Kodhier.ViewModels.PizzaViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Kodhier.Controllers
@@ -24,7 +24,7 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas.Include(p => p.PriceCategory).Select(p => Mapper.Map<PizzaViewModel>(p));
+            var pizzas = _context.Pizzas.Include(p => p.PriceCategory).Select(p => Mapper.Map<PizzaDetailsViewModel>(p));
             foreach (var pizza in pizzas)
             {
                 pizza.Prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategory.Id);

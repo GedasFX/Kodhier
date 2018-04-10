@@ -1,31 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Kodhier.Models;
 
-namespace Kodhier.ViewModels.PizzaViewModels
+namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
-    public class PizzaViewModel
+    public class PizzaCreateViewModel
     {
+        [Required]
         [Display(Name = "Pizza name")]
         public string Name { get; set; }
 
+        [Required]
         [Display(Name = "Path to the pizza image")]
         public string ImagePath { get; set; }
 
+        [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Display(Name = "Price categories")]
+        [Required]
+        [Display(Name = "Price category")]
         public PizzaPriceCategory PriceCategory { get; set; }
 
-        public IEnumerable<PizzaPriceInfo> Prices { get; set; }
+        // For display
         public IEnumerable<PizzaPriceCategory> PriceCategories { get; set; }
-
-        public PizzaViewModel EnumeratePrices(IQueryable<PizzaPriceInfo> context)
-        {
-            Prices = context.Where(ppi => ppi.PriceCategoryId == PriceCategory.Id);
-            return this;
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Kodhier.ViewModels.PizzaViewModels.PizzaViewModel
+﻿@model Kodhier.ViewModels.Admin.PizzaViewModels.PizzaDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -30,8 +30,8 @@
                         <dd>
                             @foreach (var price in Model.Prices)
                             {
-                                <span>@Html.Raw($"{price.Price} €")</span>
-                                <span>@Html.Raw($"{price.Size} cm")</span>
+                                <span>@price.Price €</span>
+                                <span>@price.Size cm</span>
                                 <br/>
                             }
                         </dd>

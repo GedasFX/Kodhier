@@ -1,27 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using Kodhier.Models;
 using System.ComponentModel.DataAnnotations;
-using Kodhier.Models;
 
-namespace Kodhier.ViewModels.PizzaViewModels
+namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
-    public class PizzaCreateViewModel
+    public class PizzaViewModel
     {
-        [Required]
         [Display(Name = "Pizza name")]
         public string Name { get; set; }
 
-        [Required]
         [Display(Name = "Path to the pizza image")]
         public string ImagePath { get; set; }
 
-        [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Required]
         [Display(Name = "Price categories")]
         public PizzaPriceCategory PriceCategory { get; set; }
 
-        public IEnumerable<PizzaPriceInfo> Prices { get; set; }
+        [Display(Name = "Lowest price")]
+        public decimal MinPrice { get; set; }
     }
 }

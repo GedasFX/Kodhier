@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Checkout" xml:space="preserve">
-    <value>Peržiūra</value>
+    <value>Mokėti</value>
   </data>
   <data name="Continue Shopping" xml:space="preserve">
     <value>Tęsti apsipirkimą</value>

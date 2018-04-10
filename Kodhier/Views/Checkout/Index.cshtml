@@ -37,7 +37,7 @@
 
                     <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
                     <td data-th="Quantity">
-                        <input type="number" class="form-control text-center" value="@Html.DisplayFor(modelItem => item.Quantity)">
+                        <input type="number" disabled class="form-control text-center" value="@Html.DisplayFor(modelItem => item.Quantity)">
                     </td>
                     <td data-th="Price" class="text-center">@Html.DisplayFor(modelItem => item.Price)</td>
 
@@ -52,7 +52,7 @@
             <tr>
                 <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i>@Localizer["Continue Shopping"]</a></td>
                 <td colspan="2" class="hidden-xs"></td>
-                <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
+                <td class="hidden-xs text-center"><strong>Total @Model.Sum(a => a.Price)</strong></td>
                 <td><a href="#" class="btn btn-success btn-block">@Localizer["Checkout"] <i class="fa fa-angle-right"></i></a></td>
             </tr>
         </tfoot>

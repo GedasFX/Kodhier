@@ -24,6 +24,7 @@ namespace Kodhier.Controllers
             var orders = _context.Orders
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => !o.IsPaid)
+                .OrderByDescending(c => c.PlacementDate)
                 .Select(o => new CheckoutViewModel
                 {
                     Id = o.Id,

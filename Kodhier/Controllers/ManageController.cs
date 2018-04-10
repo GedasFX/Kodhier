@@ -14,7 +14,6 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
-using SQLitePCL;
 
 namespace Kodhier.Controllers
 {

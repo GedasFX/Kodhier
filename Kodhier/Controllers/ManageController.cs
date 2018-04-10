@@ -74,12 +74,14 @@ namespace Kodhier.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Redeem()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {

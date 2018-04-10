@@ -1,6 +1,7 @@
 ﻿using Kodhier.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Kodhier.ViewModels.OrderViewModels
 {
@@ -18,10 +19,14 @@ namespace Kodhier.ViewModels.OrderViewModels
         // Selceted price/size combo
         // User input.
         [Required]
-        public PizzaPriceInfo Price { get; set; }
+        [Display(Name = "Size")]
+        public int SizeId { get; set; }
         public string Comment { get; set; }
 
         // Filled from controller
         public IEnumerable<PizzaPriceInfo> Prices { get; set; }
+
+        [Display(Name = "Price")]
+        public decimal MinPrice { get; set; }
     }
 }

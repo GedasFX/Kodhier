@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180410190832_jja")]
+    partial class jja
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +109,6 @@ namespace Kodhier.Migrations
                     b.Property<decimal>("Price");
 
                     b.Property<int>("Quantity");
-
-                    b.Property<int>("Size");
 
                     b.Property<int>("Status");
 

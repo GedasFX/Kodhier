@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.ViewModels.Admin.PizzaViewModels.PizzaViewModel>
+﻿@model IEnumerable<Kodhier.ViewModels.OrderViewModels.OrderViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,8 +22,8 @@
                     <div class="products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.PriceCategory)</h4>
-                        <a asp-action="Details" asp-route-id="@item.Name" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">DETAILS</a>
+                        <h4 class="text-white">from @Html.DisplayFor(modelItem => item.MinPrice) €</h4>
+                        <a asp-action="Create" asp-route-id="@item.Name" asp-route-returnurl="@ViewData["ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">Order</a>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,9 @@ namespace Kodhier.Models
         public Guid Id { get; set; }
 
         public int Quantity { get; set; }
+        public int Size { get; set; }
+        public decimal Price { get; set; }
+        
         public string Comment { get; set; }
 
         public DateTime PlacementDate { get; set; }
@@ -18,7 +21,9 @@ namespace Kodhier.Models
         public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }
 
+        public virtual PizzaPriceCategory PizzaPriceCategory { get; set; }
         public virtual Pizza Pizza { get; set; }
         public virtual ApplicationUser Client { get; set; }
+        
     }
 }

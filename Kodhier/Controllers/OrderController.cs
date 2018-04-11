@@ -4,7 +4,7 @@ using Kodhier.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Security.Claims;
+using Kodhier.Extensions;
 using Kodhier.Models;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -65,8 +65,7 @@ namespace Kodhier.Controllers
         {
             return View(_context.Orders
                 .Include(p => p.Pizza)
-                .Where(o => o.Client.Id ==
-                            HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                .Where(o => o.Client.Id == User.GetId())
                 .Where(o => o.IsPaid)
                 .Select(o => new OrderHistoryViewModel
                 {
@@ -104,8 +103,7 @@ namespace Kodhier.Controllers
             {
                 Id = Guid.NewGuid(),
                 Pizza = pizza,
-                Client = _context.Users.SingleOrDefault(u =>
-                    u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value),
+                Client = _context.Users.SingleOrDefault(u => u.Id == User.GetId()),
                 Comment = model.Comment,
                 Quantity = model.Quantity,
                 Price = gar.Price,

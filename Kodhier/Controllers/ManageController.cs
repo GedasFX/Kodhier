@@ -15,7 +15,6 @@ using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Http;
 
 namespace Kodhier.Controllers
 {

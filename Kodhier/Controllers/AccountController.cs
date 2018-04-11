@@ -10,7 +10,6 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Http;
 
 namespace Kodhier.Controllers
 {

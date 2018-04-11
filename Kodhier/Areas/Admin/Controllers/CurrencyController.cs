@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kodhier.Data;
@@ -24,8 +23,14 @@ namespace Kodhier.Areas.Admin.Controllers
         {
             return View(new PrepaidCardViewModel
             {
-                Elements = _context.
-                PrepaidCodes.Include(e => e.Redeemer).Select(c => Mapper.Map<PrepaidCardViewModel>(c))
+                Elements = _context.PrepaidCodes.Include(e => e.Redeemer).Select(c => new PrepaidCardViewModel
+                {
+                    Id = c.Id,
+                    Redeemer = c.Redeemer,
+                    Amount = c.Amount,
+                    CreationDate = c.CreationDate,
+                    RedemptionDate = c.RedemptionDate
+                })
             });
         }
 

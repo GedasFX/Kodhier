@@ -1,7 +1,6 @@
 ﻿using Kodhier.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
@@ -16,15 +15,6 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Display(Name = "Price categories")]
-        public PizzaPriceCategory PriceCategory { get; set; }
-
         public IEnumerable<PizzaPriceInfo> Prices { get; set; }
-
-        public PizzaDetailsViewModel EnumeratePrices(IQueryable<PizzaPriceInfo> context)
-        {
-            Prices = context.Where(ppi => ppi.PriceCategoryId == PriceCategory.Id);
-            return this;
-        }
     }
 }

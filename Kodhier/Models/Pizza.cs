@@ -10,6 +10,8 @@ namespace Kodhier.Models
         public string ImagePath { get; set; }
         public string Description { get; set; }
 
+        [ForeignKey("PriceCategory")]
+        public int? PriceCategoryId { get; set; }
         public virtual PizzaPriceCategory PriceCategory { get; set; }
     }
 }

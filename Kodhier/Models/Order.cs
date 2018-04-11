@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kodhier.Models
 {
@@ -21,8 +22,16 @@ namespace Kodhier.Models
         public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }
 
+        [ForeignKey("PizzaPriceCategory")]
+        public int? PizzaPriceCategoryId { get; set; }
         public virtual PizzaPriceCategory PizzaPriceCategory { get; set; }
+
+        [ForeignKey("Pizza")]
+        public Guid? PizzaId { get; set; }
         public virtual Pizza Pizza { get; set; }
+
+        [ForeignKey("Client")]
+        public string ClientId { get; set; }
         public virtual ApplicationUser Client { get; set; }
         
     }

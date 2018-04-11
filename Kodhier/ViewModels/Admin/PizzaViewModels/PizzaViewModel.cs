@@ -1,5 +1,4 @@
-﻿using Kodhier.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
@@ -13,9 +12,6 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
 
         [Display(Name = "Description")]
         public string Description { get; set; }
-
-        [Display(Name = "Price categories")]
-        public PizzaPriceCategory PriceCategory { get; set; }
 
         [Display(Name = "Lowest price")]
         public decimal MinPrice { get; set; }

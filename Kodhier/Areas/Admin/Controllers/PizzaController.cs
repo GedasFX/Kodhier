@@ -21,13 +21,12 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas.Include(c => c.PriceCategory).ToArray();
+            var pizzas = _context.Pizzas;
             return View(pizzas
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.Name,
                     Description = r.Description,
-                    PriceCategory = r.PriceCategory,
                     ImagePath = r.ImagePath,
                     MinPrice = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategory.Id)
@@ -52,10 +51,10 @@ namespace Kodhier.Areas.Admin.Controllers
             var model = new PizzaDetailsViewModel
             {
                 Name = pizza.Name,
-                PriceCategory = pizza.PriceCategory,
                 Description = pizza.Description,
-                ImagePath = pizza.ImagePath
-            }.EnumeratePrices(_context.PizzaPriceInfo);
+                ImagePath = pizza.ImagePath,
+                Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategory.Id)
+            };
             return View(model);
         }
 
@@ -77,7 +76,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var dbPizza = new Pizza
             {
                 Name = model.Name,
-                PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == model.PriceCategoryId),
+                PriceCategoryId = model.PriceCategoryId,
                 Id = Guid.NewGuid(),
                 Description = model.Description,
                 ImagePath = model.ImagePath
@@ -133,7 +132,7 @@ namespace Kodhier.Areas.Admin.Controllers
             pizza.Name = model.Name;
             pizza.Description = model.Description;
             pizza.ImagePath = model.ImagePath;
-            pizza.PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == model.PriceCategoryId);
+            pizza.PriceCategoryId = model.PriceCategoryId;
 
             try
             {
@@ -159,7 +158,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+            var pizza = await _context.Pizzas
                 .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
@@ -171,7 +170,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 Name = pizza.Name,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
-                Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategory.Id)
+                Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategoryId)
             });
         }
 

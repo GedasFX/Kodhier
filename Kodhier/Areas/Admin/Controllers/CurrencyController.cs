@@ -23,7 +23,8 @@ namespace Kodhier.Areas.Admin.Controllers
         {
             return View(new PrepaidCardViewModel
             {
-                Elements = _context.PrepaidCodes.Include(e => e.Redeemer).Select(c => new PrepaidCardViewModel
+                Elements = _context.PrepaidCodes.Include(e => e.Redeemer)
+                    .Select(c => new PrepaidCardViewModel
                 {
                     Id = c.Id,
                     Redeemer = c.Redeemer,

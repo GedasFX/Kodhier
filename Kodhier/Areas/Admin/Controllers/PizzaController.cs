@@ -29,7 +29,7 @@ namespace Kodhier.Areas.Admin.Controllers
                     Description = r.Description,
                     ImagePath = r.ImagePath,
                     MinPrice = _context.PizzaPriceInfo
-                        .Where(ppi => ppi.PriceCategoryId == r.PriceCategory.Id)
+                        .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
                         .Min(c => c.Price)
                 }));
         }
@@ -41,7 +41,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+            var pizza = await _context.Pizzas
                 .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
@@ -53,7 +53,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 Name = pizza.Name,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
-                Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategory.Id)
+                Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategoryId)
             };
             return View(model);
         }
@@ -96,7 +96,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.Include(p => p.PriceCategory).SingleOrDefaultAsync(m => m.Name == id);
+            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
@@ -105,7 +105,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
-                PriceCategoryId = pizza.PriceCategory.Id,
+                PriceCategoryId = pizza.PriceCategoryId ?? 0,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories

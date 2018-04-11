@@ -1,16 +1,17 @@
 using Kodhier.Controllers;
 using Kodhier.Data;
 using Kodhier.Models;
-using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Xunit;
 
@@ -43,10 +44,14 @@ namespace Kodhier.Tests
         {
             var uId = new Guid("ec04ee08-f434-41d0-a208-15bd2dcb3389");
             var pId = Guid.NewGuid();
+            var ppc = new PizzaPriceCategory { Description = "LOL", Id = 1 };
             var user = new ApplicationUser() { Id = uId.ToString(), BirthDate = new DateTime(), Email = "asdf@jkl.lt", FirstName = "ASdF", UserName = "AwDcV" };
             _context.Users.Add(user);
             _context.Users.Add(new ApplicationUser() { Id = Guid.NewGuid().ToString(), BirthDate = new DateTime(), Email = "dummy@jkdl.lt", FirstName = "dummy", UserName = "dumb" });
-            _context.Pizzas.Add(new Pizza() { Creator = user, Id = pId, Name = "Havaian", Price = 46.5M });
+            _context.PizzaPriceCategories.Add(ppc);
+            _context.SaveChanges();
+            _context.PizzaPriceInfo.Add(new PizzaPriceInfo {Id = 1, Price = 6.05m, PriceCategory = ppc, Size = 32});
+            _context.Pizzas.Add(new Pizza { Id = pId, Name = "Havaian", PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == 1) /*= new PizzaClass { Price = 46.5M, Size = 32, Tier = PizzaPriceTier.Low } })*/});
             _context.SaveChangesAsync();
         }
 
@@ -54,10 +59,10 @@ namespace Kodhier.Tests
         public async Task Create_Order_success()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderViewModel() { Pizza = pizza, Quantity = 3, Size = 20 };
+            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
+            var res = await _controller.Create(pizza.Name, order);
 
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Index", ((RedirectToActionResult)res).ActionName);
@@ -68,10 +73,17 @@ namespace Kodhier.Tests
         public async Task Create_Order_fail()
         {
             var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderViewModel { Pizza = pizza, Quantity = -9 };
+            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = -1, SizeId = 1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Id, new OrderCreateViewModel { Order = order });
+            var res = await _controller.Create(pizza.Name, order);
+
+            Assert.IsType<ViewResult>(res);
+
+            order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 2 };
+            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
+                _controller.ModelState.AddModelError("err", "Error");
+            res = await _controller.Create(pizza.Name, order);
 
             Assert.IsType<ViewResult>(res);
             Assert.False((bool)_controller.TempData["CreateSuccess"]);

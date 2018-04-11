@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,23 +10,17 @@ namespace Kodhier.Areas.Admin.Controllers
     [Area("Admin")]
     public class GalleryController : Controller
     {
-        private readonly string rootPath;
-
+        private readonly string _rootPath;
 
         public GalleryController(IHostingEnvironment env)
         {
-            rootPath = env.WebRootPath;
+            _rootPath = env.WebRootPath;
         }
 
         public IActionResult Index()
         {
-            List<string> imgList = new List<string>();
-            foreach (var item in Directory.EnumerateFiles(Path.Combine(rootPath, "uploads/img/gallery/"), "*.jpg"))
-            {
-                imgList.Add("~/uploads/img/gallery/" + Path.GetFileName(item));
-            }
-            ViewData["ImgEnum"] = imgList;
-            return View();
+            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg").Select(item => "~/uploads/img/gallery/" + Path.GetFileName(item));
+            return View(imgList);
         }
 
         [HttpPost]
@@ -44,7 +38,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            var filePath = Path.Combine(rootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
+            var filePath = Path.Combine(_rootPath, "uploads/img/gallery/", Path.GetFileName(imgfile.FileName));
             using (var stream = new FileStream(filePath, FileMode.Create)) // might be other errors?
             {
                 await imgfile.CopyToAsync(stream);

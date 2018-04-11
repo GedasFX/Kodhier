@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Kodhier.Models;
 
-namespace Kodhier.Areas.Admin.ViewModels
+namespace Kodhier.ViewModels
 {
     public class PrepaidCardViewModel
     {

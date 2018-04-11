@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Kodhier.ViewModels.Admin.PizzaViewModels;
+using Kodhier.ViewModels.OrderViewModels;
 
 namespace Kodhier
 {
@@ -7,9 +9,9 @@ namespace Kodhier
         public static void RegisterMappings()
         {
             Mapper.Initialize(cfg => {
-                cfg.CreateMap<Areas.Admin.ViewModels.PizzaViewModel, Models.Pizza>().ReverseMap();
-                cfg.CreateMap<ViewModels.OrderViewModel, Models.Order>().ReverseMap();
-                cfg.CreateMap<Areas.Admin.ViewModels.PrepaidCardViewModel, Models.PrepaidCode>().ReverseMap();
+                cfg.CreateMap<PizzaViewModel, Models.Pizza>().ReverseMap();
+                cfg.CreateMap<OrderViewModel, Models.Order>().ReverseMap();
+                cfg.CreateMap<ViewModels.PrepaidCardViewModel, Models.PrepaidCode>().ReverseMap();
             });
         }
     }

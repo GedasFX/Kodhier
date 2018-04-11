@@ -3,12 +3,10 @@ using System.Threading.Tasks;
 using Kodhier.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Kodhier.Models;
-using AutoMapper;
-using Kodhier.Areas.Admin.ViewModels;
-using Kodhier.ViewModels;
 using System.Linq;
-using System.Security.Claims;
+using Kodhier.Extensions;
+using Kodhier.Models;
+using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Kodhier.Controllers
@@ -24,58 +22,99 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Pizzas.Select(p => Mapper.Map<PizzaViewModel>(p)));
+            var pizzas = _context.Pizzas.Include(p => p.PriceCategory).Select(p => new OrderViewModel
+            {
+                Name = p.Name,
+                Description = p.Description,
+                ImagePath = p.ImagePath,
+                MinPrice = _context.PizzaPriceInfo
+                    .Where(ppi => ppi.PriceCategoryId == p.PriceCategory.Id)
+                    .Min(c => c.Price)
+            });
+            return View(pizzas);
         }
 
-        public async Task<IActionResult> Create(Guid? id)
+        public async Task<IActionResult> Create(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+                .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
             }
 
-            return View(new OrderCreateViewModel { Order = new OrderViewModel(), ImagePath = pizza.ImagePath, Name = pizza.Name, Price = pizza.Price, Description = pizza.Description });
+            var prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategory.Id);
+            var vm = new OrderCreateViewModel
+            {
+                ImagePath = pizza.ImagePath,
+                Name = pizza.Name,
+                Prices = prices,
+                Description = pizza.Description
+            };
+            vm.MinPrice = vm.Prices.Min(p => p.Price);
+            return View(vm);
         }
 
         [Authorize]
         public IActionResult History()
         {
             return View(_context.Orders
-                .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                .Include(p => p.Pizza)
+                .Where(o => o.Client.Id == User.GetId())
                 .Where(o => o.IsPaid)
-                .Select(o => Mapper.Map<OrderViewModel>(o)));
+                .Select(o => new OrderHistoryViewModel
+                {
+                    Pizza = o.Pizza,
+                    DateCreated = o.PlacementDate,
+                    Price = o.Price,
+                    Status = o.Status,
+                    Size = o.Size,
+                    Quantity = o.Quantity
+                }));
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("Order,Name,Price,ImagePath")] OrderCreateViewModel model)
+        public async Task<IActionResult> Create(string id, [Bind("Quantity,SizeId,Comment")] OrderCreateViewModel model)
         {
             // TempData["CreateSuccess"] - resulting value
             TempData["CreateSuccess"] = false;
-            var pizza = _context.Pizzas.SingleOrDefault(i => i.Id == id);
+            var pizza = _context.Pizzas.Include(p => p.PriceCategory).SingleOrDefault(i => i.Name == id);
             if (pizza == null)
-                return View(model);
-            if (ModelState.IsValid)
             {
-                var order = Mapper.Map<Order>(model.Order);
-                order.Id = Guid.NewGuid();
-                order.Pizza = pizza;
-                order.Client = _context.Users.SingleOrDefault(u => u.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                TempData["CreateSuccess"] = true;
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("Error", "Pizza doesn't exist");
+                return View(model);
             }
 
-            return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var gar = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
+            if (gar == null)
+                return View(model);
+
+            var order = new Order
+            {
+                Id = Guid.NewGuid(),
+                Pizza = pizza,
+                Client = _context.Users.SingleOrDefault(u => u.Id == User.GetId()),
+                Comment = model.Comment,
+                Quantity = model.Quantity,
+                Price = gar.Price,
+                Size = gar.Size,
+                PlacementDate = DateTime.Now,
+                PizzaPriceCategory = pizza.PriceCategory
+            };
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+            TempData["CreateSuccess"] = true;
+            return RedirectToAction(nameof(Index));
         }
     }
 }

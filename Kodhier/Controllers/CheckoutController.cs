@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using Kodhier.Data;
-using Kodhier.Models;
 using Kodhier.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kodhier.Controllers
@@ -28,6 +24,7 @@ namespace Kodhier.Controllers
             var orders = _context.Orders
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => !o.IsPaid)
+                .OrderByDescending(c => c.PlacementDate)
                 .Select(o => new CheckoutViewModel
                 {
                     Id = o.Id,
@@ -36,7 +33,7 @@ namespace Kodhier.Controllers
                     Comment = o.Comment,
                     Name = o.Pizza.Name,
                     ImagePath = o.Pizza.ImagePath,
-                    Price = o.Pizza.Price,
+                    Price = o.Price,
                     Description = o.Pizza.Description
                 });
 
@@ -69,9 +66,9 @@ namespace Kodhier.Controllers
         public async Task<IActionResult> Remove(Guid id)
         {
             var order = _context.Orders
-                   .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
-                   .Where(o => o.Id == id)
-                   .Single();
+                   .Where(o => o.Client.Id
+                               == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+                   .Single(o => o.Id == id);
 
             if (order != null)
             {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Kodhier.Data;
+using Kodhier.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +15,6 @@ using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Http;
 
 namespace Kodhier.Controllers
 {
@@ -79,12 +78,14 @@ namespace Kodhier.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Redeem()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
@@ -110,14 +111,12 @@ namespace Kodhier.Controllers
             TempData["Success"] = true;
             code.RedemptionDate = DateTime.Now;
 
-            var user = _context.Users.SingleOrDefault(u =>
-                u.Id == User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            var user = _context.Users.SingleOrDefault(u => u.Id == User.GetId());
             code.Redeemer = user;
             user.Coins += code.Amount;
             _cache.Remove(user.UserName);
 
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Your code was successfully converted to coins!";
             return View();
         }
 

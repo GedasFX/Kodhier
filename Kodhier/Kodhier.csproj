@@ -5,6 +5,17 @@
     <UserSecretsId>aspnet-Kodhier-326C2400-DDBA-4A87-96F4-C3B34361E02F</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20180407120542_aa.cs" />
+    <Compile Remove="Migrations\20180407120542_aa.Designer.cs" />
+    <Compile Remove="Migrations\20180411173408_PriceCategoryId.cs" />
+    <Compile Remove="Migrations\20180411173408_PriceCategoryId.Designer.cs" />
+    <Compile Remove="Migrations\20180411173837_orderFK.cs" />
+    <Compile Remove="Migrations\20180411173837_orderFK.Designer.cs" />
+    <Compile Remove="Migrations\20180411174144_nonullFKConstraints.cs" />
+    <Compile Remove="Migrations\20180411174144_nonullFKConstraints.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />

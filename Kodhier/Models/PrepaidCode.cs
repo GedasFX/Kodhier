@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kodhier.Models
 {
@@ -9,6 +10,8 @@ namespace Kodhier.Models
         public DateTime CreationDate { get; set; }
         public DateTime? RedemptionDate { get; set; }
 
+        [ForeignKey("Redeemer")]
+        public string RedeemerId { get; set; }
         public virtual ApplicationUser Redeemer { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.ViewModels.OrderViewModel>
+﻿@model IEnumerable<Kodhier.ViewModels.OrderViewModels.OrderHistoryViewModel>
 
 @{
     ViewData["Title"] = "History";
@@ -13,17 +13,24 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Size)
+                Quantity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPaid)
+                Size
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Order status
             </th>
+            <th>
+                Total amount
+            </th>
+            <th>
+                Date ordered
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -31,16 +38,25 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @item.Pizza.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Size)
+                    @item.Quantity
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsPaid)
+                    @item.Size
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @item.Status
+                </td>
+                <td>
+                    @(item.Quantity * item.Price)
+                </td>
+                <td>
+                    @item.DateCreated
+                </td>
+                <td>
+                    <a asp-action="Create" asp-route-id="@item.Pizza.Name">Place another order</a>
                 </td>
             </tr>
         }

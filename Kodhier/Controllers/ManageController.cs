@@ -79,12 +79,14 @@ namespace Kodhier.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Redeem()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
@@ -117,7 +119,6 @@ namespace Kodhier.Controllers
             _cache.Remove(user.UserName);
 
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Your code was successfully converted to coins!";
             return View();
         }
 

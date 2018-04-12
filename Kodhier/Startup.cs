@@ -16,9 +16,13 @@ namespace Kodhier
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment HostingEnvironment { get; }
+
+        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             Configuration = configuration;
+            HostingEnvironment = hostingEnvironment;
+
             AutoMapperConfig.RegisterMappings();
         }
 
@@ -27,10 +31,15 @@ namespace Kodhier
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<UserDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("UsersConnection")));
-            services.AddDbContext<KodhierDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ApplicationConnection")));
+            if (HostingEnvironment.IsDevelopment())
+                services.AddDbContext<KodhierDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection")));
+            else if (HostingEnvironment.IsStaging())
+                services.AddDbContext<KodhierDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("StagingConnection")));
+            else if (HostingEnvironment.IsProduction())
+                services.AddDbContext<KodhierDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection"))); 
 
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
             {
@@ -81,7 +90,7 @@ namespace Kodhier
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();

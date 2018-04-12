@@ -5,6 +5,12 @@
     <UserSecretsId>aspnet-Kodhier-326C2400-DDBA-4A87-96F4-C3B34361E02F</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;RELEASE;NETCOREAPP2_0</DefineConstants>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Migrations\20180407120542_aa.cs" />
     <Compile Remove="Migrations\20180407120542_aa.Designer.cs" />

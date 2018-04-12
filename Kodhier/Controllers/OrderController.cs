@@ -22,13 +22,13 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas.Include(p => p.PriceCategory).Select(p => new OrderViewModel
+            var pizzas = _context.Pizzas.Select(p => new OrderViewModel
             {
                 Name = p.Name,
                 Description = p.Description,
                 ImagePath = p.ImagePath,
                 MinPrice = _context.PizzaPriceInfo
-                    .Where(ppi => ppi.PriceCategoryId == p.PriceCategory.Id)
+                    .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
                     .Min(c => c.Price)
             });
             return View(pizzas);
@@ -41,14 +41,14 @@ namespace Kodhier.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.Include(p => p.PriceCategory)
+            var pizza = await _context.Pizzas
                 .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
                 return NotFound();
             }
 
-            var prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategory.Id);
+            var prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
             var vm = new OrderCreateViewModel
             {
                 ImagePath = pizza.ImagePath,
@@ -85,7 +85,7 @@ namespace Kodhier.Controllers
         {
             // TempData["CreateSuccess"] - resulting value
             TempData["CreateSuccess"] = false;
-            var pizza = _context.Pizzas.Include(p => p.PriceCategory).SingleOrDefault(i => i.Name == id);
+            var pizza = _context.Pizzas.SingleOrDefault(i => i.Name == id);
             if (pizza == null)
             {
                 ModelState.AddModelError("Error", "Pizza doesn't exist");
@@ -103,14 +103,17 @@ namespace Kodhier.Controllers
             {
                 Id = Guid.NewGuid(),
                 Pizza = pizza,
-                Client = _context.Users.SingleOrDefault(u => u.Id == User.GetId()),
+                ClientId = User.GetId(),
                 Comment = model.Comment,
                 Quantity = model.Quantity,
                 Price = gar.Price,
                 Size = gar.Size,
                 PlacementDate = DateTime.Now,
-                PizzaPriceCategory = pizza.PriceCategory
+                PizzaPriceCategoryId = pizza.PriceCategoryId
             };
+            if (string.IsNullOrEmpty(order.ClientId))
+                return View(model);
+
             _context.Add(order);
             await _context.SaveChangesAsync();
             TempData["CreateSuccess"] = true;

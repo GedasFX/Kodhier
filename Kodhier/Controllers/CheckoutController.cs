@@ -3,7 +3,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kodhier.Data;
+using Kodhier.Extensions;
 using Kodhier.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kodhier.Controllers
@@ -17,9 +19,10 @@ namespace Kodhier.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            var clientId = HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var clientId = User.GetId();
 
             var orders = _context.Orders
                 .Where(o => o.Client.Id == clientId)

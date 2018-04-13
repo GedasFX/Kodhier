@@ -39,7 +39,10 @@
 
                 <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
                 <td data-th="Quantity">
-                    <input type="number" disabled class="form-control text-center" value="@item.Quantity">
+                    <form asp-action="Edit" asp-route-id="@item.Id">
+                        <input type="number" class="form-control text-center" name="qty" value="@item.Quantity" onblur="$(this).parent().submit()">
+                        <!--<input type="submit" class="btn-sm" value="Change" />-->
+                    </form>
                 </td>
                 <td data-th="Price" class="text-center">@(item.Price)</td>
                 <td data-th="Price" class="text-center">@(item.Quantity * item.Price)</td>
@@ -54,7 +57,7 @@
                 <td><a asp-controller="Order" asp-action="Index" class="btn btn-warning"><i class="fa fa-angle-left"></i> @Localizer["Continue Shopping"]</a></td>
                 <td colspan="3" class="hidden-xs"></td>
                 <td class="hidden-xs text-center"><strong>Total @Model.Sum(a => a.Price * a.Quantity)</strong></td>
-                <td><a href="#" class="btn btn-success btn-block">@Localizer["Checkout"] <i class="fa fa-angle-right"></i></a></td>
+                <td><a asp-action="Continue" class="btn btn-success btn-block">@Localizer["Checkout"] <i class="fa fa-angle-right"></i></a></td>
             </tr>
         </tfoot>
     </table>

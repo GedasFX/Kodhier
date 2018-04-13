@@ -1,0 +1,15 @@
+﻿@model decimal
+
+@{
+    ViewData["Title"] = "Continue";
+}
+
+<h2>Continue</h2>
+
+<a asp-action="Index">Back</a><br />
+Your adress: <input type="text" name="adress" /><br/>
+<br />
+Total: @(Model) cash<br />
+<a asp-action="Confirm">Confirm</a><br />
+
+

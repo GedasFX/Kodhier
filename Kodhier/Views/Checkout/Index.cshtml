@@ -14,45 +14,45 @@
     <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
         <thead>
             <tr>
-                <th style="width:68%">@Localizer["Product"]</th>
+                <th style="width:65%">@Localizer["Product"]</th>
                 <th style="width:5%" class="text-center">@Localizer["Size"]</th>
-                <th style="width:9%">@Localizer["Quantity"]</th>
-                <th style="width:8%" class="text-center">@Localizer["Price"]</th>
+                <th style="width:10%">@Localizer["Quantity"]</th>
+                <th style="width:5%" class="text-center">@Localizer["Price"]</th>
+                <th style="width:5%" class="text-center">@Localizer["Price"]</th>
                 <th style="width:10%"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr id="@Html.DisplayFor(modelItem => item.Id)">
-                    <td data-th="Product">
-                        <div class="row">
-                            <div class="col-md-2 col-lg-2 col-sm-2 hidden-xs"><img src=@Html.DisplayFor(modelItem => item.ImagePath) class="img-responsive rounded-circle img-fluid" /></div>
-                            <div class="col-md-10 col-lg-10 col-sm-10">
-                                <h4 class="nomargin">@Html.DisplayFor(modelItem => item.Name)</h4>
-                                <p>@item.Description</p>
-                                <p>@item.Comment</p>
-                            </div>
+            <tr id="@Html.DisplayFor(modelItem => item.Id)">
+                <td data-th="Product">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-2 col-sm-2 hidden-xs"><img src=@Html.DisplayFor(modelItem => item.ImagePath) class="img-responsive rounded-circle img-fluid" /></div>
+                        <div class="col-md-10 col-lg-10 col-sm-10">
+                            <h4 class="nomargin">@Html.DisplayFor(modelItem => item.Name)</h4>
+                            <p>@item.Description</p>
+                            <p>@item.Comment</p>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
-                    <td data-th="Quantity">
-                        <input type="number" disabled class="form-control text-center" value="@item.Quantity">
-                    </td>
-                    <td data-th="Price" class="text-center">@(item.Quantity * item.Price)</td>
-
-
-                    <td class="actions" data-th="">
-                        <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                </tr>
+                <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
+                <td data-th="Quantity">
+                    <input type="number" disabled class="form-control text-center" value="@item.Quantity">
+                </td>
+                <td data-th="Price" class="text-center">@(item.Price)</td>
+                <td data-th="Price" class="text-center">@(item.Quantity * item.Price)</td>
+                <td class="actions" data-th="">
+                    <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                </td>
+            </tr>
             }
         </tbody>
         <tfoot>
             <tr>
                 <td><a asp-controller="Order" asp-action="Index" class="btn btn-warning"><i class="fa fa-angle-left"></i> @Localizer["Continue Shopping"]</a></td>
-                <td colspan="2" class="hidden-xs"></td>
+                <td colspan="3" class="hidden-xs"></td>
                 <td class="hidden-xs text-center"><strong>Total @Model.Sum(a => a.Price * a.Quantity)</strong></td>
                 <td><a href="#" class="btn btn-success btn-block">@Localizer["Checkout"] <i class="fa fa-angle-right"></i></a></td>
             </tr>

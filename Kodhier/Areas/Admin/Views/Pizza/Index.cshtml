@@ -1,20 +1,26 @@
 ﻿@model IEnumerable<Kodhier.ViewModels.Admin.PizzaViewModels.PizzaViewModel>
 
 @{
+    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
     ViewData["Title"] = "Index";
 }
-<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
-<div class="col-md-8 offset-md-2">
-    <header>
-        <h1>PIZZA LIST</h1>
+
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
+
+<section class="content">
+    <header class="content__title">
+        <h1>Pizza list</h1>
+        <small>Create your finest pizzas!</small>
     </header>
-    <div class="col-md-4 col-sm-6">
-        <a asp-action="Create" style="margin-top:5px" class="btn btn-success">Create New Pizza</a>
+    <div class="row">
+    <div class="mx-auto">
+        <a asp-action="Create" class="btn btn-success">Create New Pizza</a>
     </div>
+        </div>
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4 text-center">
                 <div class="container my-5">
                     <div class="main products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
@@ -28,6 +34,6 @@
                 </div>
             </div>
         }
-    </div>
-</div>
+    </div>    
+</section>
 

@@ -1,0 +1,24 @@
+﻿.main2 {
+    background-color: #ffffff;
+    width: 480px;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.2);
+}
+
+header{
+    text-align:center;
+}
+
+.create-button {
+    margin: 5px 5px 5px 20px;
+}
+
+.cancel-button {
+    margin: 5px 5px 5px 5px;
+}
+
+.btl-button{
+    margin-top: 5px;
+}

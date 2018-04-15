@@ -1,53 +1,58 @@
 ﻿@model Kodhier.ViewModels.Admin.PizzaViewModels.PizzaDetailsViewModel
 
 @{
+    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
     ViewData["Title"] = "Details";
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/PizzaDetails.css" />
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
 
 
-<div class="main col-md-12">
-    <header>
-        <h2>Pizza Details</h2>
+<section class="content">
+
+    <header class="content__title">
+        <h1>Pizza Details</h1>
     </header>
-    <blockquote class="blockquote text-center">
-        <p class="h1 text-uppercase">@Html.DisplayFor(model => model.Name)</p>
-    </blockquote>
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="text-center">
-                    <img src="@Html.DisplayFor(model => model.ImagePath)" class="rounded-circle img-fluid" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="col-md-12">
-                    <dl class="dl-horizontal">
-                        <dt>
-                            Price category
-                        </dt>
-                        <dd>
-                            @foreach (var price in Model.Prices)
-                            {
-                                <span>@price.Price €</span>
-                                <span>@price.Size cm</span>
-                                <br/>
+    <div class="row">
+        <div class="main2 mx-auto">
+            <blockquote class="blockquote text-center">
+                <p class="h1 text-uppercase">@Html.DisplayFor(model => model.Name)</p>
+            </blockquote>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <img src="@Html.DisplayFor(model => model.ImagePath)" class="rounded-circle img-fluid" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    Price category
+                                </dt>
+                                <dd>
+                                    @foreach (var price in Model.Prices)
+                                {
+                                    <span>@price.Price €</span>
+                                    <span>@price.Size cm</span>
+                                    <br />
                             }
-                        </dd>
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.Description)
-                        </dd>
-                    </dl>
-                </div>
-                <div class="col-md-6">
-                    <a asp-action="Index" style="margin-top:5px" class="btn btn-outline-success">Back to List</a>
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-action="Index" class="btn btn-outline-success">Back to List</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<
+</section>

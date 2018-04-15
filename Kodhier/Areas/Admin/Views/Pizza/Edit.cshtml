@@ -1,50 +1,50 @@
 ﻿@model Kodhier.ViewModels.Admin.PizzaViewModels.PizzaEditViewModel
 
 @{
+    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
     ViewData["Title"] = "Edit";
 }
-<link href="~/css/Layout.css" rel="stylesheet" />
-<header>
-    <h1>EDIT PIZZA</h1>
-</header>
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <div class="main">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PriceCategoryId" class="control-label"></label>
-                    <select asp-for="PriceCategoryId" asp-items="@(new SelectList(Model.PriceCategories, "Id", "Description"))" class="form-control"></select>
-                    <span asp-validation-for="PriceCategoryId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ImagePath" class="control-label"></label>
-                    <input asp-for="ImagePath" class="form-control" />
-                    <span asp-validation-for="ImagePath" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="row">
+<section class="content">
+    <header class="content__title">
+        <h1>EDIT PIZZA</h1>
+    </header>
+
+
+    <div class="row">
+            <div class="main2 mx-auto">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <input type="submit" value="Edit" class="btn btn-outline-success" style="margin:5px 5px 5px 20px" />
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                    <div>
-                        <a asp-action="Index" class="btn btn-outline-danger" style="margin:5px 5px 5px 5px">Cancel</a>
+                    <div class="form-group">
+                        <label asp-for="PriceCategoryId" class="control-label"></label>
+                        <select asp-for="PriceCategoryId" asp-items="@(new SelectList(Model.PriceCategories, "Id", "Description"))" class="form-control"></select>
+                        <span asp-validation-for="PriceCategoryId" class="text-danger"></span>
                     </div>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label asp-for="ImagePath" class="control-label"></label>
+                        <input asp-for="ImagePath" class="form-control" />
+                        <span asp-validation-for="ImagePath" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="submit" value="Edit" class="btn btn-outline-success" style="margin:5px 5px 5px 20px" />
+                        </div>
+                        <div>
+                            <a asp-action="Index" class="btn btn-outline-danger" style="margin:5px 5px 5px 5px">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</section>

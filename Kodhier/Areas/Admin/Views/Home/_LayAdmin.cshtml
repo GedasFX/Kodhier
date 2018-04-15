@@ -149,7 +149,15 @@
                 </div>
                 <ul class="navigation">
                     <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i>System</a></li>
-                    <li><a asp-controller="Pizza" asp-action="Index"><i class="zmdi zmdi-view-week"></i>Order Management</a></li>                    
+                    <li><a asp-controller="Pizza" asp-action="Index"><i class="zmdi zmdi-view-week"></i>Order Management</a></li>
+                    <li><a asp-controller="Currency" asp-action="Index"><i class="zmdi zmdi-money"></i> Pizza Coins</a></li>
+                    <li class="navigation__sub">
+                        <a><i class="zmdi zmdi-email"></i> Email</a>
+                         <ul>
+                             <li class="@@otherchartsactive"><a asp-controller="" asp-action="">Email Settings</a></li>
+                             <li class="@@flotchartsactive"><a asp-controller="" asp-action="">Bulk Email</a></li>
+                         </ul>
+                    </li>
                     <li class="@@widgetactive"><a href=""><i class="zmdi zmdi-widgets"></i> Widgets</a></li>
                     <li class="navigation__sub @@chartsactive">
                         <a href=""><i class="zmdi zmdi-trending-up"></i> Charts</a>

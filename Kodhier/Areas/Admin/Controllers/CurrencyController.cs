@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Kodhier.Data;
 using Kodhier.Models;
 using Kodhier.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CurrencyController : Controller
     {
         private readonly KodhierDbContext _context;

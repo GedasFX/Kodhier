@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
 using Kodhier.ViewModels.Admin.PizzaViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;

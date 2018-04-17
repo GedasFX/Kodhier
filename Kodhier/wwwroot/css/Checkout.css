@@ -1,8 +1,14 @@
 ﻿.table > tbody > tr > td, .table > tfoot > tr > td {
     vertical-align: middle;
 }
+input{
+    min-width: 100px;
+}
+img {
+    min-width: 60px;
+}
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1292px) {
     table#cart tbody td .form-control {
         width: 20%;
         display: inline !important;

@@ -113,7 +113,7 @@ namespace Kodhier.Tests
             var m_Data = new Mock<ITempDataProvider>();
             m_User.Setup(t => t.Claims).Returns(new[] { new Claim(ClaimTypes.NameIdentifier, uid) });
             var httpContext = new DefaultHttpContext() { User = m_User.Object };
-            var manageCtrl = new ManageController(null, null, null, null, null, _context, new Mock<IMemoryCache>().Object, null) { ControllerContext = new ControllerContext { HttpContext = httpContext } };
+            var manageCtrl = new ManageController(null, null, null, null, null, _context, new Mock<IMemoryCache>().Object, null, null) { ControllerContext = new ControllerContext { HttpContext = httpContext } };
             manageCtrl.TempData = new TempDataDictionary(httpContext, m_Data.Object);
 
             // Actual test

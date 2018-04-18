@@ -34,23 +34,27 @@
                         </div>
                         <label asp-for="Email">@Localizer["Email"]</label>
                         @if (Model.IsEmailConfirmed)
-                        {
-                            <div class="input-group">
-                                <input asp-for="Email" class="form-control" />
-                                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                            </div>
-                        }
-                        else
-                        {
-                            <input asp-for="Email" class="form-control" />
-                            <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
-                        }
+    {
+                    <div class="input-group">
+                        <input asp-for="Email" class="form-control" />
+                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                    </div>
+}
+else
+{
+                    <input asp-for="Email" class="form-control" />
+                    <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
+}
                         <span asp-validation-for="Email" class="text-danger"></span>
                         <div class="form-group">
                             <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
                             <input asp-for="PhoneNumber" class="form-control" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             @await Html.PartialAsync("_ManageNav")
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="checkbox100" checked="checked">
+                            <label class="form-check-label" for="checkbox100">Would you like to get emails from us?</label>
                         </div>
                         <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>
                     </div>

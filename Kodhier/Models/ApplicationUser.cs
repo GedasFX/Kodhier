@@ -10,5 +10,6 @@ namespace Kodhier.Models
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public decimal Coins { get; set; }
+        public string Address { get; set; }
     }
 }

@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Continue";
 }
-
-<link rel="stylesheet" type="text/css" href="~/css/Checkout.css" />
+<link rel="stylesheet" href="~/assets/css/Map-Clean.css">
+<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
 <script>
     var geocoder;
     var map;
@@ -43,31 +43,35 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <div class="modal-header">
-                <h5 class="display-4">ORDER</h5>
-            </div>
-            <br />
-            <p class="font-weight-bold lead ">Total: @(Model.Price) coins&trade;</p>
-        </div>
-        <div class="col-md-9">
-            <div class="modal-header">
-                <h5 class="display-4">DELIVERY DETAILS</h5>
-            </div>
-            <div class="row">
-                <div class="col-md-5">
-                    <form asp-action="Confirm" method="post">
-                        <br />
-                        <p class="lead">SHIPPING ADDRESS:</p>
-                        <input type="text" id="address" name="confirmAddress" class="form-control"
-                               placeholder=" SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" onblur="viewAddress()" />
-                        <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" style="margin-top:5px" />
-                        <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top:5px">Back</a>
-                    </form>
+        <div class="col-md-4">
+            <div class="products">
+                <div class="modal-header">
+                    <h6 class="display-4">ORDER</h6>
                 </div>
-                <div class="col-md-7">
-                    <br />
-                    <iframe allowfullscreen frameborder="0" height="470" width="100%" id="map" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&amp;q=kaunas%2C+lietuva&amp;zoom=15"></iframe>
+                <br />
+                <p class="font-weight-bold lead ">Total: @(Model.Price) coins&trade;</p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="products">
+                <div class="modal-header">
+                    <h6 class="display-4">DELIVERY DETAILS</h6>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <form asp-action="Confirm" method="post">
+                            <br />
+                            <p class="lead">SHIPPING ADDRESS:</p>
+                            <input type="text" id="address" name="confirmAddress" class="form-control"
+                                   placeholder=" SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" onblur="viewAddress()" />
+                            <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" style="margin-top:5px" />
+                            <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top:5px">Back</a>
+                        </form>
+                    </div>
+                    <div class="col-md-7">
+                        <br />
+                        <iframe allowfullscreen frameborder="0" height="420px" width="100%" id="map" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&amp;q=kaunas%2C+lietuva&amp;zoom=15"></iframe>
+                    </div>
                 </div>
             </div>
         </div>

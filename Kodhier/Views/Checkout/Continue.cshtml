@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Continue";
 }
-}
+
 <link rel="stylesheet" type="text/css" href="~/css/Checkout.css" />
 <script>
     var geocoder;
@@ -47,10 +47,9 @@
             <div class="modal-header">
                 <h4>ORDER SUMMARY</h4>
             </div>
-
-            Total: @(Model.Price) coins&trade;<br />
             <br />
-            <a asp-action="Index">Back</a><br />
+            Total: @(Model.Price) coins&trade;
+
         </div>
         <div class="col-md-9">
             <div class="modal-header">
@@ -59,12 +58,17 @@
             <div class="row">
                 <div class="col-md-5">
                     <form asp-action="Confirm" method="post">
-                        SHIPPING ADDRESS: <input type="text" id="address" name="confirmAddress" value="@(Model.ConfirmAddress)" onblur="viewAddress()" /><br />
-                        <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" /><br />
+                        <br />
+                        SHIPPING ADDRESS: <input type="text" id="address" name="confirmAddress" class="form-control"
+                                                 placeholder=" SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" onblur="viewAddress()" style="margin-top:5px" />
+                        <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" style="margin-top:5px" />
+                        <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top:5px" >Back</a>
                     </form>
+
                 </div>
                 <div class="col-md-7">
-                    <div id="map" style="width: 480px; height: 480px;"></div>
+                    <br />                 
+                    <div id="map" style="width: 470px; height: 470px;"></div>
                 </div>
             </div>
         </div>

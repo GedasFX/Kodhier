@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,54 +20,84 @@ namespace Kodhier.Controllers
             _context = context;
         }
 
+		private IQueryable<ViewModels.CheckoutViewModel> GetCheckoutOrders(String clientId)
+		{
+			return _context.Orders
+				.Where(o => o.Client.Id == clientId)
+				.Where(o => !o.IsPaid)
+				.OrderByDescending(c => c.PlacementDate)
+				.Select(o => new CheckoutViewModel
+				{
+					Id = o.Id,
+					Quantity = o.Quantity,
+					Size = o.Size,
+					Comment = o.Comment,
+					Name = o.Pizza.Name,
+					ImagePath = o.Pizza.ImagePath,
+					Price = o.Price,
+					Description = o.Pizza.Description
+				}
+			);
+		}
+
         [Authorize]
         public IActionResult Index()
         {
             var clientId = User.GetId();
+            return View(GetCheckoutOrders(clientId));
+		}
 
-            var orders = _context.Orders
-                .Where(o => o.Client.Id == clientId)
-                .Where(o => !o.IsPaid)
-                .OrderByDescending(c => c.PlacementDate)
-                .Select(o => new CheckoutViewModel
-                {
-                    Id = o.Id,
-                    Quantity = o.Quantity,
-                    Size = o.Size,
-                    Comment = o.Comment,
-                    Name = o.Pizza.Name,
-                    ImagePath = o.Pizza.ImagePath,
-                    Price = o.Price,
-                    Description = o.Pizza.Description
-                });
+        [Authorize]
+        public async Task<IActionResult> Edit(string id, int qty)
+        {
+            var clientId = User.GetId();
+			var orderID = GetCheckoutOrders(clientId).Single(o => o.Id.ToString().Equals(id)).Id;
 
-            return View(orders);
-        }
+			var order = _context.Orders.Single(o => o.Id.Equals(orderID));
 
-        //public async Task<IActionResult> Edit(Guid id, OrderViewModel model)
-        //{
-        //    var order = _context.Orders
-        //        .Where(o => o.Client.Id == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
-        //        .Where(o => o.Id == id)
-        //        .Single();
+			order.Quantity = qty;
+			_context.Update(order);
+			await _context.SaveChangesAsync();
 
-        //    if (order == null) // no such order
-        //        return RedirectToAction("Index");
-        //    if (ModelState.IsValid)
-        //    {
-        //        order.Size = model.Size;
-        //        order.Quantity = model.Quantity;
+            return RedirectToAction("Index");
+		}
 
-        //        _context.Update(order);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-        //    //TempData["Failure"] = "Incorrect data"; // display errors here
-        //    //return View(new OrderViewModel{ Pizza = order.Pizza, Size = order.Size, Quantity = order.Quantity });
-        //    return RedirectToAction(nameof(Index));
-        //}
+		[Authorize]
+		public IActionResult Continue()
+		{
+			var clientId = User.GetId();
+			var orders = GetCheckoutOrders(clientId);
 
-        public async Task<IActionResult> Remove(Guid id)
+			decimal price = orders.Sum(o => o.Price * o.Quantity);
+			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
+
+			return View(price);
+		}
+
+		[Authorize]
+		public IActionResult Confirm()
+		{
+			var clientId = User.GetId();
+			var orders = GetCheckoutOrders(clientId);
+
+			decimal price = orders.Sum(o => o.Price * o.Quantity);
+			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
+
+			if (price > wallet)
+			{
+				return RedirectToAction("Index");
+				// insufficient pizzaCoins
+			}
+
+
+			// successful checkout, update db
+
+			//TempData["CheckoutSuccess"] = true;
+
+			return RedirectToAction("Index");
+		}
+
+		public async Task<IActionResult> Remove(Guid id)
         {
             var order = _context.Orders
                    .Where(o => o.Client.Id

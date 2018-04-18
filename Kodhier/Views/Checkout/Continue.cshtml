@@ -1,15 +1,58 @@
-﻿@model decimal
+﻿@model Kodhier.ViewModels.ConfirmCheckoutViewModel
 
 @{
     ViewData["Title"] = "Continue";
 }
 
+<script>
+    var geocoder;
+    var map;
+    function initMap() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(54.9049311, 23.9544675);
+        var mapOptions = {
+            zoom: 15,
+            center: latlng
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        //viewAddress();
+    }
+
+    function viewAddress() {
+        var address = document.getElementById('address').value;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('There was a problem displaying the adress: ' + status);
+            }
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&callback=initMap">
+</script>
+
 <h2>Continue</h2>
 
 <a asp-action="Index">Back</a><br />
-Your adress: <input type="text" name="adress" /><br/>
+Total: @(Model.Price) coins&trade;<br />
 <br />
-Total: @(Model) cash<br />
-<a asp-action="Confirm">Confirm</a><br />
+<form asp-action="Confirm" method="post">
+    Your address: <input type="text" id="address" name="confirmAddress" value="@(Model.ConfirmAddress)" onblur="viewAddress()" /><br />
+    <input type="submit" value="Confirm" /><br />
+</form>
 
+<div id="map" style="width: 480px; height: 480px;"></div>
 
+<br />
+
+@foreach (var item in Model.CheckoutList)
+{
+    //    <span>@(item.Name) (@(item.Price) $) x@(item.Quantity)</span><br />
+}

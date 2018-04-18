@@ -65,32 +65,43 @@ namespace Kodhier.Controllers
 		[Authorize]
 		public IActionResult Continue()
 		{
+			var vm = new ConfirmCheckoutViewModel();
+
 			var clientId = User.GetId();
-			var orders = GetCheckoutOrders(clientId);
+			vm.CheckoutList = GetCheckoutOrders(clientId);
+			vm.ConfirmAddress = "kaunas, studentu 50"; // <<< LB-105
+			vm.Price = vm.CheckoutList.Sum(o => o.Price * o.Quantity);
 
-			decimal price = orders.Sum(o => o.Price * o.Quantity);
-			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
+			//decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
 
-			return View(price);
+			return View(vm);
 		}
 
 		[Authorize]
-		public IActionResult Confirm()
+		public IActionResult Confirm(String confirmAddress)
 		{
 			var clientId = User.GetId();
 			var orders = GetCheckoutOrders(clientId);
 
 			decimal price = orders.Sum(o => o.Price * o.Quantity);
-			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
+			var user = _context.Users.Where(u => u.Id == clientId).Single();
 
-			if (price > wallet)
+			if (price > user.Coins)
 			{
 				return RedirectToAction("Index");
 				// insufficient pizzaCoins
 			}
 
-
 			// successful checkout, update db
+			user.Coins -= price;
+			_context.Users.Update(user);
+
+			foreach (var checkoutEntry in orders)
+			{
+				var order = _context.Orders.Where(o => o.Id == checkoutEntry.Id).Single();
+				order.Status = Models.OrderStatus.Queued;
+				_context.Orders.Update(order);
+			}
 
 			//TempData["CheckoutSuccess"] = true;
 

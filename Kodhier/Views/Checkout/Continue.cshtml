@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Continue";
 }
-
+}
+<link rel="stylesheet" type="text/css" href="~/css/Checkout.css" />
 <script>
     var geocoder;
     var map;
@@ -37,22 +38,39 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&callback=initMap">
 </script>
+<header>
+    <h1>CHECKOUT</h1>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="modal-header">
+                <h4>ORDER SUMMARY</h4>
+            </div>
 
-<h2>Continue</h2>
-
-<a asp-action="Index">Back</a><br />
-Total: @(Model.Price) coins&trade;<br />
-<br />
-<form asp-action="Confirm" method="post">
-    Your address: <input type="text" id="address" name="confirmAddress" value="@(Model.ConfirmAddress)" onblur="viewAddress()" /><br />
-    <input type="submit" value="Confirm" /><br />
-</form>
-
-<div id="map" style="width: 480px; height: 480px;"></div>
-
-<br />
-
+            Total: @(Model.Price) coins&trade;<br />
+            <br />
+            <a asp-action="Index">Back</a><br />
+        </div>
+        <div class="col-md-9">
+            <div class="modal-header">
+                <h4>DELIVERY DETAILS</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <form asp-action="Confirm" method="post">
+                        SHIPPING ADDRESS: <input type="text" id="address" name="confirmAddress" value="@(Model.ConfirmAddress)" onblur="viewAddress()" /><br />
+                        <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" /><br />
+                    </form>
+                </div>
+                <div class="col-md-7">
+                    <div id="map" style="width: 480px; height: 480px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @foreach (var item in Model.CheckoutList)
 {
-    //    <span>@(item.Name) (@(item.Price) $) x@(item.Quantity)</span><br />
+    //    <span></span><br />
 }

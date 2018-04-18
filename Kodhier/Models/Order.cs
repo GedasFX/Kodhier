@@ -13,6 +13,8 @@ namespace Kodhier.Models
         
         public string Comment { get; set; }
 
+        public string DeliveryAddress { get; set; }
+
         public DateTime PlacementDate { get; set; }
         public DateTime? PaymentDate { get; set; }
         public DateTime? CookingDate { get; set; }

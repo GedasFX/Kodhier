@@ -68,8 +68,9 @@ namespace Kodhier.Controllers
 			var vm = new ConfirmCheckoutViewModel();
 
 			var clientId = User.GetId();
+			var user = _context.Users.Where(u => u.Id == clientId).Single();
 			vm.CheckoutList = GetCheckoutOrders(clientId);
-			vm.ConfirmAddress = "kaunas, studentu 50"; // <<< LB-105
+			vm.ConfirmAddress = user.Address;
 			vm.Price = vm.CheckoutList.Sum(o => o.Price * o.Quantity);
 
 			//decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
@@ -100,7 +101,7 @@ namespace Kodhier.Controllers
 			{
 				var order = _context.Orders.Where(o => o.Id == checkoutEntry.Id).Single();
 				order.Status = Models.OrderStatus.Queued;
-				order.Comment = ""; // <<< LB-105
+				order.DeliveryAddress = user.Address;
 				_context.Orders.Update(order);
 			}
 

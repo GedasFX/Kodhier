@@ -100,6 +100,7 @@ namespace Kodhier.Controllers
 			{
 				var order = _context.Orders.Where(o => o.Id == checkoutEntry.Id).Single();
 				order.Status = Models.OrderStatus.Queued;
+				order.Comment = ""; // <<< LB-105
 				_context.Orders.Update(order);
 			}
 
@@ -110,9 +111,8 @@ namespace Kodhier.Controllers
 
 		public async Task<IActionResult> Remove(Guid id)
         {
-            var order = _context.Orders
-                   .Where(o => o.Client.Id
-                               == HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value)
+			var order = _context.Orders
+				   .Where(o => o.Client.Id == User.GetId())
                    .Single(o => o.Id == id);
 
             if (order != null)

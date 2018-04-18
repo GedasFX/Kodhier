@@ -20,7 +20,7 @@ namespace Kodhier.Controllers
             _context = context;
         }
 
-		public IQueryable<ViewModels.CheckoutViewModel> GetCheckoutOrders(String clientId)
+		private IQueryable<ViewModels.CheckoutViewModel> GetCheckoutOrders(String clientId)
 		{
 			return _context.Orders
 				.Where(o => o.Client.Id == clientId)
@@ -44,14 +44,14 @@ namespace Kodhier.Controllers
         public IActionResult Index()
         {
             var clientId = User.GetId();
-            return View(getCheckoutOrders(clientId));
+            return View(GetCheckoutOrders(clientId));
 		}
 
         [Authorize]
         public async Task<IActionResult> Edit(string id, int qty)
         {
             var clientId = User.GetId();
-			var orderID = getCheckoutOrders(clientId).Single(o => o.Id.ToString().Equals(id)).Id;
+			var orderID = GetCheckoutOrders(clientId).Single(o => o.Id.ToString().Equals(id)).Id;
 
 			var order = _context.Orders.Single(o => o.Id.Equals(orderID));
 
@@ -66,7 +66,7 @@ namespace Kodhier.Controllers
 		public IActionResult Continue()
 		{
 			var clientId = User.GetId();
-			var orders = getCheckoutOrders(clientId);
+			var orders = GetCheckoutOrders(clientId);
 
 			decimal price = orders.Sum(o => o.Price * o.Quantity);
 			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;
@@ -78,7 +78,7 @@ namespace Kodhier.Controllers
 		public IActionResult Confirm()
 		{
 			var clientId = User.GetId();
-			var orders = getCheckoutOrders(clientId);
+			var orders = GetCheckoutOrders(clientId);
 
 			decimal price = orders.Sum(o => o.Price * o.Quantity);
 			decimal wallet = _context.Users.Where(u => u.Id == clientId).Single().Coins;

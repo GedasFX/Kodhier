@@ -20,7 +20,7 @@ namespace Kodhier.Controllers
             _context = context;
         }
 
-		public IQueryable<ViewModels.CheckoutViewModel> getCheckoutOrders(String clientId)
+		public IQueryable<ViewModels.CheckoutViewModel> GetCheckoutOrders(String clientId)
 		{
 			return _context.Orders
 				.Where(o => o.Client.Id == clientId)

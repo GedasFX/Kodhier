@@ -52,10 +52,20 @@
             </div>
         </nav>
     </section>
-    <div class="body-content">
+    <div class="page-content">
         @RenderBody()
         <hr />
     </div>
+         <div class="footer">
+            <footer>
+                <div class="row">
+                    <div class="col- text-md-center mx-auto">
+                        @await Html.PartialAsync("_SelectLanguagePartial")
+                    </div>
+                </div>
+            </footer>
+        </div>
+ 
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

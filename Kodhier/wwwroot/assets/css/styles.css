@@ -193,6 +193,7 @@ body {
     z-index: 1000;
     display: flex;
     align-items: center;
+    padding-bottom:80px;
 }
 
     .slider-pagination label {
@@ -271,7 +272,7 @@ body {
 
     .slider-content {
         padding: 0 2%;
-        padding-bottom: 230px;
+        padding-bottom: 400px;
     }
 
     .navigation {

@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<section class="content">
+    <header class="content__title">
+        <h1>Search for user:</h1>
+    </header>
+
+    <form asp-action="Details" method="get">
+        <input type="text" name="id" />
+        <input type="submit" style="margin-top:10px" class="btn btn-success btn-block" />
+    </form>
+</section>

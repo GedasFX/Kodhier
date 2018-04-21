@@ -33,11 +33,11 @@
                                 </dt>
                                 <dd>
                                     @foreach (var price in Model.Prices)
-                                {
-                                    <span>@price.Price €</span>
-                                    <span>@price.Size cm</span>
-                                    <br />
-                            }
+                                    {
+                                        <span>@price.Price €</span>
+                                        <span>@price.Size cm</span>
+                                        <br />
+                                    }
                                 </dd>
                                 <dt>
                                     @Html.DisplayNameFor(model => model.Description)

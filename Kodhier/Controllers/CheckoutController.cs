@@ -13,7 +13,7 @@ namespace Kodhier.Controllers
     public class CheckoutController : Controller
     {
         private readonly KodhierDbContext _context;
-        private IMemoryCache _cache;
+        private readonly IMemoryCache _cache;
 
         public CheckoutController(KodhierDbContext context, IMemoryCache cache)
         {

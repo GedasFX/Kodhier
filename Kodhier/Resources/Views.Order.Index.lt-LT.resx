@@ -126,4 +126,7 @@
   <data name="Your order was accepted successfully!" xml:space="preserve">
     <value>Užsakymas sėkmingas!</value>
   </data>
+  <data name="Add to cart" xml:space="preserve">
+    <value>Pridėti į krepšelį</value>
+  </data>
 </root>

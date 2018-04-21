@@ -40,6 +40,10 @@
                     <div class="col-md-3 form-group">
                         <label asp-for="SizeId" class="control-label">@Localizer["Size (in cm)"]</label>
                         <select asp-for="SizeId" asp-items="@(new SelectList(Model.Prices, "Id", "Size"))" class="form-control"></select>
+                        <div>
+                            <span id="priceValue"></span>
+                            <span>eur</span>
+                        </div>
                         <span asp-validation-for="SizeId" class="text-danger"></span>
                     </div>
                     <div class="col-md-12 form-group">
@@ -62,6 +66,20 @@
     </div>
 </div>
 @section Scripts {
+    <script>
+        var raw = @Json.Serialize(Model.Prices.Select(t => new { Category = t.Id, Price = t.Price }));
+        var values = {};
+        for (var i = 0; i < raw.length; i++) {
+            values[raw[i].category] = raw[i].price;
+        }
+        var drop = $('#SizeId');
+        $('#priceValue').html(values[drop.val()]);
+
+        drop.change(function() {
+            $('#priceValue').html(values[drop.val()]);
+        });
+    </script>
+
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
 

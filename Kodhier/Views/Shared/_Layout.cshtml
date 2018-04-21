@@ -46,8 +46,8 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav mx-auto">            
-                        @await Html.PartialAsync("_LoginPartial")          
+                <ul class="nav navbar-nav mx-auto">
+                    @await Html.PartialAsync("_LoginPartial")
                 </ul>
             </div>
         </nav>
@@ -56,15 +56,15 @@
         @RenderBody()
         <hr />
     </div>
-        <div class="footer">
-            <footer>
-                <div class="row">
-                    <div class="col-md-2 text-md-center mx-auto">
-                        @await Html.PartialAsync("_SelectLanguagePartial")
-                    </div>
+    <div class="footer">
+        <footer>
+            <div class="row">
+                <div class="col-md-2 text-md-center mx-auto">
+                    @await Html.PartialAsync("_SelectLanguagePartial")
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
+    </div>
 
 
     <script src="~/lib/jquery/dist/jquery.js"></script>

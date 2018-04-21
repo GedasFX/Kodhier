@@ -29,9 +29,9 @@
             <div class="logo hidden-sm-down">
                 <h1><a href="/">Kodhier ACP</a></h1>
             </div>
-            <form class="search">
+            <form  asp-action="Details" asp-controller="Manage" method="get" class="search">
                 <div class="search__inner">
-                    <input type="text" class="search__text" placeholder="Search for people, files, documents...">
+                    <input type="text" name="id" class="search__text" placeholder="Search for users">
                     <i class="zmdi zmdi-search search__helper" data-sa-action="search-close"></i>
                 </div>
             </form>

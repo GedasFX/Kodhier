@@ -4,10 +4,12 @@
 }
 
 <section class="content">
-    <h4>Search for user:</h4>
-    
-    <form asp-action="Details" method="get" >
+    <header class="content__title">
+        <h1>Search for user:</h1>
+    </header>
+
+    <form asp-action="Details" method="get">
         <input type="text" name="id" />
-        <input type="submit" />
+        <input type="submit" style="margin-top:10px" class="btn btn-success btn-block" />
     </form>
 </section>

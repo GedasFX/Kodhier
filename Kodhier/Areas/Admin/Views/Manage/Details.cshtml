@@ -3,34 +3,63 @@
     ViewBag.Title = "Details";
     Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
 }
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
 
-<section class="content">
-    <h4>List of roles:</h4>
+    <header class="content__title">
+        
+    </header>
 
-    <table>
-        <tr>
-            <th>
-                Role
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.UserRoles)
-        {
-            <tr>
-                <td>@item</td>
-                <td>
-                    <a asp-controller="Manage" asp-action="Delete" asp-all-route-data="@(new Dictionary<string, string>
+    <div class="content__inner content__inner--sm">
+        <header class="content__title">
+            <h1>User profile: @Model.Username</h1>
+            <small>Vardas Pavarde</small>
+        </header>
+            <div class="card">
+                <div class="card-body">
+                    <h4>Current roles:</h4>
+                    @foreach (var item in Model.UserRoles)
+    {
+
+                @item
+
+                <a asp-controller="Manage" asp-action="Delete" asp-all-route-data="@(new Dictionary<string, string>
                                                                                          {
                                                                                              { "id", Model.Username },
                                                                                              { "role", item }
-                                                                                         })">Del</a>
-                </td>
-            </tr>
-        }
-    </table>
-    Add to role:
-    <form asp-action="Create" asp-route-id="@Model.Username" >
-        <select asp-for="NewRole" asp-items="@(new SelectList(Model.AllRoles))"></select>
-        <input type="submit"/>
-    </form>
-</section>
+                                                                                         })" title="remove"><i class="zmdi zmdi-delete"></i></a>
+}
+                <div class="gap20">
+                    <h4>Add additional role</h4>
+                    <form asp-action="Create" asp-route-id="@Model.Username">
+                        <select asp-for="NewRole" asp-items="@(new SelectList(Model.AllRoles))"></select>
+                        <input type="submit" class="btn btn-outline-success create-button" />
+                    </form>
+                </div>
+                </div>
+                </div>
+
+        <div class="card profile">
+            <div class="profile__img">
+                <img src="~/uploads/img/gallery/1.jpg" alt="">
+                <a href="" class="zmdi zmdi-camera profile__img__edit"></a>
+            </div>
+            <div class="profile__info ">
+                <ul class="icon-list ">
+                    <li><i class="zmdi zmdi-account"></i>Vardas Pavarde</li>
+                    <li><i class="zmdi zmdi-phone"></i>+3706*******</li>
+                    <li><i class="zmdi zmdi-email"></i>gmail@gmail.com</li>
+                    <li><i class="zmdi zmdi-edit"></i>Change user password</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-body__title mb-4">Contact Information</h4>
+                <ul class="icon-list">
+                    <li><i class="zmdi zmdi-phone"></i>+3706*******</li>
+                    <li><i class="zmdi zmdi-email"></i>gmail@gmail.com</li>
+                    <li><i class="zmdi zmdi-pin"></i>K. Donelaičio g. 73, LT-44249 Kaunas</li>
+                </ul>
+            </div>
+        </div>
+    </div>

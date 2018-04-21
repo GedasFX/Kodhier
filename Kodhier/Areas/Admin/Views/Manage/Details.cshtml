@@ -1,0 +1,36 @@
+﻿@model Kodhier.ViewModels.Admin.ManageViewModels.ManageDetailsViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
+}
+
+<section class="content">
+    <h4>List of roles:</h4>
+
+    <table>
+        <tr>
+            <th>
+                Role
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.UserRoles)
+        {
+            <tr>
+                <td>@item</td>
+                <td>
+                    <a asp-controller="Manage" asp-action="Delete" asp-all-route-data="@(new Dictionary<string, string>
+                                                                                         {
+                                                                                             { "id", Model.Username },
+                                                                                             { "role", item }
+                                                                                         })">Del</a>
+                </td>
+            </tr>
+        }
+    </table>
+    Add to role:
+    <form asp-action="Create" asp-route-id="@Model.Username" >
+        <select asp-for="NewRole" asp-items="@(new SelectList(Model.AllRoles))"></select>
+        <input type="submit"/>
+    </form>
+</section>

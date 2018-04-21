@@ -23,7 +23,11 @@
                     <div class="products">
                         <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
-                        <h4 class="text-white">@Localizer["From"] @Html.DisplayFor(modelItem => item.MinPrice) €</h4>
+                        @foreach (var price in item.PriceInfo)
+                        {
+                            @price.Size
+                        }
+                        <h4 class="text-white">@Localizer["From"] @item.PriceInfo.Min(p => p.Price) €</h4>
                         <a asp-action="Create" asp-route-id="@item.Name" asp-route-returnurl="@ViewData[" ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">@Localizer["Add to cart"]</a>
                     </div>
                 </div>

@@ -1,7 +1,27 @@
-#mainsec {
+#mainsec, html {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
+
+* {
+    margin: 0;
+}
+
+.page-content {
+    min-height: 90%;
+    /* equal to footer height */
+    margin-bottom: -100px;
+}
+
+    .page-content:after {
+        content: "";
+        display: block;
+    }
+
+    footer, .page-content:after {
+        height: 100px;
+    }
+
 
 @media (min-width: 768px) {
     #mainsec {

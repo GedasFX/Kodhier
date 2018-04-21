@@ -7,32 +7,29 @@
 
 <link href="~/adm/css/Custom.css" rel="stylesheet" />
 
-<section class="content">
+<header class="content__title">
+    <h1>DELETE PIZZA</h1>
+</header>
 
-    <header class="content__title">
-        <h1>DELETE PIZZA</h1>
-    </header>
-
-    <div class="row">
-        <div class="main2 mx-auto text-center">
-            <img src=@Html.DisplayFor(model => model.ImagePath) class="rounded-circle img-fluid" />
-            <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(model => model.Name)</h4>
-            <h5 class="text-white">@Html.DisplayFor(model => model.Description)</h5>
-            <br />
-            <h5 class="text-white">
-                @foreach (var price in Model.Prices)
-                {
-                    <span>@price.Price €</span>
-                    <span>@price.Size cm</span>
-                    <br />
-                }
-            </h5>
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Name" />
-                <input type="submit" value="Delete" class="btn btn-outline-success" style="margin:5px 5px 5px 20px" />
-                <a asp-action="Index" class="btn btn-outline-danger" style="margin:5px 5px 5px 5px">Cancel</a>
-            </form>
-        </div>
-
+<div class="row">
+    <div class="main2 mx-auto text-center">
+        <img src=@Html.DisplayFor(model => model.ImagePath) class="rounded-circle img-fluid" />
+        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(model => model.Name)</h4>
+        <h5 class="text-white">@Html.DisplayFor(model => model.Description)</h5>
+        <br />
+        <h5 class="text-white">
+            @foreach (var price in Model.Prices)
+            {
+                <span>@price.Price €</span>
+                <span>@price.Size cm</span>
+                <br />
+            }
+        </h5>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Name" />
+            <input type="submit" value="Delete" class="btn btn-outline-success" style="margin:5px 5px 5px 20px" />
+            <a asp-action="Index" class="btn btn-outline-danger" style="margin:5px 5px 5px 5px">Cancel</a>
+        </form>
     </div>
-</section>
+
+</div>

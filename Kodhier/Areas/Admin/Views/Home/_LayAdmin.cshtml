@@ -29,7 +29,7 @@
             <div class="logo hidden-sm-down">
                 <h1><a href="/">Kodhier ACP</a></h1>
             </div>
-            <form  asp-action="Details" asp-controller="Manage" method="get" class="search">
+            <form asp-action="Index" asp-controller="Manage" method="get" class="search">
                 <div class="search__inner">
                     <input type="text" name="id" class="search__text" placeholder="Search for users">
                     <i class="zmdi zmdi-search search__helper" data-sa-action="search-close"></i>
@@ -153,10 +153,10 @@
                     <li><a asp-controller="Currency" asp-action="Index"><i class="zmdi zmdi-money"></i> Pizza Coins</a></li>
                     <li class="navigation__sub">
                         <a><i class="zmdi zmdi-email"></i> Email</a>
-                         <ul>
-                             <li class="@@otherchartsactive"><a asp-controller="" asp-action="">Email Settings</a></li>
-                             <li class="@@flotchartsactive"><a asp-controller="" asp-action="">Bulk Email</a></li>
-                         </ul>
+                        <ul>
+                            <li class="@@otherchartsactive"><a asp-controller="" asp-action="">Email Settings</a></li>
+                            <li class="@@flotchartsactive"><a asp-controller="" asp-action="">Bulk Email</a></li>
+                        </ul>
                     </li>
                     <li class="@@widgetactive"><a href=""><i class="zmdi zmdi-widgets"></i> Widgets</a></li>
                     <li class="navigation__sub @@chartsactive">
@@ -186,7 +186,9 @@
             </div>
         </div>
         <div class="body-content">
-            @RenderBody()
+            <section class="content">
+                @RenderBody()
+            </section>
         </div>
         <footer class="footer hidden-xs-down">
             <p>©2018 Leit Bugs. All rights reserved.</p>

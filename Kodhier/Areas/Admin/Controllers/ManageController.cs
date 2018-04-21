@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
 using Kodhier.ViewModels.Admin.ManageViewModels;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ManageController : Controller
     {
         private readonly KodhierDbContext _context;
@@ -30,14 +28,7 @@ namespace Kodhier.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
-        // GET: Manage
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: Manage/Details/5
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Index(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return NotFound();
@@ -73,7 +64,7 @@ namespace Kodhier.Areas.Admin.Controllers
             if (!await _userManager.IsInRoleAsync(user, model.NewRole))
                 await _userManager.AddToRoleAsync(user, model.NewRole);
 
-            return RedirectToAction(nameof(Details), "Manage", new { id = user.UserName });
+            return RedirectToAction(nameof(Index), "Manage", new { id = user.UserName });
         }
 
         // GET: Manage/Delete/5
@@ -89,7 +80,7 @@ namespace Kodhier.Areas.Admin.Controllers
 
             await _userManager.RemoveFromRoleAsync(user, role);
 
-            return RedirectToAction(nameof(Details), "Manage", new { id = user.UserName });
+            return RedirectToAction(nameof(Index), "Manage", new { id = user.UserName });
         }
     }
 }

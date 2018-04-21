@@ -7,33 +7,32 @@
 
 <link href="~/adm/css/Custom.css" rel="stylesheet" />
 
-<section class="content">
-    <header class="content__title">
-        <h1>Pizza list</h1>
-        <small>Create your finest pizzas!</small>
-    </header>
-    <div class="row">
-        <div class="mx-auto">
-            <a asp-action="Create" class="btn btn-success">Create New Pizza</a>
-        </div>
+<header class="content__title">
+    <h1>Pizza list</h1>
+    <small>Create your finest pizzas!</small>
+</header>
+
+<div class="row">
+    <div class="mx-auto">
+        <a asp-action="Create" class="btn btn-success">Create New Pizza</a>
     </div>
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-sm-6 col-md-4 text-center">
-                <div class="container my-5">
-                    <div class="main products">
-                        <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
-                        <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
-                        <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.MinPrice) €</div>
-                        <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>
-                        <a asp-action="Details" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text">Delete</a>
-                        <a asp-action="Edit" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Edit</a>
-                    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-6 col-md-4 text-center">
+            <div class="container my-5">
+                <div class="main products">
+                    <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
+                    <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
+                    <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.MinPrice) €</div>
+                    <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>
+                    <a asp-action="Details" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-danger btn-block btn-md-text">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Name" style="margin:5px 5px 5px 3px" class="btn btn-outline-success btn-block btn-md-text">Edit</a>
                 </div>
             </div>
-        }
-    </div>
-</section>
+        </div>
+    }
+</div>
 

@@ -5,71 +5,96 @@
 }
 
 
+<script src="~/js/Slide.js"></script>
+
 <!-- Slider Wrapper -->
-<div class="css-slider-wrapper" id="slideshow">
-    <input type="radio" name="slider" class="slide-radio1" checked id="slider_1">
-    <input type="radio" name="slider" class="slide-radio2" id="slider_2">
-    <input type="radio" name="slider" class="slide-radio3" id="slider_3">
-    <input type="radio" name="slider" class="slide-radio4" id="slider_4">
+<div id="fullpage">
+    <div class="section">
+        <div class="css-slider-wrapper" id="slideshow">
+            <input type="radio" name="slider" class="slide-radio1" checked id="slider_1">
+            <input type="radio" name="slider" class="slide-radio2" id="slider_2">
+            <input type="radio" name="slider" class="slide-radio3" id="slider_3">
+            <input type="radio" name="slider" class="slide-radio4" id="slider_4">
+            <!-- Slider Pagination -->
+            <div class="slider-pagination">
+                <label for="slider_1" class="page1"></label>
+                <label for="slider_2" class="page2"></label>
+                <label for="slider_3" class="page3"></label>
+                <label for="slider_4" class="page4"></label>
+            </div>
+            <!-- Slider #1 -->
+            <div class="slider slide-1">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute3.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Portobello
 
-    <!-- Slider Pagination -->
-    <div class="slider-pagination">
-        <label for="slider_1" class="page1"></label>
-        <label for="slider_2" class="page2"></label>
-        <label for="slider_3" class="page3"></label>
-        <label for="slider_4" class="page4"></label>
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+            </div>
+            <!-- Slider #2 -->
+            <div class="slider slide-2">
+                <img class="img-responsive img-fluid rounded-circle" src="../../assets/img/picute.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Chili
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+
+            </div>
+            <!-- Slider #3 -->
+            <div class="slider slide-3">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute2.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Palermo
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+
+            </div>
+            <!-- Slider #4 -->
+            <div class="slider slide-4">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute4.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Romana
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Slider #1 -->
-    <div class="slider slide-1">
-        <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute3.jpg" style="max-width: 900px; max-height: 900px;">
-        <div class="slider-content">
-            <h4>New Product</h4>
-            <h2>
-                Portobello
-
-            </h2>
-            <button type="button" class="buy-now-btn" name="button">$130</button>
+    <div class="section">
+        <div class="container " id="contain">
+            <div id="location" class="intro">
+                <h2 class="text-center">@Localizer["We're located"]</h2>
+            </div>
         </div>
 
-    </div>
-
-    <!-- Slider #2 -->
-    <div class="slider slide-2">
-        <img class="img-responsive img-fluid rounded-circle" src="../../assets/img/picute.jpg" style="max-width: 900px; max-height: 900px;">
-        <div class="slider-content">
-            <h4>New Product</h4>
-            <h2>
-                Chili
-            </h2>
-            <button type="button" class="buy-now-btn" name="button">$130</button>
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/phone.png">@Localizer["Contacts"]&nbsp; </h2>
+                        <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
+                        <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
+                        <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/email60x60.png">&nbsp;@Localizer["Email"]&nbsp;</h2>
+                        <h3 class="text-center" style="background-color:red;">orders@kodhier.com</h3>
+                        <h3 class="text-center" style="background-color:red;">info@kodhier.com</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <iframe allowfullscreen frameborder="0" height="450" width="100%" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&amp;q=kaunas%2C+lietuva&amp;zoom=15"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
-
-    </div>
-
-    <!-- Slider #3 -->
-    <div class="slider slide-3">
-        <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute2.jpg" style="max-width: 900px; max-height: 900px;">
-        <div class="slider-content">
-            <h4>New Product</h4>
-            <h2>
-                Palermo
-            </h2>
-            <button type="button" class="buy-now-btn" name="button">$130</button>
-        </div>
-
-    </div>
-
-    <!-- Slider #4 -->
-    <div class="slider slide-4">
-        <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute4.jpg" style="max-width: 900px; max-height: 900px;">
-        <div class="slider-content">
-            <h4>New Product</h4>
-            <h2>
-                Romana
-            </h2>
-            <button type="button" class="buy-now-btn" name="button">$130</button>
-        </div>
-
+        <div class="map-clean"></div>
     </div>
 </div>

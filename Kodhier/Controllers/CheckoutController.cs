@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Extensions;
 using Kodhier.ViewModels;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -90,11 +92,29 @@ namespace Kodhier.Controllers
 			}
 
 
-			// successful checkout, update db
+            // successful checkout, update db
 
-			//TempData["CheckoutSuccess"] = true;
+            //TempData["CheckoutSuccess"] = true;
+            
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Kodhier", "leitbugs.test@gmail.com"));
+            message.To.Add(new MailboxAddress("gavejas", "lauriz1997@gmail.com"));
+            message.Subject = "testuju emaila";
+            message.Body = new TextPart("plain")
+            {
+                Text = "Labas, testuoju emailo siuntėją"
+            };
+            BodyBuilder naujas = new BodyBuilder();
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("leitbugs.test@gmail.com", "leitbugs123");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            
 
-			return RedirectToAction("Index");
+            return RedirectToAction("Index");
 		}
 
 		public async Task<IActionResult> Remove(Guid id)

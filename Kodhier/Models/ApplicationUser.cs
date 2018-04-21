@@ -11,5 +11,7 @@ namespace Kodhier.Models
         public DateTime BirthDate { get; set; }
         public decimal Coins { get; set; }
         public string Address { get; set; }
+        public bool SendUpdates { get; set; }
+        public bool SendNews { get; set; }
     }
 }

@@ -48,7 +48,6 @@ namespace Kodhier.Controllers
           KodhierDbContext context,
           IMemoryCache cache,
           IStringLocalizer<ManageController> localizer,
-          RoleManager<IdentityRole> roleManager,
           IHostingEnvironment env)
         {
             _userManager = userManager;
@@ -59,7 +58,6 @@ namespace Kodhier.Controllers
             _context = context;
             _cache = cache;
             _localizer = localizer;
-            _roleManager = roleManager;
             _env = env;
         }
 

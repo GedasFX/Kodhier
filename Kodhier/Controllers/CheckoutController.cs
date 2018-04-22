@@ -136,8 +136,7 @@ namespace Kodhier.Controllers
                     _context.Users.Where(u => u.Id == clientId).Single().UserName
                     );
                     
-                //await _emailSender.SendEmailAsync(_context.Users.Where(u => u.Id == clientId).Single().Email, subject, messageBody);
-                _emailSender.SendEmailAsync(_context.Users.Where(u => u.Id == clientId).Single().Email, subject, messageBody);
+                await _emailSender.SendEmailAsync(_context.Users.Where(u => u.Id == clientId).Single().Email, subject, messageBody);
             }
             
 			user.Coins -= price;

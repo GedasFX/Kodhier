@@ -6,10 +6,10 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 #fullpage {
-    height: 75vh;
+    height: 70vh;
 }
     #fullpage section {
-        height: 75vh;
+        height: 70vh;
         width: 100%;
         padding-top: 100px;
     }
@@ -83,6 +83,7 @@ body {
 .slider-content {
     width: 635px;
     padding-left: 100px;
+    bottom:300px;
 }
 
 /* Slider Inner Slide Effect */
@@ -114,17 +115,14 @@ body {
 }
 
 .slider > img {
-    position: absolute;
-    right: 10%;
+    position: relative;
+    right: 0;
     bottom: 0;
+    padding: 130px;
     height: 100%;
     opacity: 0;
     -webkit-transform: translateX(500px);
     transform: translateX(500px);
-}
-
-.slide-1 > img {
-    right: 0;
 }
 
 .buy-now-btn {
@@ -196,7 +194,7 @@ body {
     z-index: 1000;
     display: flex;
     align-items: center;
-    padding-bottom:80px;
+    padding-bottom:100px;
 }
 
     .slider-pagination label {

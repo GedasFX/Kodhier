@@ -52,6 +52,15 @@
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             @await Html.PartialAsync("_ManageNav")
                         </div>
+                        <div class="checkbox">
+                            <input asp-for="EmailSendPromotional" />
+                            <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
+                        </div>
+                        <div class="checkbox">
+                            <input asp-for="EmailSendUpdates" />
+                            <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
+
+                        </div>
                         <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>
                     </div>
                 </div>

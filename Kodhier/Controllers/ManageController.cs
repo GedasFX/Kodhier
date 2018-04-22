@@ -82,7 +82,9 @@ namespace Kodhier.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                EmailSendPromotional = user.EmailSendPromotional,
+                EmailSendUpdates = user.EmailSendUpdates
             };
 
             return View(model);
@@ -185,6 +187,14 @@ namespace Kodhier.Controllers
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
+            }
+
+            if (user.EmailSendPromotional != model.EmailSendPromotional ||
+                user.EmailSendUpdates != model.EmailSendUpdates)
+            {
+                user.EmailSendPromotional = model.EmailSendPromotional;
+                user.EmailSendUpdates = model.EmailSendUpdates;
+                await _context.SaveChangesAsync();
             }
 
             StatusMessage = _localizer["Your profile has been updated"];

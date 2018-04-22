@@ -3,57 +3,103 @@
 @{
     ViewData["Title"] = Localizer["Home Page"];
 }
-<div class="carousel slide" data-ride="carousel" id="carousel-1">
-    <div class="carousel-inner" role="listbox">
-        <div class="carousel-item">
-            <div class="jumbotron jumbotron-fluid hero-nature carousel-hero">
-                <img src="../../assets/img/piizzaa.jpg" class="img-responsive img-fluid" />              
-            </div>
-        </div>
-        <div class="carousel-item active">
-            <div class="jumbotron  jumbotron-fluid hero-photography carousel-hero">
-                <img src="../../assets/img/picaa.jpg" class="img-responsive img-fluid"/>             
-            </div>
-        </div>
-        <div class="carousel-item"> 
-            <div class="jumbotron  jumbotron-fluid hero-technology carousel-hero">
-                <img src="../../assets/img/pica.jpg" class="img-responsive img-fluid" />
-            </div>
-        </div>
-    </div>
-    <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><i class="fa fa-chevron-left"></i><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-slide="next"><i class="fa fa-chevron-right"></i><span class="sr-only">Next</span></a></div>
-    <ol class="carousel-indicators">
-        <li data-target="#carousel-1" data-slide-to="0"></li>
-        <li data-target="#carousel-1" data-slide-to="1" class="active"></li>
-        <li data-target="#carousel-1" data-slide-to="2"></li>
-    </ol>
-</div>
-<div class="container" id="contain">
-    <div id="location" class="intro">
-        <h2 class="text-center">@Localizer["We're located"]</h2>
 
-    </div>
-</div>
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/phone.png">@Localizer["Contacts"]&nbsp; </h2>
-                <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
-                <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
-                <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/email60x60.png">&nbsp;@Localizer["Email"]&nbsp;</h2>
-                <h3 class="text-center" style="background-color:red;">orders@kodhier.com</h3>
-                <h3 class="text-center" style="background-color:red;">info@kodhier.com</h3>
+
+<script src="~/js/Slide.js"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="~/js/jquery.fullpage.js"></script>
+<!-- Slider Wrapper -->
+<div id="fullpage">
+    <section>
+        <div class="css-slider-wrapper" id="slideshow">
+            <input type="radio" name="slider" class="slide-radio1" checked id="slider_1">
+            <input type="radio" name="slider" class="slide-radio2" id="slider_2">
+            <input type="radio" name="slider" class="slide-radio3" id="slider_3">
+            <input type="radio" name="slider" class="slide-radio4" id="slider_4">
+            <!-- Slider Pagination -->
+            <div class="slider-pagination">
+                <label for="slider_1" class="page1"></label>
+                <label for="slider_2" class="page2"></label>
+                <label for="slider_3" class="page3"></label>
+                <label for="slider_4" class="page4"></label>
             </div>
-            <div class="col-md-6">
-                <iframe allowfullscreen frameborder="0" height="450" width="100%" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&amp;q=kaunas%2C+lietuva&amp;zoom=15"></iframe>
+            <!-- Slider #1 -->
+            <div class="slider slide-1">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute3.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Portobello
+
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+            </div>
+            <!-- Slider #2 -->
+            <div class="slider slide-2">
+                <img class="img-responsive img-fluid rounded-circle" src="../../assets/img/picute.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Chili
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+
+            </div>
+            <!-- Slider #3 -->
+            <div class="slider slide-3">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute2.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Palermo
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
+
+            </div>
+            <!-- Slider #4 -->
+            <div class="slider slide-4">
+                <img class="img-responsive img-fluid  rounded-circle" src="../../assets/img/picute4.jpg" style="max-width: 900px; max-height: 900px;">
+                <div class="slider-content">
+                    <h4>New Product</h4>
+                    <h2>
+                        Romana
+                    </h2>
+                    <button type="button" class="buy-now-btn" name="button">$130</button>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+    <section>
+        <div class="container " id="contain">
+            <div id="location" class="intro">
+                <h2 class="text-center">@Localizer["We're located"]</h2>
+            </div>
+        </div>
+
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/phone.png">@Localizer["Contacts"]&nbsp; </h2>
+                        <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
+                        <h3 class="text-center" style="background-color:red;">+370 64 524 636</h3>
+                        <h2 class="text-center" style="color:rgb(0,0,0);background-color:#ffffff;"><img src="assets/img/email60x60.png">&nbsp;@Localizer["Email"]&nbsp;</h2>
+                        <h3 class="text-center" style="background-color:red;">orders@kodhier.com</h3>
+                        <h3 class="text-center" style="background-color:red;">info@kodhier.com</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <iframe allowfullscreen frameborder="0" height="290" width="100%" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAHhtemjR5x_jVhJc-vPt7lRJMkVOVb4xw&amp;q=kaunas%2C+lietuva&amp;zoom=15"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="map-clean"></div>
+    </section>
 </div>
-<div class="map-clean"></div>
-<section class="copyright">
-    <div class="copyright-inner">
-        <p class="text-center">&#169 2018, Kodhier.</p>
-    </div>
-</section>
+
+<script type="text/javascript">
+    $('#fullpage').fullpage();
+</script>

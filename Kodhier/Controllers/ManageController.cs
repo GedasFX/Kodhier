@@ -33,7 +33,6 @@ namespace Kodhier.Controllers
         private readonly KodhierDbContext _context;
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ManageController> _localizer;
-        private RoleManager<IdentityRole> _roleManager;
 
         private IHostingEnvironment _env;
 
@@ -88,28 +87,6 @@ namespace Kodhier.Controllers
             };
 
             return View(model);
-        }
-
-        // TODO: REMOVE THIS
-        [HttpGet]
-        [Authorize]
-        public async Task<JsonResult> GiveAdmin()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            if (!await _roleManager.RoleExistsAsync("Admin"))
-            {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-            }
-            
-            if (!await _userManager.IsInRoleAsync(user, "Admin"))
-                await _userManager.AddToRoleAsync(user, "Admin");
-
-            return Json(await _userManager.GetRolesAsync(user));
         }
 
         [Authorize]

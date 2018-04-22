@@ -415,8 +415,31 @@ namespace Kodhier.Controllers
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+
+                var webRoot = _env.WebRootPath;
+                var pathToFile = _env.WebRootPath
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "Templates"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "EmailTemplate"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "Password_Reset.html";
+                var subject = "Slaptažodžio atkūrimas";
+                var builder = new BodyBuilder();
+                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+                //{0} : Username
+                //{1} : URL
+
+                string messageBody = string.Format(builder.HtmlBody,
+                    user.UserName,
+                    callbackUrl
+                    );
+
+                await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
+
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 

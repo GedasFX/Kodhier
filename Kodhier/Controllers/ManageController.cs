@@ -15,6 +15,9 @@ using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -32,6 +35,8 @@ namespace Kodhier.Controllers
         private readonly IStringLocalizer<ManageController> _localizer;
         private RoleManager<IdentityRole> _roleManager;
 
+        private IHostingEnvironment _env;
+
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
@@ -44,7 +49,8 @@ namespace Kodhier.Controllers
           KodhierDbContext context,
           IMemoryCache cache,
           IStringLocalizer<ManageController> localizer,
-          RoleManager<IdentityRole> roleManager)
+          RoleManager<IdentityRole> roleManager,
+          IHostingEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,6 +61,7 @@ namespace Kodhier.Controllers
             _cache = cache;
             _localizer = localizer;
             _roleManager = roleManager;
+            _env = env;
         }
 
         [TempData]
@@ -199,10 +206,43 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            string ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+            string ctokenlink = Url.Action("ConfirmEmail", "Account", new
+            {
+                userid = user.Id,
+                token = ctoken
+            }, protocol: HttpContext.Request.Scheme);
             var email = user.Email;
-            await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
+            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                      // $"Please confirm your account by clicking this link: <a href='{ctokenlink}'>link</a>");
+
+
+
+            var webRoot = _env.WebRootPath;
+            var pathToFile = _env.WebRootPath
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "Templates"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "EmailTemplate"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "Confirm_Email.html";
+            var subject = "Confirm Account Registration";
+            var builder = new BodyBuilder();
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = SourceReader.ReadToEnd();
+            }
+            //{0} : tokeURL
+            //{1} : Email
+            //{2} : Username           
+
+            string messageBody = string.Format(builder.HtmlBody,
+                        ctokenlink,
+                        model.Email,
+                        model.Username
+                        );
+
+            await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 
             StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));

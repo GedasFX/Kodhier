@@ -10,6 +10,9 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -21,18 +24,23 @@ namespace Kodhier.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IStringLocalizer<AccountController> _localizer;
+
+        private IHostingEnvironment _env;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IStringLocalizer<AccountController> localizer)
+            IStringLocalizer<AccountController> localizer,
+            IHostingEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _localizer = localizer;
+            _env = env;
         }
 
         [TempData]
@@ -224,16 +232,47 @@ namespace Kodhier.Controllers
                     BirthDate = model.BirthDate,
                     Email = model.Email,
                     FirstName = model.FirstName,
-                    LastName = model.LastName
+                    LastName = model.LastName,
+                    EmailSendUpdates = true,
+                    EmailSendPromotional= true
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    string ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+                    string ctokenlink = Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userid = user.Id,
+                        token = ctoken
+                    }, protocol: HttpContext.Request.Scheme);
+                    //ViewBag.token = ctokenlink;
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    var webRoot = _env.WebRootPath;
+                    var pathToFile = _env.WebRootPath
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "Templates"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "EmailTemplate"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "Confirm_Email.html";
+                    var subject = "Confirm Account Registration";
+                    var builder = new BodyBuilder();
+                    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                    {
+                        builder.HtmlBody = SourceReader.ReadToEnd();
+                    }
+
+                    //{0} : tokenurl
+                    //{1} : Email
+                    //{2} : Username
+
+                    string messageBody = string.Format(builder.HtmlBody,
+                        ctokenlink,
+                        model.Email,
+                        model.Username
+                        );
+
+                    await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
@@ -336,9 +375,9 @@ namespace Kodhier.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            if (userId == null || code == null)
+            if (userId == null || token == null)
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
@@ -347,7 +386,7 @@ namespace Kodhier.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

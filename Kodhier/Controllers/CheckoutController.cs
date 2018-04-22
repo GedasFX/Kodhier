@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Extensions;
+using Kodhier.Services;
 using Kodhier.ViewModels;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
+
 
 namespace Kodhier.Controllers
 {
     public class CheckoutController : Controller
     {
         private readonly KodhierDbContext _context;
+        private readonly IEmailSender _emailSender;
+        private IHostingEnvironment _env;
 
-        public CheckoutController(KodhierDbContext context)
+        public CheckoutController(KodhierDbContext context,
+            IEmailSender emailSender,
+            IHostingEnvironment env)
         {
             _context = context;
+            _emailSender = emailSender;
+            _env = env; ;
         }
 
 		private IQueryable<ViewModels.CheckoutViewModel> GetCheckoutOrders(String clientId)
@@ -95,24 +105,34 @@ namespace Kodhier.Controllers
             // successful checkout, update db
 
             //TempData["CheckoutSuccess"] = true;
-            
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Kodhier", "leitbugs.test@gmail.com"));
-            message.To.Add(new MailboxAddress("gavejas", "lauriz1997@gmail.com"));
-            message.Subject = "testuju emaila";
-            message.Body = new TextPart("plain")
+
+            if (_context.Users.Where(u => u.Id == clientId).Single().EmailSendUpdates)
             {
-                Text = "Labas, testuoju emailo siuntėją"
-            };
-            BodyBuilder naujas = new BodyBuilder();
-            using (var client = new SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("leitbugs.test@gmail.com", "leitbugs123");
-                client.Send(message);
-                client.Disconnect(true);
+                var webRoot = _env.WebRootPath;
+
+                var pathToFile = _env.WebRootPath
+                                + Path.DirectorySeparatorChar.ToString()
+                                + "Templates"
+                                + Path.DirectorySeparatorChar.ToString()
+                                + "EmailTemplate"
+                                + Path.DirectorySeparatorChar.ToString()
+                                + "Confirm_Order.html";
+
+                var subject = "Confirm Checkout";
+                var builder = new BodyBuilder();
+
+                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                {
+                    builder.HtmlBody = SourceReader.ReadToEnd();
+                }
+                string messageBody = string.Format(builder.HtmlBody,
+                    _context.Users.Where(u => u.Id == clientId).Single().UserName
+                    );
+
+                //reikia perdaryt į async, bet kažkas negerai
+                //await _emailSender.SendEmailAsync(_context.Users.Where(u => u.Id == clientId).Single().Email, subject, messageBody);
+                _emailSender.SendEmailAsync(_context.Users.Where(u => u.Id == clientId).Single().Email, subject, messageBody);
             }
-            
 
             return RedirectToAction("Index");
 		}

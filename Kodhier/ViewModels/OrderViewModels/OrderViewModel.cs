@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Kodhier.Models;
 
 namespace Kodhier.ViewModels.OrderViewModels
 {
@@ -13,7 +15,7 @@ namespace Kodhier.ViewModels.OrderViewModels
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Display(Name = "Lowest price")]
-        public decimal MinPrice { get; set; }
+        [Display(Name = "Price information")]
+        public IEnumerable<PizzaPriceInfo> PriceInfo { get; set; }
     }
 }

@@ -27,9 +27,9 @@ namespace Kodhier.Controllers
                 Name = p.Name,
                 Description = p.Description,
                 ImagePath = p.ImagePath,
-                MinPrice = _context.PizzaPriceInfo
+                PriceInfo = _context.PizzaPriceInfo
                     .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
-                    .Min(c => c.Price)
+                    .ToArray()
             });
             return View(pizzas);
         }

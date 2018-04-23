@@ -17,41 +17,41 @@
     <link rel="stylesheet" href="~/css/BetterMeniu.css" />
     <link rel="stylesheet" href="~/assets/css/Map-Clean.css">
     <link rel="stylesheet" href="~/assets/css/styles.css">
+
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top bg-dark flex-wrap">
+        <a class="navbar-brand d-inline-flex" asp-controller="Home" asp-action="Index">
+            <img class="img-fluid" src="~/assets/img/minishef.png">
+            <strong>kodhier</strong>
+        </a>
+
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
+            <span class="sr-only">@Localizer["Toggle navigation"]</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav mx-auto">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                        <i class="typcn typcn-home-outline"></i>
+                        <strong>&nbsp;@Localizer["Home"]</strong>
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" asp-controller="Order" asp-action="Index">
+                        <i class="typcn typcn-clipboard"></i>
+                        <strong>&nbsp;@Localizer["Menu"]</strong>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav mx-auto">
+                @await Html.PartialAsync("_LoginPartial")
+            </ul>
+        </div>
+    </nav>
+
 </head>
 <body id="mainsec">
-    <section>
-        <nav class="navbar navbar-dark navbar-expand-lg sticky-top bg-dark flex-wrap">
-            <a class="navbar-brand d-inline-flex" asp-controller="Home" asp-action="Index">
-                <img class="img-fluid" src="~/assets/img/minishef.png">
-                <strong>kodhier</strong>
-            </a>
-
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
-                <span class="sr-only">@Localizer["Toggle navigation"]</span>
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav mx-auto">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                            <i class="typcn typcn-home-outline"></i>
-                            <strong>&nbsp;@Localizer["Home"]</strong>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" asp-controller="Order" asp-action="Index">
-                            <i class="typcn typcn-clipboard"></i>
-                            <strong>&nbsp;@Localizer["Menu"]</strong>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav mx-auto">
-                    @await Html.PartialAsync("_LoginPartial")
-                </ul>
-            </div>
-        </nav>
-    </section>
     <div class="page-content">
         @RenderBody()
         <hr />
@@ -59,7 +59,7 @@
     <div class="footer">
         <footer>
             <div class="row">
-                <div class="col-md-2 text-md-center mx-auto">
+                <div class="col-md-2 text-md-center text-sm-center mx-auto">
                     @await Html.PartialAsync("_SelectLanguagePartial")
                 </div>
             </div>

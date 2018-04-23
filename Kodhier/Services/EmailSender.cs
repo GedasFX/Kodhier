@@ -39,7 +39,7 @@ namespace Kodhier.Services
                                          ToAddress
                                          ));
                 mimeMessage.Subject = Subject; //Subject
-                mimeMessage.Body = new TextPart("plain")
+                mimeMessage.Body = new TextPart("html")
                 {
                     Text = BodyContent
                 };

@@ -234,43 +234,39 @@ namespace Kodhier.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     EmailSendUpdates = true,
-                    EmailSendPromotional= true
+                    EmailSendPromotional = true
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    string ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-                    string ctokenlink = Url.Action("ConfirmEmail", "Account", new
+                    var ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+                    var ctokenlink = Url.Action("ConfirmEmail", "Account", new
                     {
                         userid = user.Id,
                         token = ctoken
-                    }, protocol: HttpContext.Request.Scheme);
-                    //ViewBag.token = ctokenlink;
+                    }, HttpContext.Request.Scheme);
 
-                    var webRoot = _env.WebRootPath;
                     var pathToFile = _env.WebRootPath
-                            + Path.DirectorySeparatorChar.ToString()
+                            + Path.DirectorySeparatorChar
                             + "Templates"
-                            + Path.DirectorySeparatorChar.ToString()
+                            + Path.DirectorySeparatorChar
                             + "EmailTemplate"
-                            + Path.DirectorySeparatorChar.ToString()
+                            + Path.DirectorySeparatorChar
                             + "Confirm_Email.html";
                     var subject = "Confirm Account Registration";
                     var builder = new BodyBuilder();
-                    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                    using (var sourceReader = System.IO.File.OpenText(pathToFile))
                     {
-                        builder.HtmlBody = SourceReader.ReadToEnd();
+                        builder.HtmlBody = sourceReader.ReadToEnd();
                     }
 
                     //{0} : tokenurl
                     //{1} : Email
                     //{2} : Username
-
-                    string messageBody = string.Format(builder.HtmlBody,
+                    var messageBody = string.Format(builder.HtmlBody,
                         ctokenlink,
                         model.Email,
-                        model.Username
-                        );
+                        model.Username);
 
                     await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 

@@ -182,7 +182,7 @@ namespace Kodhier.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -191,44 +191,34 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            string ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-            string ctokenlink = Url.Action("ConfirmEmail", "Account", new
+            var ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+            var ctokenlink = Url.Action("ConfirmEmail", "Account", new
             {
                 userid = user.Id,
                 token = ctoken
-            }, protocol: HttpContext.Request.Scheme);
-            var email = user.Email;
-            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                      // $"Please confirm your account by clicking this link: <a href='{ctokenlink}'>link</a>");
-
-
-
-            var webRoot = _env.WebRootPath;
+            }, HttpContext.Request.Scheme);
+            
             var pathToFile = _env.WebRootPath
-                    + Path.DirectorySeparatorChar.ToString()
+                    + Path.DirectorySeparatorChar
                     + "Templates"
-                    + Path.DirectorySeparatorChar.ToString()
+                    + Path.DirectorySeparatorChar
                     + "EmailTemplate"
-                    + Path.DirectorySeparatorChar.ToString()
+                    + Path.DirectorySeparatorChar
                     + "Confirm_Email.html";
             var subject = "Confirm Account Registration";
             var builder = new BodyBuilder();
-            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            using (var sourceReader = System.IO.File.OpenText(pathToFile))
             {
-                builder.HtmlBody = SourceReader.ReadToEnd();
+                builder.HtmlBody = sourceReader.ReadToEnd();
             }
+
             //{0} : tokeURL
             //{1} : Email
             //{2} : Username           
-
-            string messageBody = string.Format(builder.HtmlBody,
-                        ctokenlink,
-                        model.Email,
-                        model.Username
-                        );
+            var messageBody = string.Format(builder.HtmlBody, ctokenlink, model.Email, model.Username);
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
-
+            
             StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));
         }

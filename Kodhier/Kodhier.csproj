@@ -20,11 +20,16 @@
     <Compile Remove="Migrations\20180411173837_orderFK.Designer.cs" />
     <Compile Remove="Migrations\20180411174144_nonullFKConstraints.cs" />
     <Compile Remove="Migrations\20180411174144_nonullFKConstraints.Designer.cs" />
+    <Compile Remove="Migrations\20180421192131_emailpromo.cs" />
+    <Compile Remove="Migrations\20180421192131_emailpromo.Designer.cs" />
+    <Compile Remove="Migrations\20180421192341_emailpromo.cs" />
+    <Compile Remove="Migrations\20180421192341_emailpromo.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="MailKit" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />

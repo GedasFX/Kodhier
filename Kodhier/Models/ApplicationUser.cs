@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.ComponentModel;
 
 namespace Kodhier.Models
 {
@@ -8,8 +9,14 @@ namespace Kodhier.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
         public DateTime BirthDate { get; set; }
+
         public decimal Coins { get; set; }
+
         public string Address { get; set; }
+
+        public bool EmailSendUpdates { get; set; }
+        public bool EmailSendPromotional { get; set; }
     }
 }

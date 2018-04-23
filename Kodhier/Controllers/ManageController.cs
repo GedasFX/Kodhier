@@ -15,6 +15,9 @@ using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -31,6 +34,8 @@ namespace Kodhier.Controllers
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ManageController> _localizer;
 
+        private IHostingEnvironment _env;
+
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
@@ -43,7 +48,7 @@ namespace Kodhier.Controllers
           KodhierDbContext context,
           IMemoryCache cache,
           IStringLocalizer<ManageController> localizer,
-          RoleManager<IdentityRole> roleManager)
+          IHostingEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -53,6 +58,7 @@ namespace Kodhier.Controllers
             _context = context;
             _cache = cache;
             _localizer = localizer;
+            _env = env;
         }
 
         [TempData]
@@ -73,7 +79,9 @@ namespace Kodhier.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                EmailSendPromotional = user.EmailSendPromotional,
+                EmailSendUpdates = user.EmailSendUpdates
             };
 
             return View(model);
@@ -156,6 +164,14 @@ namespace Kodhier.Controllers
                 }
             }
 
+            if (user.EmailSendPromotional != model.EmailSendPromotional ||
+                user.EmailSendUpdates != model.EmailSendUpdates)
+            {
+                user.EmailSendPromotional = model.EmailSendPromotional;
+                user.EmailSendUpdates = model.EmailSendUpdates;
+                await _context.SaveChangesAsync();
+            }
+
             StatusMessage = _localizer["Your profile has been updated"];
             return RedirectToAction(nameof(Index));
         }
@@ -166,7 +182,7 @@ namespace Kodhier.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -175,11 +191,34 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            var email = user.Email;
-            await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
+            var ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+            var ctokenlink = Url.Action("ConfirmEmail", "Account", new
+            {
+                userid = user.Id,
+                token = ctoken
+            }, HttpContext.Request.Scheme);
+            
+            var pathToFile = _env.WebRootPath
+                    + Path.DirectorySeparatorChar
+                    + "Templates"
+                    + Path.DirectorySeparatorChar
+                    + "EmailTemplate"
+                    + Path.DirectorySeparatorChar
+                    + "Confirm_Email.html";
+            var subject = "Confirm Account Registration";
+            var builder = new BodyBuilder();
+            using (var sourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = sourceReader.ReadToEnd();
+            }
 
+            //{0} : tokeURL
+            //{1} : Email
+            //{2} : Username           
+            var messageBody = string.Format(builder.HtmlBody, ctokenlink, model.Email, model.Username);
+
+            await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
+            
             StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));
         }

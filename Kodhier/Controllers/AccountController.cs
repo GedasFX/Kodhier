@@ -452,13 +452,13 @@ namespace Kodhier.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null, string userId = null)
         {
-            if (code == null)
+            if (code == null || userId == null)
             {
                 throw new ApplicationException("A code must be supplied for password reset.");
             }
-            var model = new ResetPasswordViewModel { Code = code };
+            var model = new ResetPasswordViewModel { Code = code, Id = userId };
             return View(model);
         }
 
@@ -471,7 +471,8 @@ namespace Kodhier.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
             {
                 // Don't reveal that the user does not exist

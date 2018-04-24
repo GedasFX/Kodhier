@@ -26,10 +26,17 @@
                 </li>
             }
             <li class="nav-itemlog">
-                <form class="form-display" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                    <button class="nav-link active btn btn-link" type="submit">@Localizer["Log out"]</button>
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <a class="nav-link active" id="logoutBtn">@Localizer["Log out"]</a>
                 </form>
             </li>
         </ul>
     </li>
 </ul>
+
+<script>
+    document.getElementById('logoutBtn').addEventListener('click',
+        function() {
+            document.getElementById("logoutForm").submit();
+        });
+</script>

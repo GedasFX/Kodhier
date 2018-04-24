@@ -99,13 +99,13 @@ namespace Kodhier.Controllers
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
             TempData["Success"] = false;
+
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
-
             if (code == null)
             {
                 ViewData["Error"] = "Code doesn't exist.";
@@ -116,13 +116,20 @@ namespace Kodhier.Controllers
                 ViewData["Error"] = "The code has already been used.";
                 return View();
             }
-            // Code valid, continue
-            TempData["Success"] = true;
-            code.RedemptionDate = DateTime.Now;
 
             var user = _context.Users.SingleOrDefault(u => u.Id == User.GetId());
+
+            if (user == null)
+                return View();
+
+            // Code valid, continue
+            TempData["Success"] = true;
+
+            code.RedemptionDate = DateTime.Now;
             code.Redeemer = user;
+
             user.Coins += code.Amount;
+
             _cache.Remove(user.UserName);
 
             await _context.SaveChangesAsync();
@@ -420,7 +427,7 @@ namespace Kodhier.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Disable2faWarning()
+        public async Task<IActionResult> Disable2FaWarning()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -433,12 +440,12 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
 
-            return View(nameof(Disable2fa));
+            return View(nameof(Disable2Fa));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Disable2fa()
+        public async Task<IActionResult> Disable2Fa()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -446,8 +453,8 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
-            if (!disable2faResult.Succeeded)
+            var disable2FaResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+            if (!disable2FaResult.Succeeded)
             {
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
@@ -490,10 +497,10 @@ namespace Kodhier.Controllers
             // Strip spaces and hypens
             var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
+            var is2FaTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
                 user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
-            if (!is2faTokenValid)
+            if (!is2FaTokenValid)
             {
                 ModelState.AddModelError("Code", "Verification code is invalid.");
                 await LoadSharedKeyAndQrCodeUriAsync(user, model);

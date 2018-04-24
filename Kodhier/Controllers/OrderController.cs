@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Kodhier.Extensions;
 using Kodhier.Models;
+using Kodhier.Mvc;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 
@@ -83,13 +84,13 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string id, [Bind("Quantity,SizeId,Comment")] OrderCreateViewModel model)
         {
-            // TempData["CreateSuccess"] - resulting value
-            TempData["CreateSuccess"] = false;
+            var execRes = new ExecutionResult();
+
             var pizza = _context.Pizzas.SingleOrDefault(i => i.Name == id);
             if (pizza == null)
             {
-                ModelState.AddModelError("Error", "Pizza doesn't exist");
-                return View(model);
+                execRes.AddError("Requested pizza was not found. Please try again.");
+                return RedirectToAction(nameof(Index));
             }
 
             if (!ModelState.IsValid)
@@ -97,7 +98,10 @@ namespace Kodhier.Controllers
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
             if (ppi == null)
+            {
+                execRes.AddError("Unexpected size was selected. Please try again.");
                 return View(model);
+            }
 
             var userId = User.GetId();
             if (string.IsNullOrEmpty(userId))
@@ -133,8 +137,8 @@ namespace Kodhier.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["CreateSuccess"] = true;
 
+            TempData["ExecutionResult"] = execRes;
             return RedirectToAction(nameof(Index));
         }
     }

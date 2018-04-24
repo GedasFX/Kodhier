@@ -95,28 +95,46 @@ namespace Kodhier.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var gar = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
-            if (gar == null)
+            var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
+            if (ppi == null)
                 return View(model);
 
-            var order = new Order
+            var userId = User.GetId();
+            if (string.IsNullOrEmpty(userId))
+                return View(model);
+
+            // Check if there is an order in the basket already
+            var order = await _context.Orders.SingleOrDefaultAsync(o => !o.IsPaid && o.PizzaId == pizza.Id && o.ClientId == userId && o.Size == ppi.Size);
+            if (order != null)
             {
-                Id = Guid.NewGuid(),
-                Pizza = pizza,
-                ClientId = User.GetId(),
-                Comment = model.Comment,
-                Quantity = model.Quantity,
-                Price = gar.Price,
-                Size = gar.Size,
-                PlacementDate = DateTime.Now,
-                PizzaPriceCategoryId = pizza.PriceCategoryId
-            };
-            if (string.IsNullOrEmpty(order.ClientId))
-                return View(model);
+                order.Price = ppi.Price;
+                order.Quantity += model.Quantity;
+                order.PlacementDate = DateTime.Now;
+                // Adds a new line to the comment with the new comment.
+                order.Comment = string.IsNullOrEmpty(order.Comment) 
+                    ? model.Comment : string.IsNullOrEmpty(model.Comment) 
+                        ? order.Comment : $"{order.Comment}\n-----\n{model.Comment}";
+            }
+            else
+            {
+                order = new Order
+                {
+                    Id = Guid.NewGuid(),
+                    Pizza = pizza,
+                    ClientId = userId,
+                    Comment = model.Comment,
+                    Quantity = model.Quantity,
+                    Price = ppi.Price,
+                    Size = ppi.Size,
+                    PlacementDate = DateTime.Now,
+                    PizzaPriceCategoryId = pizza.PriceCategoryId
+                };
+                _context.Add(order);
+            }
 
-            _context.Add(order);
             await _context.SaveChangesAsync();
             TempData["CreateSuccess"] = true;
+
             return RedirectToAction(nameof(Index));
         }
     }

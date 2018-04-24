@@ -88,5 +88,17 @@ namespace Kodhier.Tests
             Assert.IsType<ViewResult>(res);
             Assert.False((bool)_controller.TempData["CreateSuccess"]);
         }
+
+        [Fact(DisplayName = "Instead of making new order, system updates a preexisting unpaid order.")]
+        public async Task CreateOrderAlreadyExists()
+        {
+            var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
+            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
+            if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
+                _controller.ModelState.AddModelError("err", "Error");
+
+            var res = await _controller.Create(pizza.Name, order);
+            
+        }
     }
 }

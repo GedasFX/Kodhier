@@ -75,7 +75,7 @@ namespace Kodhier.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    return RedirectToAction(nameof(LoginWith2Fa), new { returnUrl, model.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -95,7 +95,7 @@ namespace Kodhier.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> LoginWith2Fa(bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -114,7 +114,7 @@ namespace Kodhier.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> LoginWith2Fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -412,7 +412,6 @@ namespace Kodhier.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
 
-                var webRoot = _env.WebRootPath;
                 var pathToFile = _env.WebRootPath
                         + Path.DirectorySeparatorChar.ToString()
                         + "Templates"
@@ -422,9 +421,9 @@ namespace Kodhier.Controllers
                         + "Password_Reset.html";
                 var subject = "Slaptažodžio atkūrimas";
                 var builder = new BodyBuilder();
-                using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                using (var sourceReader = System.IO.File.OpenText(pathToFile))
                 {
-                    builder.HtmlBody = SourceReader.ReadToEnd();
+                    builder.HtmlBody = sourceReader.ReadToEnd();
                 }
                 //{0} : Username
                 //{1} : URL

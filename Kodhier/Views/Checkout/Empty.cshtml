@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Kodhier.ViewModels.CheckoutViewModel>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Checkout"];
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/Checkout.css" />
+<header>
+    <h1>@Localizer["SHOPPING CART"]</h1>
+</header>
+
+@* TODO: Make good *@
+<div class="container col-md-8 offset-md-2">
+    Shopping cart is empty
+</div>

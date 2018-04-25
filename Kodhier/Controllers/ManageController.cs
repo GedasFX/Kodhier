@@ -133,7 +133,7 @@ namespace Kodhier.Controllers
                 execRes.AddInfo(
                     $"Code has been succesfully redeemed. Added {code.Amount} to the acccount balance. New balance: {user.Coins}!");
             else
-                execRes.AddError("Failed to used the code. Try again later.");
+                execRes.AddError("Failed to use the code. Try again later.");
 
             execRes.PushTo(TempData);
             return View();

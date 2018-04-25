@@ -207,7 +207,7 @@ namespace Kodhier.Controllers
                 userid = user.Id,
                 token = ctoken
             }, HttpContext.Request.Scheme);
-            
+
             var pathToFile = _env.WebRootPath
                     + Path.DirectorySeparatorChar
                     + "Templates"
@@ -228,7 +228,7 @@ namespace Kodhier.Controllers
             var messageBody = string.Format(builder.HtmlBody, ctokenlink, model.Email, model.Username);
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
-            
+
             StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));
         }

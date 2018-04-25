@@ -31,10 +31,12 @@
                     </dl>
                 </div>
                 <form asp-action="Create" asp-route-id="@Model.Name">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Description" hidden />
+                    <input asp-for="ImagePath" hidden />
+                    <input asp-for="Name" hidden />
                     <div class="col-md-12">
                         <label asp-for="Quantity">@Localizer["Quantity"]</label>
-                        <input asp-for="Quantity" id ="quantity" value="1" class="form-control" />
+                        <input asp-for="Quantity" id="quantity" value="1" class="form-control" />
                         <span asp-validation-for="Quantity" class="text-danger"></span>
                     </div>
                     <div class="col-md-12">

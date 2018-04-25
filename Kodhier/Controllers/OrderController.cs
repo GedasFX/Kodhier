@@ -37,6 +37,7 @@ namespace Kodhier.Controllers
 
         public async Task<IActionResult> Create(string id)
         {
+            var exRes = new ExecutionResult();
             if (string.IsNullOrEmpty(id))
             {
                 return RedirectToAction(nameof(Index));
@@ -46,6 +47,7 @@ namespace Kodhier.Controllers
                 .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
+                exRes.AddError("Requested pizza could not be found.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -82,7 +84,7 @@ namespace Kodhier.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("Quantity,SizeId,Comment")] OrderCreateViewModel model)
+        public async Task<IActionResult> Create(string id, OrderCreateViewModel model)
         {
             var execRes = new ExecutionResult();
 
@@ -94,8 +96,11 @@ namespace Kodhier.Controllers
             }
 
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(Create), new { Id = id });
-
+            {
+                model.Prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
+                model.MinPrice = model.Prices.Min(p => p.Price);
+                return View(model);
+            }
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
             if (ppi == null || pizza.PriceCategoryId != ppi.PriceCategoryId)

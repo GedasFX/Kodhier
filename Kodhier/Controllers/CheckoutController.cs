@@ -136,7 +136,7 @@ namespace Kodhier.Controllers
             foreach (var checkoutEntry in orders)
             {
                 var order = _context.Orders.Single(o => o.Id == checkoutEntry.Id);
-                order.Status = Models.OrderStatus.Queued;
+                order.Status = OrderStatus.Queued;
                 order.IsPaid = true;
                 order.DeliveryAddress = model.ConfirmAddress;
             }

@@ -1,0 +1,29 @@
+﻿@model Kodhier.Mvc.ExecutionResult
+
+@if (Model.HasInfo)
+{
+    <div class="alert alert-info" role="alert">
+        @foreach (var intel in Model.InfoList)
+        {
+            <div>@intel</div>
+        }
+    </div>
+}
+@if (Model.HasWarn)
+{
+    <div class="alert alert-warning" role="alert">
+        @foreach (var intel in Model.WarnList)
+        {
+            <div>@intel</div>
+        }
+    </div>
+}
+@if (Model.HasError)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var intel in Model.ErrorList)
+        {
+            <div>@intel</div>
+        }
+    </div>
+}

@@ -27,13 +27,13 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 Elements = _context.PrepaidCodes.Include(e => e.Redeemer)
                     .Select(c => new PrepaidCardViewModel
-                {
-                    Id = c.Id,
-                    Redeemer = c.Redeemer,
-                    Amount = c.Amount,
-                    CreationDate = c.CreationDate,
-                    RedemptionDate = c.RedemptionDate
-                })
+                    {
+                        Id = c.Id,
+                        Redeemer = c.Redeemer,
+                        Amount = c.Amount,
+                        CreationDate = c.CreationDate,
+                        RedemptionDate = c.RedemptionDate
+                    })
             });
         }
 

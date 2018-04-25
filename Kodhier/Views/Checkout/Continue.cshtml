@@ -1,4 +1,5 @@
-﻿@model Kodhier.ViewModels.ConfirmCheckoutViewModel
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model Kodhier.ViewModels.ConfirmCheckoutViewModel
 
 @{
     ViewData["Title"] = "Continue";
@@ -33,7 +34,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <form asp-action="Confirm" method="post">
+                        <form asp-action="Continue" method="post">
                             <br />
                             <p class="lead">SHIPPING ADDRESS:</p>
                             <input type="text" id="address" name="confirmAddress" class="form-control" placeholder="SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" onblur="viewAddress()" />
@@ -42,7 +43,7 @@
                         </form>
                     </div>
                     <div class="col-md-8">
-                        <br/>
+                        <br />
                         <div id="map"></div>
                     </div>
                 </div>
@@ -61,10 +62,10 @@
             map = new window.google.maps.Map(document.getElementById('map'),
                 {
                     center: { lat: 54.9049311, lng: 23.9544675 },
-                    zoom: 10
+                    zoom: 13
                 });
             geocoder = new window.google.maps.Geocoder();
-            autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('address'));
+            autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('address'), { componentRestrictions: { country: "lt" } });
         }
 
         function viewAddress() {
@@ -80,10 +81,11 @@
                             position: results[0].geometry.location
                         });
                     } else {
-                        alert('There was a problem displaying the adress: ' + status);
+                        $('#address').val('');
                     }
                 });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>
 }
+@await Html.PartialAsync("_ValidationScriptsPartial")

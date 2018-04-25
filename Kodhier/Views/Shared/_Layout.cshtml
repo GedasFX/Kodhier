@@ -1,5 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Kodhier.Extensions
+@using Kodhier.Mvc
 @inject IViewLocalizer Localizer
+
+@{
+    var executionResult = TempData.Get<ExecutionResult>("ExecutionResult");
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,11 +23,12 @@
     <link rel="stylesheet" href="~/css/BetterMeniu.css" />
     <link rel="stylesheet" href="~/assets/css/Map-Clean.css">
     <link rel="stylesheet" href="~/assets/css/styles.css">
-
+</head>
+<body id="mainsec">
     <nav class="navbar navbar-dark navbar-expand-lg sticky-top bg-dark flex-wrap">
         <a class="navbar-brand d-inline-flex" asp-controller="Home" asp-action="Index">
             <img class="img-fluid" src="~/assets/img/minishef.png">
-            <strong>kodhier</strong>
+            <strong>Kodhier</strong>
         </a>
 
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
@@ -49,10 +56,8 @@
             </ul>
         </div>
     </nav>
-
-</head>
-<body id="mainsec">
     <div class="page-content">
+        @await Html.PartialAsync("_InfoBoxPartial", executionResult)
         @RenderBody()
         <hr />
     </div>
@@ -69,7 +74,6 @@
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/assets/js/jquery.min.js"></script>
     <script src="~/js/Submenu.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

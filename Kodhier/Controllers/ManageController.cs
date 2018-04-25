@@ -17,6 +17,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Kodhier.Mvc;
 using MimeKit;
 
 namespace Kodhier.Controllers
@@ -98,7 +99,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Redeem([Bind("Id")] RedeemViewModel model)
         {
-            TempData["Success"] = false;
+            var execRes = new ExecutionResult();
 
             if (!ModelState.IsValid)
             {
@@ -108,22 +109,18 @@ namespace Kodhier.Controllers
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
             if (code == null)
             {
-                ViewData["Error"] = "Code doesn't exist.";
+                execRes.AddError("Provided code doesn't exist.").PushTo(TempData);
                 return View();
             }
             if (code.RedemptionDate != null)
             {
-                ViewData["Error"] = "The code has already been used.";
+                execRes.AddError("Provided code has already been used.").PushTo(TempData);
                 return View();
             }
 
-            var user = _context.Users.SingleOrDefault(u => u.Id == User.GetId());
-
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
-                return View();
-
-            // Code valid, continue
-            TempData["Success"] = true;
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             code.RedemptionDate = DateTime.Now;
             code.Redeemer = user;
@@ -132,7 +129,13 @@ namespace Kodhier.Controllers
 
             _cache.Remove(user.UserName);
 
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddInfo(
+                    $"Code has been succesfully redeemed. Added {code.Amount} to the acccount balance. New balance: {user.Coins}!");
+            else
+                execRes.AddError("Failed to use the code. Try again later.");
+
+            execRes.PushTo(TempData);
             return View();
         }
 
@@ -204,7 +207,7 @@ namespace Kodhier.Controllers
                 userid = user.Id,
                 token = ctoken
             }, HttpContext.Request.Scheme);
-            
+
             var pathToFile = _env.WebRootPath
                     + Path.DirectorySeparatorChar
                     + "Templates"
@@ -225,7 +228,7 @@ namespace Kodhier.Controllers
             var messageBody = string.Format(builder.HtmlBody, ctokenlink, model.Email, model.Username);
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
-            
+
             StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToAction(nameof(Index));
         }

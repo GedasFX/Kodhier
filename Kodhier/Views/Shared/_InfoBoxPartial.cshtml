@@ -1,0 +1,47 @@
+﻿@model Kodhier.Mvc.ExecutionResult
+
+@if (Model != null || !Html.ViewData.ModelState.IsValid)
+{
+    <div id="infoModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-body">
+                @if (Model != null)
+                {
+                    if (Model.HasSuccess)
+                    {
+                        <div class="alert alert-success">
+                            @foreach (var intel in Model.SuccessList)
+                            {
+                                <div>@intel</div>
+                            }
+                        </div>
+                    }
+                    if (Model.HasInfo)
+                    {
+                        <div class="alert alert-info">
+                            @foreach (var intel in Model.InfoList)
+                            {
+                                <div>@intel</div>
+                            }
+                        </div>
+                    }
+                    if (Model.HasError)
+                    {
+                        <div class="alert alert-danger">
+                            @foreach (var intel in Model.ErrorList)
+                            {
+                                <div>@intel</div>
+                            }
+                        </div>
+                    }
+                }
+                @if (!Html.ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-warning">
+                        <div asp-validation-summary="All" style="margin-bottom: 0"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

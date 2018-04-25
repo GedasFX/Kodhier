@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Kodhier.Extensions;
 using Kodhier.Models;
+using Kodhier.Mvc;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 
@@ -36,16 +37,18 @@ namespace Kodhier.Controllers
 
         public async Task<IActionResult> Create(string id)
         {
+            var exRes = new ExecutionResult();
             if (string.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             var pizza = await _context.Pizzas
                 .SingleOrDefaultAsync(m => m.Name == id);
             if (pizza == null)
             {
-                return NotFound();
+                exRes.AddError("Requested pizza could not be found.").PushTo(TempData);
+                return RedirectToAction(nameof(Index));
             }
 
             var prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
@@ -81,27 +84,37 @@ namespace Kodhier.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("Quantity,SizeId,Comment")] OrderCreateViewModel model)
+        public async Task<IActionResult> Create(string id, OrderCreateViewModel model)
         {
-            // TempData["CreateSuccess"] - resulting value
-            TempData["CreateSuccess"] = false;
+            var execRes = new ExecutionResult();
+
             var pizza = _context.Pizzas.SingleOrDefault(i => i.Name == id);
             if (pizza == null)
             {
-                ModelState.AddModelError("Error", "Pizza doesn't exist");
-                return View(model);
+                execRes.AddError("Requested pizza was not found. Please try again.").PushTo(TempData);
+                return RedirectToAction(nameof(Index));
             }
 
             if (!ModelState.IsValid)
+            {
+                model.Prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
+                model.MinPrice = model.Prices.Min(p => p.Price);
                 return View(model);
+            }
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
-            if (ppi == null)
-                return View(model);
+            if (ppi == null || pizza.PriceCategoryId != ppi.PriceCategoryId)
+            {
+                execRes.AddError("Unexpected size was selected. Please try again.").PushTo(TempData);
+                return RedirectToAction(nameof(Create), new { Id = id });
+            }
 
             var userId = User.GetId();
             if (string.IsNullOrEmpty(userId))
-                return View(model);
+            {
+                execRes.AddError("You are logged out. Please log in to add the order.").PushTo(TempData);
+                return RedirectToAction(nameof(Create), new { Id = id });
+            }
 
             // Check if there is an order in the basket already
             var order = await _context.Orders.SingleOrDefaultAsync(o => !o.IsPaid && o.PizzaId == pizza.Id && o.ClientId == userId && o.Size == ppi.Size);
@@ -111,8 +124,8 @@ namespace Kodhier.Controllers
                 order.Quantity += model.Quantity;
                 order.PlacementDate = DateTime.Now;
                 // Adds a new line to the comment with the new comment.
-                order.Comment = string.IsNullOrEmpty(order.Comment) 
-                    ? model.Comment : string.IsNullOrEmpty(model.Comment) 
+                order.Comment = string.IsNullOrEmpty(order.Comment)
+                    ? model.Comment : string.IsNullOrEmpty(model.Comment)
                         ? order.Comment : $"{order.Comment}\n-----\n{model.Comment}";
             }
             else
@@ -132,9 +145,12 @@ namespace Kodhier.Controllers
                 _context.Add(order);
             }
 
-            await _context.SaveChangesAsync();
-            TempData["CreateSuccess"] = true;
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddInfo("Order was succesfully added to the basket.");
+            else
+                execRes.AddError("Order could not be added to the basket. Please try again.");
 
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -47,7 +47,9 @@
                     <td data-th="Price" class="text-center">@(item.Price)</td>
                     <td data-th="Price" class="text-center">@(item.Quantity * item.Price)</td>
                     <td class="actions" data-th="">
-                        <a asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                        <form asp-action="Remove" asp-route-id="@item.Id">
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </form>
                     </td>
                 </tr>
             }

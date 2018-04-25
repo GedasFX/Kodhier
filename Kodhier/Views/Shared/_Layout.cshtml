@@ -57,11 +57,7 @@
         </div>
     </nav>
     <div class="page-content">
-        @if (executionResult != null)
-        {
-            @await Html.PartialAsync("_InfoBoxPartial", executionResult)
-        }
-
+        @await Html.PartialAsync("_InfoBoxPartial", executionResult)
         @RenderBody()
         <hr />
     </div>
@@ -78,7 +74,6 @@
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/assets/js/jquery.min.js"></script>
     <script src="~/js/Submenu.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

@@ -4,16 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Extensions;
+using Kodhier.Models;
+using Kodhier.Mvc;
 using Kodhier.Services;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Kodhier.Controllers
 {
+    [Authorize]
     public class CheckoutController : Controller
     {
         private readonly KodhierDbContext _context;
@@ -34,7 +38,7 @@ namespace Kodhier.Controllers
 
         private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId)
         {
-            return _context.Orders
+            var orders = _context.Orders
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => !o.IsPaid)
                 .OrderByDescending(c => c.PlacementDate)
@@ -48,31 +52,42 @@ namespace Kodhier.Controllers
                     ImagePath = o.Pizza.ImagePath,
                     Price = o.Price,
                     Description = o.Pizza.Description
-                }
-            );
+                });
+            return orders;
         }
 
-        [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(GetCheckoutOrders(User.GetId()));
+            var orders = await GetCheckoutOrders(User.GetId()).ToListAsync();
+            return orders.Count == 0 ? View("Empty") : View(orders);
         }
 
-        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, int qty)
         {
-            var clientId = User.GetId();
-            var orderId = GetCheckoutOrders(clientId).Single(o => o.Id.ToString().Equals(id)).Id;
+            var execRes = new ExecutionResult();
+            var order = _context.Orders.Single(o => o.Id.Equals(Guid.Parse(id)));
+            if (order == null || order.ClientId != User.GetId())
+            {
+                execRes.AddError("Pizza you were trying to edit was not found. Please try again.").PushTo(TempData);
+                return RedirectToAction("Index");
+            }
 
-            var order = _context.Orders.Single(o => o.Id.Equals(orderId));
-
+            var oq = order.Quantity;
             order.Quantity = qty;
-            await _context.SaveChangesAsync();
 
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddSuccess($"Pizza amount was successfully changed from {oq} to {qty}.");
+            else
+            {
+                execRes.AddError("Order could not be processed. Please try again.");
+            }
+
+            execRes.PushTo(TempData);
             return RedirectToAction("Index");
         }
 
-        [Authorize]
         public IActionResult Continue()
         {
             var clientId = User.GetId();
@@ -89,48 +104,31 @@ namespace Kodhier.Controllers
             return View(vm);
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Confirm(ConfirmCheckoutViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Continue(ConfirmCheckoutViewModel model)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction(nameof(Continue));
+            var execRes = new ExecutionResult();
 
             var clientId = User.GetId();
+            var user = _context.Users.Single(u => u.Id == clientId);
             var orders = GetCheckoutOrders(clientId);
 
+            if (!ModelState.IsValid)
+            {
+                model.CheckoutList = GetCheckoutOrders(clientId);
+                model.Price = model.CheckoutList.Sum(o => o.Price * o.Quantity);
+
+                return View(model);
+            }
+
             var price = orders.Sum(o => o.Price * o.Quantity);
-            var user = _context.Users.Single(u => u.Id == clientId);
 
             if (price > user.Coins)
             {
                 // insufficient PizzaCoins
+                execRes.AddError("Insufficient amount of coins in the balance.").PushTo(TempData);
                 return RedirectToAction("Index");
-            }
-
-            // Successful checkout, update db
-            if (_context.Users.Single(u => u.Id == clientId).EmailSendUpdates)
-            {
-                var pathToFile = _env.WebRootPath
-                                + Path.DirectorySeparatorChar
-                                + "Templates"
-                                + Path.DirectorySeparatorChar
-                                + "EmailTemplate"
-                                + Path.DirectorySeparatorChar
-                                + "Confirm_Order.html";
-
-                const string subject = "Confirm Checkout";
-                var builder = new BodyBuilder();
-
-                using (var sourceReader = System.IO.File.OpenText(pathToFile))
-                {
-                    builder.HtmlBody = sourceReader.ReadToEnd();
-                }
-                string messageBody = string.Format(builder.HtmlBody,
-                    _context.Users.Single(u => u.Id == clientId).UserName
-                    );
-
-                await _emailSender.SendEmailAsync(_context.Users.Single(u => u.Id == clientId).Email, subject, messageBody);
             }
 
             user.Coins -= price;
@@ -143,14 +141,55 @@ namespace Kodhier.Controllers
                 order.DeliveryAddress = model.ConfirmAddress;
             }
 
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddSuccess("Pizza was successfully ordered.");
+            else
+            {
+                execRes.AddError("Order could not be processed. Please try again.").PushTo(TempData);
+                return RedirectToAction("Index");
+            }
+
+            // Successful checkout, update db
+            if (user.EmailSendUpdates)
+            {
+                await SendEmail(user);
+                execRes.AddInfo($"Email was sent to {user.Email}.");
+            }
 
             _cache.Remove(user.UserName);
+
+            execRes.PushTo(TempData);
             return RedirectToAction("Index");
         }
 
+        private async Task SendEmail(ApplicationUser user)
+        {
+            var pathToFile = _env.WebRootPath
+                             + Path.DirectorySeparatorChar
+                             + "Templates"
+                             + Path.DirectorySeparatorChar
+                             + "EmailTemplate"
+                             + Path.DirectorySeparatorChar
+                             + "Confirm_Order.html";
+
+            const string subject = "Confirm Checkout";
+            var builder = new BodyBuilder();
+
+            using (var sourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = sourceReader.ReadToEnd();
+            }
+
+            var messageBody = string.Format(builder.HtmlBody, user.UserName);
+
+            await _emailSender.SendEmailAsync(user.Email, subject, messageBody);
+        }
+
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Remove(Guid id)
         {
+            var execRes = new ExecutionResult();
+
             var order = _context.Orders
                    .Where(o => o.Client.Id == User.GetId())
                    .Single(o => o.Id == id);
@@ -158,9 +197,16 @@ namespace Kodhier.Controllers
             if (order != null)
             {
                 _context.Orders.Remove(order);
-                await _context.SaveChangesAsync();
-            }
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddSuccess("Pizza was successfuly removed from the basket.");
 
+                else
+                    execRes.AddError("Pizza was not able to be removed from the basket. Please try again.");
+            }
+            else
+                execRes.AddError("Requested pizza was not found. Please try again.");
+
+            execRes.PushTo(TempData);
             return RedirectToAction("Index");
         }
     }

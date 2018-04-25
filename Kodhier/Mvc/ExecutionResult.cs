@@ -7,11 +7,11 @@ namespace Kodhier.Mvc
     public class ExecutionResult
     {
         public virtual bool HasInfo => InfoList != null;
-        public virtual bool HasWarn => WarnList != null;
+        public virtual bool HasSuccess => SuccessList != null;
         public virtual bool HasError => ErrorList != null;
 
         public List<string> InfoList { get; set; }
-        public List<string> WarnList { get; set; }
+        public List<string> SuccessList { get; set; }
         public List<string> ErrorList { get; set; }
 
         public ExecutionResult AddInfo(string intel)
@@ -22,11 +22,11 @@ namespace Kodhier.Mvc
             return this;
         }
 
-        public ExecutionResult AddWarn(string intel)
+        public ExecutionResult AddSuccess(string intel)
         {
-            if (WarnList == null)
-                WarnList = new List<string>();
-            WarnList.Add(intel);
+            if (SuccessList == null)
+                SuccessList = new List<string>();
+            SuccessList.Add(intel);
             return this;
         }
 

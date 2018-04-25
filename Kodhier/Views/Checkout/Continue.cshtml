@@ -15,14 +15,26 @@
         <div class="col-md-4">
             <div class="products">
                 <div class="modal-header">
-                    <h6 class="display-4">ORDER</h6>
+                    <h6 class="display-4">Basket</h6>
                 </div>
                 <br />
                 <p class="font-weight-bold lead ">Total: @(Model.Price) coins&trade;</p>
-                <table>
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                    </tr>
+
                     @foreach (var item in Model.CheckoutList)
                     {
-                        <tr>@item.Name</tr>
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Size</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Price * item.Quantity)</td>
+                        </tr>
                     }
                 </table>
             </div>
@@ -30,20 +42,30 @@
         <div class="col-md-8">
             <div class="products">
                 <div class="modal-header">
-                    <h6 class="display-4">DELIVERY DETAILS</h6>
+                    <h6 class="display-4">Delivery details</h6>
                 </div>
+                <br />
                 <div class="row">
-                    <div class="col-md-4">
-                        <form asp-action="Continue" method="post">
-                            <br />
-                            <p class="lead">SHIPPING ADDRESS:</p>
-                            <input type="text" id="address" name="confirmAddress" class="form-control" placeholder="SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" onblur="viewAddress()" />
-                            <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" style="margin-top:5px" />
-                            <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top:5px">Back</a>
+                    <div class="col-4">
+                        @* TODO: Fix validation *@
+                        <form asp-action="Continue" method="post" id="confrimCheckout">
+                            <div class="form-group">
+                                <div style="text-align: left"><label asp-for="ConfirmAddress">Address:</label></div>
+                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address"/>
+                                <span asp-validation-for="ConfirmAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div style="text-align: left"><label asp-for="PhoneNumber">Phone number:</label></div>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345"/>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div style="position: absolute; bottom: 5%; width: 90%">
+                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px"/>
+                                <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top: 5px">Return</a>
+                            </div>
                         </form>
                     </div>
-                    <div class="col-md-8">
-                        <br />
+                    <div class="col-8">
                         <div id="map"></div>
                     </div>
                 </div>
@@ -54,9 +76,21 @@
 
 @section Scripts {
     <script>
+        $('#confrimCheckout').on('keyup keypress',
+            function (e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+    </script>
+    <script>
         var autocomplete;
         var geocoder;
         var map;
+        var marker;
 
         function initMap() {
             map = new window.google.maps.Map(document.getElementById('map'),
@@ -64,28 +98,41 @@
                     center: { lat: 54.9049311, lng: 23.9544675 },
                     zoom: 13
                 });
-            geocoder = new window.google.maps.Geocoder();
-            autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('address'), { componentRestrictions: { country: "lt" } });
-        }
+            marker = new window.google.maps.Marker({
+                map: map
+            });
 
-        function viewAddress() {
-            var address = document.getElementById('address').value;
-            if (address === "")
-                return;
-            geocoder.geocode({ 'address': address },
-                function (results, status) {
-                    if (status == 'OK') {
-                        map.setCenter(results[0].geometry.location);
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location
-                        });
-                    } else {
-                        $('#address').val('');
+            geocoder = new window.google.maps.Geocoder();
+            autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('address'),
+                { componentRestrictions: { country: "lt" } });
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed',
+                function () {
+                    if (marker != null)
+                        marker.setVisible(false);
+
+                    var place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        // User entered the name of a Place that was not suggested and
+                        // pressed the Enter key, or the Place Details request failed.
+                        marker.setVisible(false);
+                        return;
                     }
+
+                    // If the place has a geometry, then present it on a map.
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17); // Why 17? Because it looks good.
+                    }
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
                 });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
-@await Html.PartialAsync("_ValidationScriptsPartial")

@@ -21,11 +21,11 @@ namespace Kodhier.ViewComponents
         {
             var name = HttpContext.User.Claims.Single(c => c.Type == ClaimTypes.Name).Value;
 
-            if (!_cache.TryGetValue(name, out decimal amount))
-            {
-                amount = _context.Users.Single(o => o.UserName == name).Coins;
-                _cache.Set(name, amount);
-            }
+            if (_cache.TryGetValue(name, out decimal amount))
+                return View(new DropdownViewModel(name, amount));
+
+            amount = _context.Users.Single(o => o.UserName == name).Coins;
+            _cache.Set(name, amount);
 
             return View(new DropdownViewModel(name, amount));
         }

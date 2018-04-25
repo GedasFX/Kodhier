@@ -473,13 +473,11 @@ body {
 
 .nav-itemlogg:hover {
     border-radius: 25px;
-    letter-spacing: 2px;
     text-shadow: 0 0 1em green;
     box-shadow: 0 0 1em green;
 }
 
 .nav-item:hover {
-    letter-spacing: 2px;
     text-shadow: 0 0 1em red;
     box-shadow: 0 0 1em red;
     border-radius: 25px;

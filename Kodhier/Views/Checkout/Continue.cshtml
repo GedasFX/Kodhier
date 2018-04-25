@@ -15,14 +15,26 @@
         <div class="col-md-4">
             <div class="products">
                 <div class="modal-header">
-                    <h6 class="display-4">ORDER</h6>
+                    <h6 class="display-4">Basket</h6>
                 </div>
                 <br />
                 <p class="font-weight-bold lead ">Total: @(Model.Price) coins&trade;</p>
-                <table>
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                    </tr>
+
                     @foreach (var item in Model.CheckoutList)
                     {
-                        <tr>@item.Name</tr>
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Size</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Price * item.Quantity)</td>
+                        </tr>
                     }
                 </table>
             </div>
@@ -30,20 +42,30 @@
         <div class="col-md-8">
             <div class="products">
                 <div class="modal-header">
-                    <h6 class="display-4">DELIVERY DETAILS</h6>
+                    <h6 class="display-4">Delivery details</h6>
                 </div>
+                <br />
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-4">
+                        @* TODO: Fix validation *@
                         <form asp-action="Continue" method="post" id="confrimCheckout">
-                            <br />
-                            <p class="lead">SHIPPING ADDRESS:</p>
-                            <input type="text" id="address" name="confirmAddress" class="form-control" placeholder="SHIPPING ADDRESS" value="@(Model.ConfirmAddress)" />
-                            <input type="submit" value="PLACE ORDER" class="btn btn-success btn-block" style="margin-top:5px" />
-                            <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top:5px">Back</a>
+                            <div class="form-group">
+                                <div style="text-align: left"><label asp-for="ConfirmAddress">Address:</label></div>
+                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address"/>
+                                <span asp-validation-for="ConfirmAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div style="text-align: left"><label asp-for="PhoneNumber">Phone number:</label></div>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345"/>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div style="position: absolute; bottom: 5%; width: 90%">
+                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px"/>
+                                <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top: 5px">Return</a>
+                            </div>
                         </form>
                     </div>
-                    <div class="col-md-8">
-                        <br />
+                    <div class="col-8">
                         <div id="map"></div>
                     </div>
                 </div>

@@ -8,7 +8,11 @@ namespace Kodhier.ViewModels
         [Required]
 		public string ConfirmAddress { get; set; }
 
-		public decimal Price { get; set; }
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+
+        public decimal Price { get; set; }
 		public IEnumerable<CheckoutViewModel> CheckoutList { get; set; }
-	}
+    }
 }

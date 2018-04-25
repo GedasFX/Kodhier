@@ -93,10 +93,17 @@ namespace Kodhier.Controllers
             var clientId = User.GetId();
             var user = _context.Users.Single(u => u.Id == clientId);
 
+            if (!user.EmailConfirmed)
+            {
+                new ExecutionResult().AddError("Your email is not confirmed. Please confirm it before proceeding.").PushTo(TempData);
+                return RedirectToAction(nameof(Index), "Manage");
+            }
+
             var vm = new ConfirmCheckoutViewModel
             {
                 CheckoutList = GetCheckoutOrders(clientId),
-                ConfirmAddress = user.Address
+                ConfirmAddress = user.Address,
+                PhoneNumber = user.PhoneNumber
             };
 
             vm.Price = vm.CheckoutList.Sum(o => o.Price * o.Quantity);
@@ -142,7 +149,7 @@ namespace Kodhier.Controllers
             }
 
             if (await _context.SaveChangesAsync() > 0)
-                execRes.AddSuccess("Pizza was successfully ordered.");
+                execRes.AddSuccess("Pizza was ordered successfully .");
             else
             {
                 execRes.AddError("Order could not be processed. Please try again.").PushTo(TempData);
@@ -153,13 +160,13 @@ namespace Kodhier.Controllers
             if (user.EmailSendUpdates)
             {
                 await SendEmail(user);
-                execRes.AddInfo($"Email was sent to {user.Email}.");
+                execRes.AddInfo($"Email was sent to {user.Email}");
             }
 
             _cache.Remove(user.UserName);
 
             execRes.PushTo(TempData);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Order");
         }
 
         private async Task SendEmail(ApplicationUser user)

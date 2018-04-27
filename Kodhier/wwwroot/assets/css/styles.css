@@ -486,7 +486,6 @@ body {
 .nav-itemlog:hover {
     border-radius: 25px;
     background-color: darkred;
-    letter-spacing: 2px;
     text-shadow: 0 0 1em red;
     box-shadow: 0 0 1em red;
 }
@@ -494,7 +493,6 @@ body {
 .nav-itemreg:hover {
     border-radius: 25px;
     background-color: darkgray;
-    letter-spacing: 2px;
     text-shadow: 0 0 1em red;
     box-shadow: 0 0 1em red;
 }

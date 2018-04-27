@@ -10,6 +10,7 @@
     <h1>Create pizza</h1>
 </header>
 
+
 <div class="row">
     <div class="mx-auto main2">
         <form asp-action="Create">
@@ -26,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" class="form-control" />
+                <select asp-for="ImagePath" asp-items="@(new SelectList(Model.ImageList))" class="form-control"></select>
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,7 +37,7 @@
             </div>
             <div class="row text-center">
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-outline-success create-button" />
+                    <input type="submit" value="Create" class="btn btn-outline-success create-button" style="cursor:pointer;" />
                 </div>
                 <div>
                     <a asp-action="Index" class="btn btn-outline-danger cancel-button">Cancel</a>

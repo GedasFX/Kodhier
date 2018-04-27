@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
 using Kodhier.ViewModels.Admin.PizzaViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +17,13 @@ namespace Kodhier.Areas.Admin.Controllers
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;
+		private readonly string _rootPath;
 
-        public PizzaController(KodhierDbContext context)
+		public PizzaController(KodhierDbContext context, IHostingEnvironment env)
         {
             _context = context;
-        }
+			_rootPath = env.WebRootPath;
+		}
 
         public IActionResult Index()
         {
@@ -62,8 +66,15 @@ namespace Kodhier.Areas.Admin.Controllers
 
         // GET: Pizza/Create
         public IActionResult Create()
-        {
-            return View(new PizzaCreateViewModel { PriceCategories = _context.PizzaPriceCategories });
+		{
+			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+				.Select(item => Path.GetFileName(item));
+
+			return View(new PizzaCreateViewModel
+			{
+				PriceCategories = _context.PizzaPriceCategories,
+				ImageList = imgList
+			});
         }
 
         // POST: Pizza/Create
@@ -81,7 +92,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 PriceCategoryId = model.PriceCategoryId,
                 Id = Guid.NewGuid(),
                 Description = model.Description,
-                ImagePath = model.ImagePath
+                ImagePath = "~/uploads/img/gallery/" + model.ImagePath
             };
 
             _context.Add(dbPizza);
@@ -104,13 +115,17 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var vm = new PizzaEditViewModel
+			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+				.Select(item => Path.GetFileName(item));
+
+			var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
                 PriceCategoryId = pizza.PriceCategoryId ?? 0,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
-                PriceCategories = _context.PizzaPriceCategories
+                PriceCategories = _context.PizzaPriceCategories,
+				ImageList = imgList
             };
 
             return View(vm);

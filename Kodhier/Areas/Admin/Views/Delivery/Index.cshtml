@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Kodhier.ViewModels.DeliveryViewModel>
+@{
+    ViewData["Title"] = "Delivery";
+}
+
+<h2>Delivery</h2>
+
+<b>Pending deliveries:</b>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Quantity</th>
+        <th>Size</th>
+        <th>Comment</th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Delivery address</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+            <td>@Html.DisplayFor(modelItem => item.Size)</td>
+            <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.ImagePath)</td>
+            <td>@Html.DisplayFor(modelItem => item.DeliveryAddress)</td>
+        </tr>
+    }
+
+</table>
+

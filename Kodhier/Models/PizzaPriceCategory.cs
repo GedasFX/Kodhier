@@ -1,4 +1,6 @@
-﻿namespace Kodhier.Models
+﻿using System.Collections.Generic;
+
+namespace Kodhier.Models
 {
     public class PizzaPriceCategory
     {
@@ -9,5 +11,8 @@
         {
             return Description;
         }
+
+        public virtual List<PizzaPriceInfo> PizzaPriceInfos { get; set; }
+        public virtual List<Pizza> Pizzas { get; set; }
     }
 }

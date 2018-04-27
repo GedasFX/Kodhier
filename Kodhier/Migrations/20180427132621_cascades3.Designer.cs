@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180427132621_cascades3")]
+    partial class cascades3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,7 +316,7 @@ namespace Kodhier.Migrations
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
                         .WithMany("Orders")
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
@@ -323,7 +324,7 @@ namespace Kodhier.Migrations
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
                         .WithMany("Pizzas")
                         .HasForeignKey("PriceCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Kodhier.Models.PizzaPriceInfo", b =>

@@ -28,16 +28,17 @@ namespace Kodhier.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var pizzas = _context.Pizzas;
-            return View(pizzas
+            var vm = pizzas
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.Name,
                     Description = r.Description,
                     ImagePath = r.ImagePath,
-                    MinPrice = _context.PizzaPriceInfo
+                    PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
-                        .Min(c => c.Price)
-                }));
+                        .ToArray()
+                });
+            return View(vm);
         }
 
         public async Task<IActionResult> Details(string id)
@@ -121,7 +122,7 @@ namespace Kodhier.Areas.Admin.Controllers
 			var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
-                PriceCategoryId = pizza.PriceCategoryId ?? 0,
+                PriceCategoryId = pizza.PriceCategoryId,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories,

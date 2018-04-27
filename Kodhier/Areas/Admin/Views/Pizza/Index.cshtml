@@ -23,7 +23,7 @@
         <div class="col-sm-6 col-md-4 text-center">
             <div class="container my-5">
                 <div class="main products">
-                    <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
+                    <img src=@Url.Content(item.ImagePath) class="rounded-circle img-fluid" />
                     <div class="text-info text-uppercase font-weight-bold text-md-center text-sm-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</div>
                     <div class="text-white text-md-center text-sm-center">from @Html.DisplayFor(modelItem => item.MinPrice) €</div>
                     <div class="text-yellow text-md-center">@Html.DisplayFor(modelItem => item.Description)</div>

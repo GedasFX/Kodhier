@@ -21,7 +21,7 @@
             <div class="col-sm-4 col-md-3">
                 <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Description)">
                     <div class="products">
-                        <img src=@Html.DisplayFor(modelItem => item.ImagePath) class="rounded-circle img-fluid" />
+                        <img src=@Url.Content(item.ImagePath) class="rounded-circle img-fluid" />
                         <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
 
                         <div title="Pizza size">

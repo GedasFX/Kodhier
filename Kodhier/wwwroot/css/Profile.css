@@ -1,12 +1,18 @@
 ﻿body {
 }
 
-.main {  
+.main {
     position: relative;
     background: rgba(0,0,1,0.6);
+    margin-top: 25px;
+    padding: 20px;
     box-shadow: 0 0 5px 0 #000;
 }
 
 .footer {
     background: none;
+}
+
+header {
+    text-align: center;
 }

@@ -5,67 +5,133 @@
     ViewData["Title"] = Localizer["Profile"];
     ViewData.AddActivePage(ManageNavPages.Index);
 }
-<link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
+
 
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 
 
 <form method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="main">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="align-self-md-center">
-                    <div class="card-header">
-                        <h4>@ViewData["Title"]</h4>
-                    </div>
-                    <div class="card-body">
-                        <img class="rounded-circle" src="~/images/profileImage.jpg">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9">
-                <div class="align-self-md-center">
-                    <div class="card-header">@Localizer["User details"]</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label asp-for="Username">@Localizer["Username"]</label>
-                            <input asp-for="Username" class="form-control" disabled />
-                        </div>
-                        <label asp-for="Email">@Localizer["Email"]</label>
-                        <div class="form-group">
-                            <input asp-for="Email" class="form-control" />
-                            @if (Model.IsEmailConfirmed)
-                            {
-                                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                            }
-                            else
-                            {
-                                <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
-                            }
-                        </div>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                        <div class="form-group">
-                            <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            @await Html.PartialAsync("_ManageNav")
-                        </div>
-                        <div class="checkbox">
-                            <input asp-for="EmailSendPromotional" />
-                            <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
-                        </div>
-                        <div class="checkbox">
-                            <input asp-for="EmailSendUpdates" />
-                            <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
-                        </div>
-                        <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>
-                    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mx-auto">
+                <div class="card-header">
+                    <h4>@ViewData["Title"]</h4>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="card-header">@Localizer["User details"]</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="Username">@Localizer["Username"]</label>
+                        <input asp-for="Username" class="form-control" disabled />
+                    </div>
+                    <label asp-for="Email">@Localizer["Email"]</label>
+                    <div class="form-group">
+                        <input asp-for="Email" class="form-control" />
+                        @if (Model.IsEmailConfirmed)
+                        {
+                            <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                        }
+                        else
+                        {
+                            <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
+                        }
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" id="address">Delivery address</label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="checkbox">
+                        <input asp-for="EmailSendPromotional" />
+                        <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
+                    </div>
+                    <div class="checkbox">
+                        <input asp-for="EmailSendUpdates" />
+                        <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
+                    </div>
+                    @await Html.PartialAsync("_ManageNav")
+                    <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="map" style="height: 500px; width: 600px;"></div>
+            </div>
+        </div>
+    </div>
 </form>
+
 @section Scripts {
+    <script>
+        $('#confrimCheckout').on('keyup keypress',
+            function (e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+    </script>
+    <script>
+        var autocomplete;
+        var geocoder;
+        var map;
+        var marker;
+
+        function initMap() {
+            map = new window.google.maps.Map(document.getElementById('map'),
+                {
+                    center: { lat: 54.9049311, lng: 23.9544675 },
+                    zoom: 13
+                });
+            marker = new window.google.maps.Marker({
+                map: map
+            });
+
+            geocoder = new window.google.maps.Geocoder();
+            autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('Address'),
+                { componentRestrictions: { country: "lt" } });
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed',
+                function () {
+                    if (marker != null)
+                        marker.setVisible(false);
+
+                    var place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        // User entered the name of a Place that was not suggested and
+                        // pressed the Enter key, or the Place Details request failed.
+                        marker.setVisible(false);
+                        return;
+                    }
+
+                    // If the place has a geometry, then present it on a map.
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17); // Why 17? Because it looks good.
+                    }
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
+                });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>
+
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

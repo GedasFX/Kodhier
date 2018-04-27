@@ -3,13 +3,15 @@
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-
-<div class="modal-header">
-    <h2>@Localizer["Manage your account"]</h2>
-</div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        @RenderBody()
+<link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
+<div class="col-md-12 col-sm-12">
+    <div class="modal-header">
+        <h2>@Localizer["Manage your account"]</h2>
+    </div>
+    <div class="col-md-11 col-sm-11 mx-auto">
+        <div class="main">
+            @RenderBody()
+        </div>
     </div>
 </div>
 

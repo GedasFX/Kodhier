@@ -51,16 +51,16 @@
                         <form asp-action="Continue" method="post" id="confrimCheckout">
                             <div class="form-group">
                                 <div style="text-align: left"><label asp-for="ConfirmAddress">Address:</label></div>
-                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address"/>
+                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address" />
                                 <span asp-validation-for="ConfirmAddress" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <div style="text-align: left"><label asp-for="PhoneNumber">Phone number:</label></div>
-                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345"/>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                             <div style="position: absolute; bottom: 5%; width: 90%">
-                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px"/>
+                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px" />
                                 <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top: 5px">Return</a>
                             </div>
                         </form>

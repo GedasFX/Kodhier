@@ -79,6 +79,7 @@ namespace Kodhier.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
                 EmailSendPromotional = user.EmailSendPromotional,

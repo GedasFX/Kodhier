@@ -8,11 +8,14 @@
     <div class="modal-header">
         <h2>@Localizer["Manage your account"]</h2>
     </div>
-        <div class="col-md-4 col-sm-4 mx-auto">
+    <div class="col-md-11 col-sm-11 mx-auto">
+        <div class="main">
             @RenderBody()
         </div>
+    </div>
 </div>
-    @section Scripts {
-        @RenderSection("Scripts", required: false)
-    }
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
 

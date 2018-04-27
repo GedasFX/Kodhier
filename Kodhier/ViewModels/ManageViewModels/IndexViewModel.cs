@@ -15,6 +15,7 @@ namespace Kodhier.ViewModels.ManageViewModels
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
+        public string Address { get; set; }
 
         public bool EmailSendUpdates { get; set; }
         public bool EmailSendPromotional { get; set; }

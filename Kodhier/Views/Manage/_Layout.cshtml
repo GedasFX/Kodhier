@@ -3,17 +3,16 @@
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-
-<div class="modal-header">
-    <h2>@Localizer["Manage your account"]</h2>
-</div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        @RenderBody()
+<link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
+<div class="col-md-12 col-sm-12">
+    <div class="modal-header">
+        <h2>@Localizer["Manage your account"]</h2>
     </div>
+        <div class="col-md-4 col-sm-4 mx-auto">
+            @RenderBody()
+        </div>
 </div>
-
-@section Scripts {
-    @RenderSection("Scripts", required: false)
-}
+    @section Scripts {
+        @RenderSection("Scripts", required: false)
+    }
 

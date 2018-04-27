@@ -59,7 +59,7 @@ namespace Kodhier.Controllers
                 Prices = prices,
                 Description = pizza.Description
             };
-            vm.MinPrice = vm.Prices.Min(p => p.Price);
+            vm.MinPrice = vm.Prices.DefaultIfEmpty(new PizzaPriceInfo()).Min(p => p.Price);
             return View(vm);
         }
 
@@ -139,8 +139,7 @@ namespace Kodhier.Controllers
                     Quantity = model.Quantity,
                     Price = ppi.Price,
                     Size = ppi.Size,
-                    PlacementDate = DateTime.Now,
-                    PizzaPriceCategoryId = pizza.PriceCategoryId
+                    PlacementDate = DateTime.Now
                 };
                 _context.Add(order);
             }

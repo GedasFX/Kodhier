@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180427120930_unlinkOrderPpi")]
+    partial class unlinkOrderPpi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +140,7 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("PriceCategoryId");
+                    b.Property<int?>("PriceCategoryId");
 
                     b.HasKey("Id");
 
@@ -313,17 +314,15 @@ namespace Kodhier.Migrations
                         .HasForeignKey("ClientId");
 
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
-                        .WithMany("Orders")
-                        .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("PizzaId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
                 {
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
-                        .WithMany("Pizzas")
-                        .HasForeignKey("PriceCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("PriceCategoryId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.PizzaPriceInfo", b =>

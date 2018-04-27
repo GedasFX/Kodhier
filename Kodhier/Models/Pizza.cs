@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kodhier.Models
@@ -11,7 +12,9 @@ namespace Kodhier.Models
         public string Description { get; set; }
 
         [ForeignKey("PriceCategory")]
-        public int? PriceCategoryId { get; set; }
+        public int PriceCategoryId { get; set; }
         public virtual PizzaPriceCategory PriceCategory { get; set; }
+
+        public virtual List<Order> Orders { get; set; }
     }
 }

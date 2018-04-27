@@ -1,4 +1,5 @@
-﻿using Kodhier.Models;
+﻿using System;
+using Kodhier.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,5 +15,22 @@ namespace Kodhier.Data
         public DbSet<PizzaPriceCategory> PizzaPriceCategories { get; set; }
 
         public KodhierDbContext(DbContextOptions options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<PizzaPriceInfo>()
+                .HasOne(ppi => ppi.PriceCategory)
+                .WithMany(ppc => ppc.PizzaPriceInfos)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Pizza>()
+                .HasOne(p => p.PriceCategory)
+                .WithMany(p => p.Pizzas)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Pizza)
+                .WithMany(p => p.Orders)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Kodhier.Models
         public string Description { get; set; }
 
         // Pizza is deleted, but some elements in db (Orders) still reference it.
-        public bool Depricated { get; set; }
+        public bool IsDepricated { get; set; }
 
         [ForeignKey("PriceCategory")]
         public int PriceCategoryId { get; set; }

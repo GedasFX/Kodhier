@@ -23,15 +23,17 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas.Select(p => new OrderViewModel
-            {
-                Name = p.Name,
-                Description = p.Description,
-                ImagePath = p.ImagePath,
-                PriceInfo = _context.PizzaPriceInfo
-                    .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
-                    .ToArray()
-            });
+            var pizzas = _context.Pizzas
+                    .Where(p => !p.IsDepricated)
+                    .Select(p => new OrderViewModel
+                    {
+                        Name = p.Name,
+                        Description = p.Description,
+                        ImagePath = p.ImagePath,
+                        PriceInfo = _context.PizzaPriceInfo
+                        .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
+                        .ToArray()
+                    });
             return View(pizzas);
         }
 
@@ -100,6 +102,12 @@ namespace Kodhier.Controllers
                 model.Prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
                 model.MinPrice = model.Prices.Min(p => p.Price);
                 return View(model);
+            }
+
+            if (pizza.IsDepricated)
+            {
+                execRes.AddError("Pizza no longer exists. Please try another pizza.").PushTo(TempData);
+                return RedirectToAction(nameof(Index));
             }
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);

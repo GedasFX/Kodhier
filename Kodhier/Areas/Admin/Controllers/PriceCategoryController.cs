@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,15 +33,26 @@ namespace Kodhier.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(string description)
         {
+            var execRes = new ExecutionResult();
             if (string.IsNullOrWhiteSpace(description))
             {
+                execRes.AddError("Invalid description was given. Please try again.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
             }
 
             var ppc = new PizzaPriceCategory { Description = description };
             await _context.PizzaPriceCategories.AddAsync(ppc);
-            await _context.SaveChangesAsync();
 
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                execRes.AddSuccess("Price category was successfully added.");
+            }
+            else
+            {
+                execRes.AddError("Database error occured. Price category could not be added.");
+            }
+
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
@@ -51,8 +61,12 @@ namespace Kodhier.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int id, int size, decimal price)
         {
+            var execRes = new ExecutionResult();
             if (id == 0 || size == 0 || price == 0)
+            {
+                execRes.AddError("Invalid size or price was given. Please try again.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
+            }
 
             var ppi = new PizzaPriceInfo
             {
@@ -60,9 +74,18 @@ namespace Kodhier.Areas.Admin.Controllers
                 Price = price,
                 Size = size
             };
-            _context.PizzaPriceInfo.Add(ppi);
-            await _context.SaveChangesAsync();
 
+            await _context.PizzaPriceInfo.AddAsync(ppi);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                execRes.AddSuccess("Price information was successfully added.");
+            }
+            else
+            {
+                execRes.AddError("Database error occured. Price information could not be added.");
+            }
+            
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
@@ -70,16 +93,29 @@ namespace Kodhier.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, int size, decimal price)
         {
+            var execRes = new ExecutionResult();
             if (id == 0 || size == 0 || price == 0)
+            {
+                execRes.AddError("Invalid size or price was given. Please try again.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
+            }
 
             var ppi = await _context.PizzaPriceInfo.SingleOrDefaultAsync(p => p.Id == id);
 
             ppi.Size = size;
             ppi.Price = price;
 
-            await _context.SaveChangesAsync();
+            await _context.PizzaPriceInfo.AddAsync(ppi);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                execRes.AddSuccess("Price information was successfully added.");
+            }
+            else
+            {
+                execRes.AddError("Database error occured. Price information could not be added.");
+            }
 
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
@@ -88,36 +124,60 @@ namespace Kodhier.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int? id)
         {
+            var execRes = new ExecutionResult();
             if (id == null)
+            {
+                execRes.AddError("Invalid id was provided. Please try again.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
+            }
 
             var ppc = await _context.PizzaPriceCategories.SingleAsync(p => p.Id == id);
             _context.PizzaPriceCategories.Remove(ppc);
             try
             {
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    execRes.AddSuccess("Price category sucessfully removed.");
+                }
+                else
+                {
+                    execRes.AddError("Invalid request.");
+                }
             }
-            catch (Exception e)
+            catch (DbUpdateException)
             {
-                // TODO: Warn that there are pizzas still attached to this price category
+                execRes.AddError("Price category is still in use by some pizzas. Make sure to unlink all pizzas before proceeding.");
             }
             
-
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(int? id)
         {
-            if (id == 0)
+            var execRes = new ExecutionResult();
+            if (id == null)
+            {
+                execRes.AddError("Invalid id was provided. Please try again.").PushTo(TempData);
                 return RedirectToAction(nameof(Index));
+            }
 
             var ppi = await _context.PizzaPriceInfo.SingleAsync(p => p.Id == id);
 
             _context.PizzaPriceInfo.Remove(ppi);
-            await _context.SaveChangesAsync();
 
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                execRes.AddSuccess("Price information sucessfully removed.");
+            }
+            else
+            {
+                execRes.AddError("Invalid request.");
+            }
+
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
     }

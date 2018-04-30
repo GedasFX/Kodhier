@@ -36,7 +36,7 @@
 
             </td>
             <td>
-                <p><input type="number" placeholder="Price" /></p>
+                <p><input type="number" placeholder="Size" /></p>
                 @foreach (var ppi in item.PizzaPriceInfos)
                 {
                     <p><input type="number" value="@ppi.Size" data-g="@ppi.Id" /></p>
@@ -83,7 +83,7 @@
             }
         });
         $('.add').click(function (e) {
-            var td = $(this).parent().parent();
+            var td = $(this).parent().parent().parent();
             var nums = td.find('input');
 
             $('#addForm input')[0].value = nums[1].value;

@@ -11,6 +11,9 @@ namespace Kodhier.Models
         public string ImagePath { get; set; }
         public string Description { get; set; }
 
+        // Pizza is deleted, but some elements in db (Orders) still reference it.
+        public bool Depricated { get; set; }
+
         [ForeignKey("PriceCategory")]
         public int PriceCategoryId { get; set; }
         public virtual PizzaPriceCategory PriceCategory { get; set; }

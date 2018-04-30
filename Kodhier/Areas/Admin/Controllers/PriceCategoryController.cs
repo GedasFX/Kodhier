@@ -105,10 +105,10 @@ namespace Kodhier.Areas.Admin.Controllers
             ppi.Size = size;
             ppi.Price = price;
 
-            await _context.PizzaPriceInfo.AddAsync(ppi);
+            _context.PizzaPriceInfo.Update(ppi);
             if (await _context.SaveChangesAsync() > 0)
             {
-                execRes.AddSuccess("Price information was successfully added.");
+                execRes.AddSuccess("Price information was successfully updated.");
             }
             else
             {
@@ -137,7 +137,7 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 if (await _context.SaveChangesAsync() > 0)
                 {
-                    execRes.AddSuccess("Price category sucessfully removed.");
+                    execRes.AddSuccess("Price category was sucessfully removed.");
                 }
                 else
                 {
@@ -170,7 +170,7 @@ namespace Kodhier.Areas.Admin.Controllers
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                execRes.AddSuccess("Price information sucessfully removed.");
+                execRes.AddSuccess("Price information was sucessfully removed.");
             }
             else
             {

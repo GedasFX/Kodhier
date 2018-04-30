@@ -75,10 +75,14 @@ namespace Kodhier.Controllers
             }
 
             var oq = order.Quantity;
-            order.Quantity = qty;
-
-            if (await _context.SaveChangesAsync() > 0)
+            
+            if ( qty > 0)
+            {
+                order.Quantity = qty;
+                await _context.SaveChangesAsync();
                 execRes.AddSuccess($"Pizza amount was successfully changed from {oq} to {qty}.");
+            }
+                
             else
             {
                 execRes.AddError("Order could not be processed. Please try again.");

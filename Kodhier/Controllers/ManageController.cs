@@ -174,6 +174,12 @@ namespace Kodhier.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
             }
+            var adress = user.Address;
+            if (model.Address != adress)
+            {
+                user.Address = model.Address;
+                await _context.SaveChangesAsync();
+            }
 
             if (user.EmailSendPromotional != model.EmailSendPromotional ||
                 user.EmailSendUpdates != model.EmailSendUpdates)

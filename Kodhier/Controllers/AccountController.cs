@@ -229,10 +229,7 @@ namespace Kodhier.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Username,
-                    BirthDate = model.BirthDate,
                     Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
                     EmailSendUpdates = true,
                     EmailSendPromotional = true
                 };

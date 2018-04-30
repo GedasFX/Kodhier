@@ -83,7 +83,10 @@ namespace Kodhier.Controllers
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
                 EmailSendPromotional = user.EmailSendPromotional,
-                EmailSendUpdates = user.EmailSendUpdates
+                EmailSendUpdates = user.EmailSendUpdates,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate
             };
 
             return View(model);
@@ -173,6 +176,27 @@ namespace Kodhier.Controllers
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
+            }
+
+            var firstName = user.FirstName;
+            if (model.FirstName != firstName)
+            {
+                user.FirstName = model.FirstName;
+                await _context.SaveChangesAsync();
+            }
+
+            var lastName = user.LastName;
+            if (model.PhoneNumber != lastName)
+            {
+                user.LastName = model.LastName;
+                await _context.SaveChangesAsync();
+            }
+
+            var birthDate = user.BirthDate;
+            if (model.BirthDate != birthDate)
+            {
+                user.BirthDate = model.BirthDate;
+                await _context.SaveChangesAsync();
             }
 
             if (user.EmailSendPromotional != model.EmailSendPromotional ||

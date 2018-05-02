@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180430114213_DepricatedPizzas")]
+    partial class DepricatedPizzas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,11 +134,11 @@ namespace Kodhier.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Depricated");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("ImagePath");
-
-                    b.Property<bool>("IsDepricated");
 
                     b.Property<string>("Name");
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.Mvc;
 using Kodhier.ViewModels.Admin.PizzaViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -27,17 +28,18 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas;
-            return View(pizzas
+            var vm = _context.Pizzas
+                .Where(p => !p.IsDepricated)
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.Name,
                     Description = r.Description,
                     ImagePath = r.ImagePath,
-                    MinPrice = _context.PizzaPriceInfo
+                    PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
-                        .Min(c => c.Price)
-                }));
+                        .ToArray()
+                });
+            return View(vm);
         }
 
         public async Task<IActionResult> Details(string id)
@@ -121,7 +123,7 @@ namespace Kodhier.Areas.Admin.Controllers
 			var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
-                PriceCategoryId = pizza.PriceCategoryId ?? 0,
+                PriceCategoryId = pizza.PriceCategoryId,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories,
@@ -197,7 +199,26 @@ namespace Kodhier.Areas.Admin.Controllers
         {
             var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Name == id);
             _context.Pizzas.Remove(pizza);
-            await _context.SaveChangesAsync();
+
+            var execRes = new ExecutionResult();
+            try
+            {
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddSuccess("Pizza deleted successfully.");
+                else
+                    execRes.AddError("Database error. Pizza was not deleted.");
+            }
+            catch (DbUpdateException)
+            {
+                _context.Entry(pizza).State = EntityState.Unchanged;
+                pizza.IsDepricated = true;
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddInfo("Pizza could not be fully deleted. Changed to depricated.");
+                else 
+                    execRes.AddError("Database error. Pizza was not deleted.");
+            }
+            
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
     }

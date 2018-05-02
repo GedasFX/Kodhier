@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180427123436_cascades1")]
+    partial class cascades1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,11 +138,9 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("ImagePath");
 
-                    b.Property<bool>("IsDepricated");
-
                     b.Property<string>("Name");
 
-                    b.Property<int>("PriceCategoryId");
+                    b.Property<int?>("PriceCategoryId");
 
                     b.HasKey("Id");
 
@@ -315,9 +314,8 @@ namespace Kodhier.Migrations
                         .HasForeignKey("ClientId");
 
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
-                        .WithMany("Orders")
-                        .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("PizzaId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
@@ -325,7 +323,7 @@ namespace Kodhier.Migrations
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
                         .WithMany("Pizzas")
                         .HasForeignKey("PriceCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("Kodhier.Models.PizzaPriceInfo", b =>

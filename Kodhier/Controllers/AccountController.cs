@@ -215,7 +215,7 @@ namespace Kodhier.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(new RegisterViewModel { SendEmailPromotional = true, SendEmailUpdate = true });
         }
 
         [HttpPost]
@@ -230,8 +230,8 @@ namespace Kodhier.Controllers
                 {
                     UserName = model.Username,
                     Email = model.Email,
-                    EmailSendUpdates = true,
-                    EmailSendPromotional = true
+                    EmailSendUpdates = model.SendEmailUpdate,
+                    EmailSendPromotional = model.SendEmailPromotional
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

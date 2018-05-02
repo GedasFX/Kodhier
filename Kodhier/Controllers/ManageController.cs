@@ -123,11 +123,8 @@ namespace Kodhier.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
+            code.Redeemer = user ?? throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             code.RedemptionDate = DateTime.Now;
-            code.Redeemer = user;
 
             user.Coins += code.Amount;
 

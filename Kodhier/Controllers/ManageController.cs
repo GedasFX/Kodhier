@@ -83,7 +83,10 @@ namespace Kodhier.Controllers
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
                 EmailSendPromotional = user.EmailSendPromotional,
-                EmailSendUpdates = user.EmailSendUpdates
+                EmailSendUpdates = user.EmailSendUpdates,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate
             };
 
             return View(model);
@@ -120,11 +123,8 @@ namespace Kodhier.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
+            code.Redeemer = user ?? throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             code.RedemptionDate = DateTime.Now;
-            code.Redeemer = user;
 
             user.Coins += code.Amount;
 
@@ -178,6 +178,27 @@ namespace Kodhier.Controllers
             if (model.Address != adress)
             {
                 user.Address = model.Address;
+                await _context.SaveChangesAsync();
+            }
+
+            var firstName = user.FirstName;
+            if (model.FirstName != firstName)
+            {
+                user.FirstName = model.FirstName;
+                await _context.SaveChangesAsync();
+            }
+
+            var lastName = user.LastName;
+            if (model.PhoneNumber != lastName)
+            {
+                user.LastName = model.LastName;
+                await _context.SaveChangesAsync();
+            }
+
+            var birthDate = user.BirthDate;
+            if (model.BirthDate != birthDate)
+            {
+                user.BirthDate = model.BirthDate;
                 await _context.SaveChangesAsync();
             }
 

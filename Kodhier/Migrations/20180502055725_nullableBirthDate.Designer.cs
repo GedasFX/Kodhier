@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180502055725_nullableBirthDate")]
+    partial class nullableBirthDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,6 +110,8 @@ namespace Kodhier.Migrations
 
                     b.Property<Guid?>("PizzaId");
 
+                    b.Property<int?>("PizzaPriceCategoryId");
+
                     b.Property<DateTime>("PlacementDate");
 
                     b.Property<decimal>("Price");
@@ -125,6 +128,8 @@ namespace Kodhier.Migrations
 
                     b.HasIndex("PizzaId");
 
+                    b.HasIndex("PizzaPriceCategoryId");
+
                     b.ToTable("Orders");
                 });
 
@@ -137,11 +142,9 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("ImagePath");
 
-                    b.Property<bool>("IsDepricated");
-
                     b.Property<string>("Name");
 
-                    b.Property<int>("PriceCategoryId");
+                    b.Property<int?>("PriceCategoryId");
 
                     b.HasKey("Id");
 
@@ -315,23 +318,25 @@ namespace Kodhier.Migrations
                         .HasForeignKey("ClientId");
 
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
-                        .WithMany("Orders")
-                        .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("PizzaId");
+
+                    b.HasOne("Kodhier.Models.PizzaPriceCategory", "PizzaPriceCategory")
+                        .WithMany()
+                        .HasForeignKey("PizzaPriceCategoryId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
                 {
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
-                        .WithMany("Pizzas")
-                        .HasForeignKey("PriceCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("PriceCategoryId");
                 });
 
             modelBuilder.Entity("Kodhier.Models.PizzaPriceInfo", b =>
                 {
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
-                        .WithMany("PizzaPriceInfos")
+                        .WithMany()
                         .HasForeignKey("PriceCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

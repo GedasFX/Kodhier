@@ -75,8 +75,8 @@ namespace Kodhier.Controllers
             }
 
             var oq = order.Quantity;
-            
-            if ( qty > 0)
+
+            if (qty > 0)
             {
                 order.Quantity = qty;
                 if (await _context.SaveChangesAsync() > 0)
@@ -143,12 +143,14 @@ namespace Kodhier.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Successful checkout, update db
             user.Coins -= price;
 
             foreach (var checkoutEntry in orders)
             {
                 var order = _context.Orders.Single(o => o.Id == checkoutEntry.Id);
                 order.Status = OrderStatus.Queued;
+                order.PaymentDate = DateTime.Now;
                 order.IsPaid = true;
                 order.DeliveryAddress = model.ConfirmAddress;
             }
@@ -161,7 +163,6 @@ namespace Kodhier.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Successful checkout, update db
             if (user.EmailSendUpdates)
             {
                 await SendEmail(user);

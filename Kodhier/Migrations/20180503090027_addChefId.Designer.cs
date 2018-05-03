@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180503090027_addChefId")]
+    partial class addChefId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,8 +98,6 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("Comment");
 
-                    b.Property<DateTime?>("CompletionDate");
-
                     b.Property<DateTime?>("CookingDate");
 
                     b.Property<string>("DeliveryAddress");
@@ -106,6 +105,8 @@ namespace Kodhier.Migrations
                     b.Property<DateTime?>("DeliveryDate");
 
                     b.Property<bool>("IsPaid");
+
+                    b.Property<DateTime?>("OvenDate");
 
                     b.Property<DateTime?>("PaymentDate");
 

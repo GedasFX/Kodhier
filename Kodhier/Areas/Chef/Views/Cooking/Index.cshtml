@@ -33,13 +33,19 @@
                 <td>@item.Quantity</td>
                 <td>@item.Size</td>
                 <td>@item.Comment</td>
-                <td><input type="button" class="btn btn-success finishCook" value="Finish" data-id="@item.Id" /></td>
+                <td>
+                    <input type="button" class="btn btn-success finishCook" value="Finish" data-id="@item.Id"/>
+                    <input type="button" class="btn btn-danger abandonCook" value="Abandon" data-id="@item.Id"/>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
 <form asp-action="Complete" id="completeForm">
+    <input type="hidden" name="Id" />
+</form>
+<form asp-action="Abandon" id="abandonForm">
     <input type="hidden" name="Id" />
 </form>
 
@@ -49,6 +55,12 @@
             if (confirm("Are you sure?")) {
                 $('#completeForm input[name="Id"]').val($(this).data('id'));
                 $('#completeForm').submit();
+            }
+        });
+        $('.abandonCook').click(function () {
+            if (confirm("Are you sure?")) {
+                $('#abandonForm input[name="Id"]').val($(this).data('id'));
+                $('#abandonForm').submit();
             }
         });
     </script>

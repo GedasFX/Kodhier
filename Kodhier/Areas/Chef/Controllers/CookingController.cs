@@ -36,7 +36,8 @@ namespace Kodhier.Areas.Chef.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Assign()
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Status == OrderStatus.Queued && o.ChefId == null);
+            var order = await _context.Orders.OrderBy(o => o.PaymentDate)
+                .FirstOrDefaultAsync(o => o.Status == OrderStatus.Queued && o.ChefId == null);
             if (order == null)
                 return RedirectToAction(nameof(Index));
 
@@ -60,6 +61,24 @@ namespace Kodhier.Areas.Chef.Controllers
 
             order.DeliveryDate = DateTime.Now;
             order.Status = OrderStatus.Delivering;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Abandon(Guid? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var order = _context.Orders.Single(o => o.Id == id);
+
+            order.ChefId = null;
+            order.CookingDate = null;
+            order.Status = OrderStatus.Queued;
 
             await _context.SaveChangesAsync();
 

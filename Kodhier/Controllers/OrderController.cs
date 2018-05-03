@@ -66,9 +66,9 @@ namespace Kodhier.Controllers
         }
 
         [Authorize]
-        public IActionResult History()
+        public async Task<IActionResult> History()
         {
-            return View(_context.Orders
+            return View(await _context.Orders
                 .Include(p => p.Pizza)
                 .Where(o => o.Client.Id == User.GetId())
                 .Where(o => o.IsPaid)
@@ -80,7 +80,7 @@ namespace Kodhier.Controllers
                     Status = o.Status,
                     Size = o.Size,
                     Quantity = o.Quantity
-                }));
+                }).ToArrayAsync());
         }
 
         [HttpPost]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Kodhier.ViewModels.OrderViewModels.OrderHistoryViewModel>
+﻿@model Kodhier.ViewModels.OrderViewModels.OrderHistoryViewModel[]
 
 @{
     ViewData["Title"] = "History";
@@ -9,56 +9,57 @@
 <p>
     <a asp-action="Index">Create New</a>
 </p>
-<table class="table">
+<h1>In progress</h1>
+<table class="table table-hover">
     <thead>
         <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Quantity
-            </th>
-            <th>
-                Size
-            </th>
-            <th>
-                Order status
-            </th>
-            <th>
-                Total amount
-            </th>
-            <th>
-                Date ordered
-            </th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Size</th>
+            <th>Order status</th>
+            <th>Total amount</th>
+            <th>Date ordered</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
         {
             <tr>
-                <td>
-                    @item.Pizza.Name
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-                <td>
-                    @item.Size
-                </td>
-                <td>
-                    @item.Status
-                </td>
-                <td>
-                    @(item.Quantity * item.Price)
-                </td>
-                <td>
-                    @item.DateCreated
-                </td>
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.Pizza.Name">Place another order</a>
-                </td>
+                <td>@item.Pizza.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Size</td>
+                <td>@item.Status</td>
+                <td>@(item.Quantity * item.Price)</td>
+                <td>@item.DateCreated</td>
+                <td><a asp-action="Create" asp-route-id="@item.Pizza.Name">Place another order</a></td>
             </tr>
         }
+    </tbody>
+</table>
+<h1>Previous</h1>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Size</th>
+        <th>Total amount</th>
+        <th>Date ordered</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Where(m => m.Status == OrderStatus.Done))
+    {
+        <tr>
+            <td>@item.Pizza.Name</td>
+            <td>@item.Quantity</td>
+            <td>@item.Size</td>
+            <td>@(item.Quantity * item.Price)</td>
+            <td>@item.DateCreated</td>
+            <td><a asp-action="Create" asp-route-id="@item.Pizza.Name">Place another order</a></td>
+        </tr>
+    }
     </tbody>
 </table>

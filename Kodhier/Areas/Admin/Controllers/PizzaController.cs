@@ -69,10 +69,11 @@ namespace Kodhier.Areas.Admin.Controllers
         // GET: Pizza/Create
         public IActionResult Create()
 		{
-			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
-				.Select(Path.GetFileName);
+		    var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+		        .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+		        .Select(Path.GetFileName);
 
-			return View(new PizzaCreateViewModel
+            return View(new PizzaCreateViewModel
 			{
 				PriceCategories = _context.PizzaPriceCategories,
 				ImageList = imgList
@@ -117,10 +118,11 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
-				.Select(Path.GetFileName);
+            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+                .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+                .Select(Path.GetFileName);
 
-			var vm = new PizzaEditViewModel
+            var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
                 PriceCategoryId = pizza.PriceCategoryId,
@@ -150,7 +152,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var pizza = _context.Pizzas.Single(p => p.Name == id);
             pizza.Name = model.Name;
             pizza.Description = model.Description;
-            pizza.ImagePath = model.ImagePath;
+            pizza.ImagePath = "~/uploads/img/gallery/" + model.ImagePath;
             pizza.PriceCategoryId = model.PriceCategoryId;
 
             try

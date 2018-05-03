@@ -70,7 +70,7 @@ namespace Kodhier.Areas.Admin.Controllers
         public IActionResult Create()
 		{
 			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
-				.Select(item => Path.GetFileName(item));
+				.Select(Path.GetFileName);
 
 			return View(new PizzaCreateViewModel
 			{
@@ -118,7 +118,7 @@ namespace Kodhier.Areas.Admin.Controllers
             }
 
 			var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
-				.Select(item => Path.GetFileName(item));
+				.Select(Path.GetFileName);
 
 			var vm = new PizzaEditViewModel
             {

@@ -46,3 +46,9 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $('select[name="ImagePath"]').val('@(Model.ImagePath.Split("/gallery/").Last())');
+    </script>
+}

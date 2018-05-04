@@ -7,7 +7,7 @@
 
 <b>Pending deliveries:</b>
 
-<table>
+<table class="table-striped">
     <tr>
         <th>ID</th>
         <th>Quantity</th>
@@ -15,8 +15,10 @@
         <th>Comment</th>
         <th>Name</th>
         <th>Image</th>
-        <th>Delivery address</th>
+        <th>Deliver to</th>
+        <th>Update</th>
     </tr>
+
     @foreach (var item in Model)
     {
         <tr>
@@ -27,12 +29,19 @@
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
             <td>@Html.DisplayFor(modelItem => item.ImagePath)</td>
             <td>@Html.DisplayFor(modelItem => item.DeliveryAddress)</td>
+
+            <td>
+                <form asp-action="Complete" method="post">
+                    <input name="id" value="@(item.Id)" type="hidden" />
+                    <input type="submit" value="Delivered" class="btn btn-outline-info" />
+                </form>
+            </td>
         </tr>
     }
 
 </table>
 
-<br/>
+<br />
 <div id="map" style="width: 480px; height: 480px;"></div>
 
 

@@ -32,7 +32,7 @@ namespace Kodhier.Areas.Admin.Controllers
 				.OrderByDescending(c => c.PlacementDate)
 				.Select(o => new DeliveryViewModel
 				{
-					Id = o.Id,
+					Id = o.Id.ToString(),
 					Quantity = o.Quantity,
 					Size = o.Size,
 					Comment = o.Comment,
@@ -42,5 +42,22 @@ namespace Kodhier.Areas.Admin.Controllers
 				});
 			return View(orders);
 		}
-    }
+
+		public IActionResult Complete(String id)
+		{
+			var correctOrder = _context.Orders
+				.Where(o => o.Id.ToString() == id)
+				.Where(o => o.Status == Models.OrderStatus.Delivering)
+				.SingleOrDefault();
+
+			if (correctOrder != null)
+			{
+				correctOrder.Status = Models.OrderStatus.Done;
+				_context.Update(correctOrder);
+				_context.SaveChanges();
+			}
+
+			return RedirectToAction("Index");
+		}
+	}
 }

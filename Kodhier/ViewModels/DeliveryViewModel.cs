@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Kodhier.ViewModels
 {
-    public class DeliveryViewModel
-    {
-		public Guid Id { get; set; }
+	public class DeliveryViewModel
+	{
+		public String Id { get; set; }
 		public int Quantity { get; set; }
 		public int Size { get; set; }
 		public string Comment { get; set; }

@@ -1,0 +1,77 @@
+﻿@model Kodhier.ViewModels.CookingViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewBag.Title = "Cooking";
+    Layout = "_Layout";
+}
+
+<form asp-action="Assign">
+    <input type="submit" class="btn btn-info" value="Get New Order" />
+</form>
+<div><p>Available orders: <span id="availableOrders"></span></p></div>
+<br />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>Image</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Quantity</td>
+            <td>Size</td>
+            <td>Comment</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Queue)
+        {
+            <tr>
+                <td><img src="@Url.Content(item.Pizza.ImagePath)" /></td>
+                <td>@item.Pizza.Name</td>
+                <td>@item.Pizza.Description</td>
+                <td>@item.Quantity</td>
+                <td>@item.Size</td>
+                <td>@item.Comment</td>
+                <td>
+                    <input type="button" class="btn btn-success finishCook" value="Finish" data-id="@item.Id"/>
+                    <input type="button" class="btn btn-danger abandonCook" value="Abandon" data-id="@item.Id"/>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="Complete" id="completeForm">
+    <input type="hidden" name="Id" />
+</form>
+<form asp-action="Abandon" id="abandonForm">
+    <input type="hidden" name="Id" />
+</form>
+
+@section Scripts {
+    <script>
+        $('.finishCook').click(function () {
+            if (confirm("Are you sure?")) {
+                $('#completeForm input[name="Id"]').val($(this).data('id'));
+                $('#completeForm').submit();
+            }
+        });
+        $('.abandonCook').click(function () {
+            if (confirm("Are you sure?")) {
+                $('#abandonForm input[name="Id"]').val($(this).data('id'));
+                $('#abandonForm').submit();
+            }
+        });
+    </script>
+    <script>
+        function updateData() {
+            $.get("@Url.Action("AvailableCount", "Cooking")", function(data) {
+                $('#availableOrders').html(data);
+            });
+        }
+
+        updateData();
+        setInterval(updateData, 5 * 1000);
+    </script>
+}

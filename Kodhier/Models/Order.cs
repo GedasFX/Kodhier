@@ -10,7 +10,7 @@ namespace Kodhier.Models
         public int Quantity { get; set; }
         public int Size { get; set; }
         public decimal Price { get; set; }
-        
+
         public string Comment { get; set; }
 
         public string DeliveryAddress { get; set; }
@@ -18,8 +18,8 @@ namespace Kodhier.Models
         public DateTime PlacementDate { get; set; }
         public DateTime? PaymentDate { get; set; }
         public DateTime? CookingDate { get; set; }
-        public DateTime? OvenDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
+        public DateTime? CompletionDate { get; set; }
 
         public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }
@@ -31,6 +31,9 @@ namespace Kodhier.Models
         [ForeignKey("Client")]
         public string ClientId { get; set; }
         public virtual ApplicationUser Client { get; set; }
-        
+
+        [ForeignKey("Chef")]
+        public string ChefId { get; set; }
+        public virtual ApplicationUser Chef { get; set; }
     }
 }

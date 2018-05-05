@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Kodhier.ViewModels.DeliveryViewModel>
+@{
+    ViewData["Title"] = "Delivery";
+}
+
+<h2>Delivery</h2>
+
+<b>Pending deliveries:</b>
+
+<table class="table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Quantity</th>
+        <th>Size</th>
+        <th>Comment</th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Deliver to</th>
+        <th>Update</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+            <td>@Html.DisplayFor(modelItem => item.Size)</td>
+            <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.ImagePath)</td>
+            <td>@Html.DisplayFor(modelItem => item.DeliveryAddress)</td>
+
+            <td>
+                <form asp-action="Complete" method="post">
+                    <input name="id" value="@(item.Id)" type="hidden" />
+                    <input type="submit" value="Delivered" class="btn btn-outline-info" />
+                </form>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+<div id="map" style="width: 480px; height: 480px;"></div>
+
+
+@section Scripts {
+    <script>
+        var geocoder;
+        var map;
+        var markers = [];
+
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress}));
+
+        function initMap() {
+            geocoder = new google.maps.Geocoder();
+            map = new window.google.maps.Map(document.getElementById('map'),
+                {
+                    center: { lat: 54.9049311, lng: 23.9544675 },
+                    zoom: 11
+                }
+            );
+
+            for (var i = 0; i < addresses.length; i++) {
+                geocoder.geocode({ 'address': addresses[i].addr }, function (results, status) {
+                    if (status == 'OK') {
+                        //map.setCenter(results[0].geometry.location);
+                        markers.push(new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        }));
+                    } else {
+                        alert('There was a problem displaying the address: ' + status);
+                    }
+                });
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,5 +1,14 @@
 ﻿body {
 }
+
+table#cart tbody td {
+   text-align:center;
+}
+
+table#cart thead th {
+    text-align: center;
+}
+
 @media screen and (max-width: 400px) {
     table#cart tbody td .form-control {
         width: 20%;
@@ -19,10 +28,10 @@
         display: block;
         padding: .6rem;
         min-width: 320px;
-        float: left;
+        text-align: left;
     }
-    table#cart tbody th {
-        float: left;
+    table#cart thead th {
+        text-align: left;
     }
 
         table#cart tbody td:before {

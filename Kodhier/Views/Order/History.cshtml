@@ -23,25 +23,25 @@
         <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
             <thead>
                 <tr>
-                    <th style="width:20%"class="text-center">Name</th>
-                    <th style="width:5%"class="text-center">Size</th>
-                    <th style="width:10%" class="text-center">Quantity</th>
-                    <th style="width:5%"class="text-center">Total price</th>
-                    <th style="width:30%" class="text-center">Order date</th>
-                    <th style="width:10%"class="text-center">Order status</th>
-                    <th style="width:20%"class="text-center"></th>
+                    <th style="width:20%">Name</th>
+                    <th style="width:5%">Size</th>
+                    <th style="width:10%">Quantity</th>
+                    <th style="width:5%">Total price</th>
+                    <th style="width:30%">Order date</th>
+                    <th style="width:10%">Order status</th>
+                    <th style="width:20%"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
                 {
                     <tr>
-                        <td data-th="Name" class="text-center">@item.Pizza.Name</td>
-                        <td data-th="Size"class="text-center">@item.Size</td>
-                        <td data-th="Quantity"class="text-center">@item.Quantity</td>
-                        <td data-th="Total price"class="text-center">@(item.Quantity * item.Price)</td>
-                        <td data-th="Date ordered"class="text-center">@item.DateCreated</td>
-                        <td data-th="Order status"class="text-center">@item.Status</td>
+                        <td data-th="Name">@item.Pizza.Name</td>
+                        <td data-th="Size">@item.Size</td>
+                        <td data-th="Quantity">@item.Quantity</td>
+                        <td data-th="Total price">@(item.Quantity * item.Price)</td>
+                        <td data-th="Date ordered">@item.DateCreated</td>
+                        <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
                             <form asp-action="Create" asp-route-id="@item.Pizza.Name">
                                 <button type="submit" class="btn btn-danger btn-sm">New order</button>

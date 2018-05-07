@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Extensions;
+using Kodhier.Models;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +20,7 @@ namespace Kodhier.Areas.Admin.Controllers
 			_context = context;
 		}
 
+        // TODO: Talk about implementation
 		public IActionResult Index()
 		{
 			var clientId = User.GetId();
@@ -28,7 +28,7 @@ namespace Kodhier.Areas.Admin.Controllers
 			// check carefully
 			var orders = _context.Orders
 				.Where(o => o.Client.Id == clientId)
-				.Where(o => o.Status == Models.OrderStatus.Delivering)
+				.Where(o => o.Status == OrderStatus.Delivering)
 				.OrderByDescending(c => c.PlacementDate)
 				.Select(o => new DeliveryViewModel
 				{
@@ -43,17 +43,18 @@ namespace Kodhier.Areas.Admin.Controllers
 			return View(orders);
 		}
 
-		public IActionResult Complete(String id)
+		public IActionResult Complete(Guid? id)
 		{
-			var correctOrder = _context.Orders
-				.Where(o => o.Id.ToString() == id)
-				.Where(o => o.Status == Models.OrderStatus.Delivering)
-				.SingleOrDefault();
+            if (id == null)
+                return RedirectToAction("Index");
+
+            var correctOrder = _context.Orders
+				.Where(o => o.Id == id)
+				.SingleOrDefault(o => o.Status == OrderStatus.Delivering);
 
 			if (correctOrder != null)
 			{
-				correctOrder.Status = Models.OrderStatus.Done;
-				_context.Update(correctOrder);
+				correctOrder.Status = OrderStatus.Done;
 				_context.SaveChanges();
 			}
 

@@ -7,6 +7,7 @@
     var executionResult = TempData.Get<ExecutionResult>("ExecutionResult");
 }
 <!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -26,7 +27,6 @@
 <body id="mainsec">
     <nav class="navbar navbar-light navbar-expand-lg sticky-top bg-dark flex-wrap">
         <a class="navbar-brand d-inline-flex" asp-controller="Home" asp-action="Index">
-            <img class="img-fluid" src="~/assets/img/minishef.png">
             <strong>Kodhier</strong>
         </a>
 
@@ -51,8 +51,20 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav mx-auto">
+
                 @await Html.PartialAsync("_LoginPartial")
+
             </ul>
+
+            @if (User.GetId() != null)
+            {
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="nav-link active" asp-controller="Checkout" asp-action="Index"><img class="rounded-circle w-50" src="~/images/cart.jpg"></a>
+                    </li>
+                </ul>
+            }
+
         </div>
     </nav>
     <div class="page-content">

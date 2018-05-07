@@ -24,6 +24,11 @@
     <Compile Remove="Migrations\20180421192131_emailpromo.Designer.cs" />
     <Compile Remove="Migrations\20180421192341_emailpromo.cs" />
     <Compile Remove="Migrations\20180421192341_emailpromo.Designer.cs" />
+    <Compile Remove="Resources.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Resources.resx" />
   </ItemGroup>
 
 

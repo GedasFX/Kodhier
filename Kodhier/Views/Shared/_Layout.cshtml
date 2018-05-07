@@ -53,9 +53,10 @@
             <ul class="nav navbar-nav mx-auto">
 
                 @await Html.PartialAsync("_LoginPartial")
-
+                <li>
+                    <language-switcher Mode="ImageAndText"></language-switcher>
+                </li>
             </ul>
-
             @if (User.GetId() != null)
             {
                 <ul class="nav navbar-nav">
@@ -89,6 +90,17 @@
     <script src="~/js/Submenu.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--<script type="text/javascript">
+    function useCookie(code) {{
+        var culture = code;
+        var uiCulture = code;
+        var cookieValue = 'Lang=' + code;
+        document.cookie = cookieValue;
+        window.location.reload();
+    }}
+    </script>-->
     @RenderSection("Scripts", required: false)
 </body>
 </html>

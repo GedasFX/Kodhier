@@ -11,6 +11,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using LanguageSwitcherTagHelper.TagHelpers;
 
 namespace Kodhier
 {
@@ -82,6 +84,7 @@ namespace Kodhier
                 // These are the cultures the app supports for UI strings, i.e. we have localized resources for.
                 options.SupportedUICultures = supportedCultures;
             });
+            services.AddSingleton<ITagHelperComponent, LanguageSwitcherTagHelperComponent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

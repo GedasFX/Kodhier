@@ -1,14 +1,6 @@
-﻿.table > tbody > tr > td, .table > tfoot > tr > td {
-    vertical-align: middle;
+﻿body {
 }
-input{
-    min-width: 100px;
-}
-img {
-    min-width: 60px;
-}
-
-@media screen and (max-width: 1292px) {
+@media screen and (max-width: 400px) {
     table#cart tbody td .form-control {
         width: 20%;
     }
@@ -36,21 +28,22 @@ img {
         min-width: 320px;
     }
 
-    table#cart tbody td:before {
-        content: attr(data-th);
-        font-weight: bold;
-        display: inline-block;
-        width: 8rem;
-    }
+        table#cart tbody td:before {
+            content: attr(data-th);
+            font-weight: bold;
+            display: inline-block;
+            width: 8rem;
+        }
 
     table#cart tfoot td {
         display: block;
     }
 
-    table#cart tfoot td .btn {
-        display: block;
-    }
+        table#cart tfoot td .btn {
+            display: block;
+        }
 }
+
 header, h1 {
     text-align: center;
     padding: 0px 30px 0px 30px;

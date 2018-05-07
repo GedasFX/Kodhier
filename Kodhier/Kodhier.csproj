@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Delivery\**" />
+    <Content Remove="Areas\Delivery\**" />
+    <EmbeddedResource Remove="Areas\Delivery\**" />
+    <None Remove="Areas\Delivery\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20180407120542_aa.cs" />
     <Compile Remove="Migrations\20180407120542_aa.Designer.cs" />
     <Compile Remove="Migrations\20180411173408_PriceCategoryId.cs" />
@@ -39,11 +46,6 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Delivery\Controllers\" />
-    <Folder Include="Areas\Delivery\Views\" />
   </ItemGroup>
 
 </Project>

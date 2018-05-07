@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kodhier.Areas.Chef.Controllers
+namespace Kodhier.Areas.Admin.Controllers
 {
-    [Area("Chef")]
+    [Area("Admin")]
     [Authorize(Roles = "Chef")]
     public class CookingController : Controller
     {
@@ -22,12 +22,14 @@ namespace Kodhier.Areas.Chef.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult> Index(CookingViewModel model = null)
+        public async Task<ActionResult> Index()
         {
             var userid = User.GetId();
             var vm = new CookingViewModel
             {
-                Queue = await _context.Orders.Include(o => o.Pizza).Where(o => o.ChefId == userid && o.Status == OrderStatus.Cooking).ToArrayAsync(),
+                Queue = await _context.Orders.Include(o => o.Pizza)
+                    .Where(o => o.ChefId == userid && o.Status == OrderStatus.Cooking)
+                    .ToArrayAsync()
             };
             return View(vm);
         }

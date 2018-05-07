@@ -6,13 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Kodhier.Extensions;
-using Kodhier.Mvc;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Xunit;
@@ -68,7 +65,6 @@ namespace Kodhier.Tests
 
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Index", ((RedirectToActionResult)res).ActionName);
-            Assert.False(_controller.TempData.Get<ExecutionResult>("ExecutionResult").HasError);
         }
 
         [Fact(DisplayName = "Create method not add an order to db with forged or wrong data")]
@@ -88,7 +84,6 @@ namespace Kodhier.Tests
             res = await _controller.Create(pizza.Name, order);
 
             Assert.IsType<ViewResult>(res);
-            Assert.True(_controller.TempData.Get<ExecutionResult>("ExecutionResult").HasError);
         }
 
         [Fact(DisplayName = "Instead of making new order, system updates a preexisting unpaid order.")]

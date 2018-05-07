@@ -122,7 +122,7 @@ namespace Kodhier.Controllers
                 return View();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            var user = _context.Users.Single(u => u.Id == User.GetId());
             code.Redeemer = user ?? throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             code.RedemptionDate = DateTime.Now;
 

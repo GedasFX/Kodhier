@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Kodhier.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Delivery")]
 	public class DeliveryController : Controller
 	{
 		private readonly KodhierDbContext _context;

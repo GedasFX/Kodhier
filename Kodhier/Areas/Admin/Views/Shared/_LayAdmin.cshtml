@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -85,10 +87,6 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
                         <div class="row app-shortcuts">
                             <a class="col-4 app-shortcuts__item" href="">
-                                <i class="zmdi zmdi-calendar"></i>
-                                <small class="">Calendar</small>
-                            </a>
-                            <a class="col-4 app-shortcuts__item" href="">
                                 <i class="zmdi zmdi-file-text"></i>
                                 <small class="">Files</small>
                             </a>
@@ -134,39 +132,36 @@
         <aside class="sidebar">
             <div class="scrollbar-inner">
                 <div class="user">
-                    <div class="user__info" data-toggle="dropdown">
+                    <div class="user__info">
                         <img class="user__img" src="" alt="">
                         <div>
-                            <div class="user__name">kodhier</div>
-                            <div class="user__email">kodhier@gmail.com</div>
+                            <div class="user__name">@User.Claims.Single(c => c.Type == ClaimTypes.Name).Value</div>
                         </div>
-                    </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="">View Profile</a>
-                        <a class="dropdown-item" href="">Settings</a>
-                        <a class="dropdown-item" href="">Logout</a>
                     </div>
                 </div>
                 <ul class="navigation">
                     <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i>System</a></li>
-                    <li><a asp-controller="Pizza" asp-action="Index"><i class="zmdi zmdi-view-week"></i>Pizza Management</a></li>
-                    <li><a asp-controller="Currency" asp-action="Index"><i class="zmdi zmdi-money"></i>Pizza Coins</a></li>
+
+                    <li class="navigation__sub">
+                        <a><i class="zmdi zmdi-view-week"></i> Pizza Management</a>
+                        <ul>
+                            <li><a asp-controller="Pizza" asp-action="Index"><i class="zmdi zmdi-pizza"></i> Menu</a></li>
+                            <li><a asp-controller="PriceCategory" asp-action="Index"><i class="zmdi zmdi-format-subject"></i> Price Category</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-controller="Delivery" asp-action="Index"><i class="zmdi zmdi-car"></i> Delivery</a></li>
+                    <li><a asp-controller="Cooking" asp-action="Index"><i class="zmdi zmdi-cake"></i> Cooking</a></li>
+                    <li><a asp-controller="Currency" asp-action="Index"><i class="zmdi zmdi-money"></i> Pizza Coins</a></li>
                     <li class="navigation__sub">
                         <a><i class="zmdi zmdi-email"></i> Email</a>
                         <ul>
-                            <li class="@@otherchartsactive"><a asp-controller="" asp-action="">Email Settings</a></li>
-                            <li class="@@flotchartsactive"><a asp-controller="" asp-action="">Bulk Email</a></li>
+                            <li class="@@otherchartsactive"><a asp-controller="" asp-action=""><i class="zmdi zmdi-settings-square"></i> Email Settings</a></li>
+                            <li class="@@flotchartsactive"><a asp-controller="" asp-action=""><i class="zmdi zmdi-folder"></i> Bulk Email</a></li>
                         </ul>
                     </li>
-                    <li class="@@widgetactive"><a href=""><i class="zmdi zmdi-widgets"></i> Widgets</a></li>
-                    <li class="navigation__sub @@chartsactive">
-                        <a href=""><i class="zmdi zmdi-trending-up"></i> Charts</a>
-                        <ul>
-                            <li class="@@flotchartsactive"><a href="">Flot</a></li>
-                            <li class="@@otherchartsactive"><a href="">Other Charts</a></li>
-                        </ul>
-                    </li>
-                    <li class="@@calendaractive"><a href=""><i class="zmdi zmdi-calendar"></i> Calendar</a></li>
+
+
+
                     <li class="@@photogalleryactive"><a asp-controller="Gallery" asp-action="Index"><i class="zmdi zmdi-image"></i> Photo Gallery</a></li>
                 </ul>
             </div>

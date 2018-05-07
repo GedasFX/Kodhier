@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -130,16 +132,11 @@
         <aside class="sidebar">
             <div class="scrollbar-inner">
                 <div class="user">
-                    <div class="user__info" data-toggle="dropdown">
+                    <div class="user__info">
                         <img class="user__img" src="" alt="">
                         <div>
-                            <div class="user__name"></div>
-                            <div class="user__email">kodhier@gmail.com</div>
+                            <div class="user__name">@User.Claims.Single(c => c.Type == ClaimTypes.Name).Value</div>
                         </div>
-                    </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="">View Profile</a>
-                        <a class="dropdown-item" href="">Logout</a>
                     </div>
                 </div>
                 <ul class="navigation">

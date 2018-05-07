@@ -10,13 +10,6 @@
         margin: 1.5em 0;
     }
 
-    .actions .btn-info {
-        float: left;
-    }
-
-    .actions .btn-danger {
-        float: right;
-    }
 
     table#cart thead {
         display: none;
@@ -26,6 +19,10 @@
         display: block;
         padding: .6rem;
         min-width: 320px;
+        float: left;
+    }
+    table#cart tbody th {
+        float: left;
     }
 
         table#cart tbody td:before {

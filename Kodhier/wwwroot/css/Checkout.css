@@ -4,9 +4,9 @@
 input{
     min-width: 100px;
 }
-/*img {
+img {
     min-width: 60px;
-}*/
+}
 
 @media screen and (max-width: 1292px) {
     table#cart tbody td .form-control {

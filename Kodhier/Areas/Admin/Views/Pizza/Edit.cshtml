@@ -1,15 +1,20 @@
 ﻿@model Kodhier.ViewModels.Admin.PizzaViewModels.PizzaEditViewModel
 
 @{
-    Layout = "~/Areas/Admin/Views/Home/_LayAdmin.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayAdmin.cshtml";
     ViewData["Title"] = "Edit";
 }
-<link href="~/adm/css/Custom.css" rel="stylesheet" />
 
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
 <header class="content__title">
-    <h1>EDIT PIZZA</h1>
+    <h1>Edit pizza</h1>
 </header>
 
+<style>
+    option {
+        background-color: black;
+    }
+</style>
 
 <div class="row">
     <div class="main2 mx-auto">
@@ -27,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImagePath" class="control-label"></label>
-                <input asp-for="ImagePath" class="form-control" />
+                <select asp-for="ImagePath" asp-items="@(new SelectList(Model.ImageList))" class="form-control"></select>
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,7 +42,7 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <input type="submit" value="Edit" class="btn btn-outline-success" style="margin:5px 5px 5px 20px" />
+                    <input type="submit" value="Edit" class="btn btn-outline-success" style="cursor:pointer; margin:5px 5px 5px 20px" />
                 </div>
                 <div>
                     <a asp-action="Index" class="btn btn-outline-danger" style="margin:5px 5px 5px 5px">Cancel</a>
@@ -46,3 +51,9 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $('select[name="ImagePath"]').val('@(Model.ImagePath.Split("/gallery/").Last())');
+    </script>
+}

@@ -21,11 +21,13 @@ namespace Kodhier.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg").Select(item => "~/uploads/img/gallery/" + Path.GetFileName(item));
+            //var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg").Select(item => "~/uploads/img/gallery/" + Path.GetFileName(item));
+            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+                .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+                .Select(item => "~/uploads/img/gallery/" + Path.GetFileName(item));
             return View(imgList);
         }
 
-        [HttpPost]
         public async Task<IActionResult> Upload(IFormFile imgfile)
         {
             if (imgfile.Length > 512000)

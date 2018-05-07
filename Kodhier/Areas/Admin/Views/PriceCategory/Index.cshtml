@@ -1,0 +1,114 @@
+﻿@using Kodhier.Models
+@model IEnumerable<PizzaPriceCategory>
+
+@{
+    ViewBag.Title = "Price management";
+    Layout = "~/Areas/Admin/Views/Shared/_LayAdmin.cshtml";
+}
+
+<form asp-action="Create">
+    <input type="text" name="Description" class="form-control col-md-2" />
+    <button type="submit" class="btn btn-primary">Create new category</button>
+</form>
+
+<table class="table table-active">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr data-val="@item.Id">
+            <td>
+                <p>@item.Description</p>
+                <p><a title="Remove" href="#" class="remove" data-val="@item.Id"><i class="zmdi zmdi-delete">Delete category?</i></a></p>
+            </td>
+            <td>
+                <p><input type="number" class="create" placeholder="Price" /></p>
+                @foreach (var ppi in item.PizzaPriceInfos)
+                {
+                    <p><input type="number" value="@ppi.Price" data-val="@item.Id" data-g="@ppi.Id" /></p>
+                }
+
+            </td>
+            <td>
+                <p><input type="number" class="create" placeholder="Size" /></p>
+                @foreach (var ppi in item.PizzaPriceInfos)
+                {
+                    <p><input type="number" value="@ppi.Size" data-val="@item.Id" data-g="@ppi.Id" /></p>
+                }
+            </td>
+            <td>
+                <p><input type="button" class="add" value="Add new Price info" data-val="@item.Id" /></p>
+                @foreach (var ppi in item.PizzaPriceInfos)
+                {
+                    <p>
+                        <a title="Remove" href="#" class="removePpi" data-val="@ppi.Id">R</a>
+                        <a title="Edit" href="#" class="editPpi" data-val="@ppi.Id">E</a>
+                    </p>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<form id="deleteForm" asp-action="Delete">
+    <input type="hidden" name="Id" value="0" />
+</form>
+<form id="addForm" asp-action="Add">
+    <input type="hidden" name="Price" value="0" />
+    <input type="hidden" name="Size" value="0" />
+    <input type="hidden" name="Id" value="0" />
+</form>
+<form id="deletePpiForm" asp-action="Remove">
+    <input type="hidden" name="Id" value="0" />
+</form>
+<form id="editPpiForm" asp-action="Edit">
+    <input type="hidden" name="Price" value="0" />
+    <input type="hidden" name="Size" value="0" />
+    <input type="hidden" name="Id" value="0" />
+</form>
+
+@section Scripts {
+    <script>
+        $('.remove').click(function (e) {
+            if (confirm('Are you sure?')) {
+                $('#deleteForm :first-child').val($(this).data("val"));
+                $('#deleteForm').submit();
+            } else {
+                e.preventDefault();
+            }
+        });
+        $('.add').click(function (e) {
+            var td = $(this).parent().parent().parent();
+            var nums = td.find('input.create');
+
+            $('#addForm input')[0].value = nums[0].value;
+            $('#addForm input')[1].value = nums[1].value;
+            $('#addForm input')[2].value = td.data("val");
+
+            $('#addForm').submit();
+        });
+        $('.removePpi').click(function (e) {
+            if (confirm('Are you sure?')) {
+                $('#deletePpiForm :first-child').val($(this).data("val"));
+                $('#deletePpiForm').submit();
+            } else {
+                e.preventDefault();
+            }
+        });
+        $('.editPpi').click(function (e) {
+            var num = $(this).data('val');
+            var nums = $("[data-g=" + num + "]");
+
+            $('#editPpiForm input')[0].value = nums[0].value;
+            $('#editPpiForm input')[1].value = nums[1].value;
+            $('#editPpiForm input')[2].value = num;
+
+            $('#editPpiForm').submit();
+        });
+    </script>
+}

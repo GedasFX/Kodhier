@@ -23,15 +23,17 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas.Select(p => new OrderViewModel
-            {
-                Name = p.Name,
-                Description = p.Description,
-                ImagePath = p.ImagePath,
-                PriceInfo = _context.PizzaPriceInfo
-                    .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
-                    .ToArray()
-            });
+            var pizzas = _context.Pizzas
+                    .Where(p => !p.IsDepricated)
+                    .Select(p => new OrderViewModel
+                    {
+                        Name = p.Name,
+                        Description = p.Description,
+                        ImagePath = p.ImagePath,
+                        PriceInfo = _context.PizzaPriceInfo
+                        .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
+                        .ToArray()
+                    });
             return View(pizzas);
         }
 
@@ -59,14 +61,14 @@ namespace Kodhier.Controllers
                 Prices = prices,
                 Description = pizza.Description
             };
-            vm.MinPrice = vm.Prices.Min(p => p.Price);
+            vm.MinPrice = vm.Prices.DefaultIfEmpty(new PizzaPriceInfo()).Min(p => p.Price);
             return View(vm);
         }
 
         [Authorize]
-        public IActionResult History()
+        public async Task<IActionResult> History()
         {
-            return View(_context.Orders
+            return View(await _context.Orders
                 .Include(p => p.Pizza)
                 .Where(o => o.Client.Id == User.GetId())
                 .Where(o => o.IsPaid)
@@ -78,7 +80,7 @@ namespace Kodhier.Controllers
                     Status = o.Status,
                     Size = o.Size,
                     Quantity = o.Quantity
-                }));
+                }).ToArrayAsync());
         }
 
         [HttpPost]
@@ -100,6 +102,12 @@ namespace Kodhier.Controllers
                 model.Prices = _context.PizzaPriceInfo.Where(info => info.PriceCategoryId == pizza.PriceCategoryId);
                 model.MinPrice = model.Prices.Min(p => p.Price);
                 return View(model);
+            }
+
+            if (pizza.IsDepricated)
+            {
+                execRes.AddError("Pizza no longer exists. Please try another pizza.").PushTo(TempData);
+                return RedirectToAction(nameof(Index));
             }
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
@@ -139,8 +147,7 @@ namespace Kodhier.Controllers
                     Quantity = model.Quantity,
                     Price = ppi.Price,
                     Size = ppi.Size,
-                    PlacementDate = DateTime.Now,
-                    PizzaPriceCategoryId = pizza.PriceCategoryId
+                    PlacementDate = DateTime.Now
                 };
                 _context.Add(order);
             }

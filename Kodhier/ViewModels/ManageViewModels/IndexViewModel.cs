@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kodhier.ViewModels.ManageViewModels
 {
@@ -15,9 +16,17 @@ namespace Kodhier.ViewModels.ManageViewModels
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
+        public string Address { get; set; }
 
         public bool EmailSendUpdates { get; set; }
         public bool EmailSendPromotional { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Birth date")]
+        public DateTime? BirthDate { get; set; }
 
         public string StatusMessage { get; set; }
     }

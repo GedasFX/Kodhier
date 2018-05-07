@@ -30,7 +30,7 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<DateTime?>("BirthDate");
 
                     b.Property<decimal>("Coins");
 
@@ -91,9 +91,13 @@ namespace Kodhier.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ChefId");
+
                     b.Property<string>("ClientId");
 
                     b.Property<string>("Comment");
+
+                    b.Property<DateTime?>("CompletionDate");
 
                     b.Property<DateTime?>("CookingDate");
 
@@ -103,13 +107,9 @@ namespace Kodhier.Migrations
 
                     b.Property<bool>("IsPaid");
 
-                    b.Property<DateTime?>("OvenDate");
-
                     b.Property<DateTime?>("PaymentDate");
 
                     b.Property<Guid?>("PizzaId");
-
-                    b.Property<int?>("PizzaPriceCategoryId");
 
                     b.Property<DateTime>("PlacementDate");
 
@@ -123,11 +123,11 @@ namespace Kodhier.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChefId");
+
                     b.HasIndex("ClientId");
 
                     b.HasIndex("PizzaId");
-
-                    b.HasIndex("PizzaPriceCategoryId");
 
                     b.ToTable("Orders");
                 });
@@ -141,9 +141,11 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("ImagePath");
 
+                    b.Property<bool>("IsDepricated");
+
                     b.Property<string>("Name");
 
-                    b.Property<int?>("PriceCategoryId");
+                    b.Property<int>("PriceCategoryId");
 
                     b.HasKey("Id");
 
@@ -312,30 +314,32 @@ namespace Kodhier.Migrations
 
             modelBuilder.Entity("Kodhier.Models.Order", b =>
                 {
+                    b.HasOne("Kodhier.Models.ApplicationUser", "Chef")
+                        .WithMany()
+                        .HasForeignKey("ChefId");
+
                     b.HasOne("Kodhier.Models.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
-                        .WithMany()
-                        .HasForeignKey("PizzaId");
-
-                    b.HasOne("Kodhier.Models.PizzaPriceCategory", "PizzaPriceCategory")
-                        .WithMany()
-                        .HasForeignKey("PizzaPriceCategoryId");
+                        .WithMany("Orders")
+                        .HasForeignKey("PizzaId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Kodhier.Models.Pizza", b =>
                 {
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
-                        .WithMany()
-                        .HasForeignKey("PriceCategoryId");
+                        .WithMany("Pizzas")
+                        .HasForeignKey("PriceCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Kodhier.Models.PizzaPriceInfo", b =>
                 {
                     b.HasOne("Kodhier.Models.PizzaPriceCategory", "PriceCategory")
-                        .WithMany()
+                        .WithMany("PizzaPriceInfos")
                         .HasForeignKey("PriceCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

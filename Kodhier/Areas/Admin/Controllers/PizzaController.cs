@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
+using Kodhier.Mvc;
 using Kodhier.ViewModels.Admin.PizzaViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,25 +18,28 @@ namespace Kodhier.Areas.Admin.Controllers
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;
+		private readonly string _rootPath;
 
-        public PizzaController(KodhierDbContext context)
+		public PizzaController(KodhierDbContext context, IHostingEnvironment env)
         {
             _context = context;
-        }
+			_rootPath = env.WebRootPath;
+		}
 
         public IActionResult Index()
         {
-            var pizzas = _context.Pizzas;
-            return View(pizzas
+            var vm = _context.Pizzas
+                .Where(p => !p.IsDepricated)
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.Name,
                     Description = r.Description,
                     ImagePath = r.ImagePath,
-                    MinPrice = _context.PizzaPriceInfo
+                    PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
-                        .Min(c => c.Price)
-                }));
+                        .ToArray()
+                });
+            return View(vm);
         }
 
         public async Task<IActionResult> Details(string id)
@@ -62,8 +68,16 @@ namespace Kodhier.Areas.Admin.Controllers
 
         // GET: Pizza/Create
         public IActionResult Create()
-        {
-            return View(new PizzaCreateViewModel { PriceCategories = _context.PizzaPriceCategories });
+		{
+		    var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+		        .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+		        .Select(Path.GetFileName);
+
+            return View(new PizzaCreateViewModel
+			{
+				PriceCategories = _context.PizzaPriceCategories,
+				ImageList = imgList
+			});
         }
 
         // POST: Pizza/Create
@@ -81,7 +95,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 PriceCategoryId = model.PriceCategoryId,
                 Id = Guid.NewGuid(),
                 Description = model.Description,
-                ImagePath = model.ImagePath
+                ImagePath = "~/uploads/img/gallery/" + model.ImagePath
             };
 
             _context.Add(dbPizza);
@@ -104,13 +118,18 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+                .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+                .Select(Path.GetFileName);
+
             var vm = new PizzaEditViewModel
             {
                 Name = pizza.Name,
-                PriceCategoryId = pizza.PriceCategoryId ?? 0,
+                PriceCategoryId = pizza.PriceCategoryId,
                 Description = pizza.Description,
                 ImagePath = pizza.ImagePath,
-                PriceCategories = _context.PizzaPriceCategories
+                PriceCategories = _context.PizzaPriceCategories,
+				ImageList = imgList
             };
 
             return View(vm);
@@ -133,7 +152,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var pizza = _context.Pizzas.Single(p => p.Name == id);
             pizza.Name = model.Name;
             pizza.Description = model.Description;
-            pizza.ImagePath = model.ImagePath;
+            pizza.ImagePath = "~/uploads/img/gallery/" + model.ImagePath;
             pizza.PriceCategoryId = model.PriceCategoryId;
 
             try
@@ -182,7 +201,26 @@ namespace Kodhier.Areas.Admin.Controllers
         {
             var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Name == id);
             _context.Pizzas.Remove(pizza);
-            await _context.SaveChangesAsync();
+
+            var execRes = new ExecutionResult();
+            try
+            {
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddSuccess("Pizza deleted successfully.");
+                else
+                    execRes.AddError("Database error. Pizza was not deleted.");
+            }
+            catch (DbUpdateException)
+            {
+                _context.Entry(pizza).State = EntityState.Unchanged;
+                pizza.IsDepricated = true;
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddInfo("Pizza could not be fully deleted. Changed to depricated.");
+                else 
+                    execRes.AddError("Database error. Pizza was not deleted.");
+            }
+            
+            execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
     }

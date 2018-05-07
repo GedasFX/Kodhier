@@ -1,4 +1,3 @@
-
 body {
     width: 100%;
     padding: 0;
@@ -10,19 +9,19 @@ body {
     height: 70vh;
 }
 
-#fullpage section {
-    height: 70vh;
-    width: 100%;
-    padding-top: 100px;
-}
+    #fullpage section {
+        height: 70vh;
+        width: 100%;
+        padding-top: 100px;
+    }
 
-#fullpage section:nth-child(1) {
-    background: none;
-}
+        #fullpage section:nth-child(1) {
+            background: none;
+        }
 
-#fullpage section:nth-child(2) {
-    background: no-repeat;
-}
+        #fullpage section:nth-child(2) {
+            background: no-repeat;
+        }
 
 
 .css-slider-wrapper {
@@ -149,19 +148,19 @@ body {
     transition: all .2s;
 }
 
-.buy-now-btn:hover {
-    box-shadow: 0px 0px 60px -17px rgba(51,51,51,1);
-}
+    .buy-now-btn:hover {
+        box-shadow: 0px 0px 60px -17px rgba(51,51,51,1);
+    }
 
-.buy-now-btn:after {
-    content: 'Buy Now';
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    position: absolute;
-    right: 35px;
-    top: 18px;
-}
+    .buy-now-btn:after {
+        content: 'Buy Now';
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        position: absolute;
+        right: 35px;
+        top: 18px;
+    }
 
 .slider .buy-now-btn:focus,
 .navigation .login-btn:focus {
@@ -204,15 +203,15 @@ body {
     padding-bottom: 100px;
 }
 
-.slider-pagination label {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    background: #fff;
-    margin: 0 10px;
-    cursor: pointer;
-}
+    .slider-pagination label {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        background: #fff;
+        margin: 0 10px;
+        cursor: pointer;
+    }
 
 /* Slider Pagger Event */
 .slide-radio1:checked ~ .slider-pagination .page1,
@@ -434,7 +433,7 @@ body {
     margin-right: 10px;
     text-align: center;
     color: aliceblue;
-    font-size: 25px;
+    font-size: 20px;
     min-height: 50px;
     text-transform: uppercase;
 }
@@ -461,7 +460,7 @@ body {
     margin-left: 10px;
     margin-right: 10px;
     color: aliceblue;
-    font-size: 25px;
+    font-size: 20px;
     height: 50px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -471,10 +470,28 @@ body {
     text-align: center;
 }
 
-.nav-itemlogg:hover {
+.nav-itemGreetings {
+    margin-left: 10px;
+    margin-right: 10px;
+    text-transform: uppercase;
+    color: aliceblue;
+    font-size: 20px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+    .nav-itemGreetings:hover {
+        cursor: pointer;
+    }
+
+.nav-itemDropdown:hover {
     border-radius: 25px;
     text-shadow: 0 0 1em green;
-    box-shadow: 0 0 1em green;
+}
+
+.nav-itemBalance:hover {
+    border-radius: 25px;
+    text-shadow: 0 0 1em yellow;
 }
 
 .nav-item:hover {
@@ -483,10 +500,9 @@ body {
     border-radius: 25px;
 }
 
-.nav-itemlog:hover {
+.nav-itemLogout:hover {
     border-radius: 25px;
     background-color: darkred;
-    letter-spacing: 2px;
     text-shadow: 0 0 1em red;
     box-shadow: 0 0 1em red;
 }
@@ -494,7 +510,6 @@ body {
 .nav-itemreg:hover {
     border-radius: 25px;
     background-color: darkgray;
-    letter-spacing: 2px;
     text-shadow: 0 0 1em red;
     box-shadow: 0 0 1em red;
 }

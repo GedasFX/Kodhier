@@ -79,10 +79,14 @@ namespace Kodhier.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
                 EmailSendPromotional = user.EmailSendPromotional,
-                EmailSendUpdates = user.EmailSendUpdates
+                EmailSendUpdates = user.EmailSendUpdates,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate
             };
 
             return View(model);
@@ -118,12 +122,9 @@ namespace Kodhier.Controllers
                 return View();
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
+            var user = _context.Users.Single(u => u.Id == User.GetId());
+            code.Redeemer = user ?? throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             code.RedemptionDate = DateTime.Now;
-            code.Redeemer = user;
 
             user.Coins += code.Amount;
 
@@ -172,6 +173,33 @@ namespace Kodhier.Controllers
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
+            }
+            var adress = user.Address;
+            if (model.Address != adress)
+            {
+                user.Address = model.Address;
+                await _context.SaveChangesAsync();
+            }
+
+            var firstName = user.FirstName;
+            if (model.FirstName != firstName)
+            {
+                user.FirstName = model.FirstName;
+                await _context.SaveChangesAsync();
+            }
+
+            var lastName = user.LastName;
+            if (model.PhoneNumber != lastName)
+            {
+                user.LastName = model.LastName;
+                await _context.SaveChangesAsync();
+            }
+
+            var birthDate = user.BirthDate;
+            if (model.BirthDate != birthDate)
+            {
+                user.BirthDate = model.BirthDate;
+                await _context.SaveChangesAsync();
             }
 
             if (user.EmailSendPromotional != model.EmailSendPromotional ||

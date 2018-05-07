@@ -12,7 +12,7 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="products">
                 <div class="modal-header">
                     <h6 class="display-4">Basket</h6>
@@ -20,26 +20,29 @@
                 <br />
                 <p class="font-weight-bold lead ">Total: @(Model.Price) coins&trade;</p>
                 <table class="table table-hover">
-                    <tr>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Amount</th>
-                        <th>Price</th>
-                    </tr>
-
-                    @foreach (var item in Model.CheckoutList)
-                    {
+                    <thead>
                         <tr>
-                            <td>@item.Name</td>
-                            <td>@item.Size</td>
-                            <td>@item.Quantity</td>
-                            <td>@(item.Price * item.Quantity)</td>
+                            <th style="width:30%; font-size: 10px;">Name</th>
+                            <th style="width:20%; font-size: 10px;">Size</th>
+                            <th style="width:20%; font-size: 10px;">Amount</th>
+                            <th style="width:20%; font-size: 10px;">Price</th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CheckoutList)
+                        {
+                            <tr>
+                                <td style="font-size: 10px;">@item.Name</td>
+                                <td style="font-size: 10px;">@item.Size</td>
+                                <td style="font-size: 10px;">@item.Quantity</td>
+                                <td style="font-size: 10px;">@(item.Price * item.Quantity)</td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="products">
                 <div class="modal-header">
                     <h6 class="display-4">Delivery details</h6>
@@ -51,16 +54,16 @@
                         <form asp-action="Continue" method="post" id="confrimCheckout">
                             <div class="form-group">
                                 <div style="text-align: left"><label asp-for="ConfirmAddress">Address:</label></div>
-                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address"/>
+                                <input asp-for="ConfirmAddress" type="text" id="address" name="confirmAddress" class="form-control" placeholder="Shipping address" />
                                 <span asp-validation-for="ConfirmAddress" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <div style="text-align: left"><label asp-for="PhoneNumber">Phone number:</label></div>
-                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345"/>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Ex: +37061212345" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                             <div style="position: absolute; bottom: 5%; width: 90%">
-                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px"/>
+                                <input type="submit" value="Place order" class="btn btn-success btn-block" style="margin-top: 5px" />
                                 <a asp-action="Index" class="btn btn-warning btn-block" style="margin-top: 5px">Return</a>
                             </div>
                         </form>

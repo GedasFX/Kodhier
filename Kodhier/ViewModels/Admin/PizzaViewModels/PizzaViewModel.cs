@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using Kodhier.Models;
 
 namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
@@ -14,6 +17,6 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
         public string Description { get; set; }
 
         [Display(Name = "Lowest price")]
-        public decimal MinPrice { get; set; }
+        public PizzaPriceInfo[] PriceInfo { get; set; }
     }
 }

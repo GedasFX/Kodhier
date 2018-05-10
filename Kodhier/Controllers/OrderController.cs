@@ -9,6 +9,7 @@ using Kodhier.Models;
 using Kodhier.Mvc;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 
 namespace Kodhier.Controllers
 {
@@ -23,12 +24,14 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var pizzas = _context.Pizzas
                     .Where(p => !p.IsDepricated)
                     .Select(p => new OrderViewModel
                     {
-                        Name = p.NameLt,
-                        Description = p.DescriptionLt,
+                        Name = cultCode == "lt-LT" ? p.NameLt : p.NameEn,
+                        Description = cultCode == "lt-LT" ? p.DescriptionLt : p.DescriptionEn,
                         ImagePath = p.ImagePath,
                         PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)

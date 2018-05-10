@@ -13,13 +13,13 @@
 <div class="row">
     <div class="main2 mx-auto">
         <blockquote class="blockquote text-center">
-            <p class="h1 text-uppercase">@Html.DisplayFor(model => model.Name)</p>
+            <p class="h1 text-uppercase">@Model.NameEn - @Model.NameLt</p>
         </blockquote>
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
                     <div class="text-center">
-                        <img src="@Html.DisplayFor(model => model.ImagePath)" class="rounded-circle img-fluid" />
+                        <img src="@Url.Content(Model.ImagePath)" class="rounded-circle img-fluid" />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -37,10 +37,16 @@
                                 }
                             </dd>
                             <dt>
-                                @Html.DisplayNameFor(model => model.Description)
+                                Descrption - en_US
                             </dt>
                             <dd>
-                                @Html.DisplayFor(model => model.Description)
+                                @Model.DescriptionEn
+                            </dd>
+                            <dt>
+                                Descrption - lt_LT
+                            </dt>
+                            <dd>
+                                @Model.DescriptionLt
                             </dd>
                         </dl>
                     </div>

@@ -6,14 +6,13 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {
     public class PizzaDetailsViewModel
     {
-        [Display(Name = "Pizza name")]
-        public string Name { get; set; }
+        public string NameLt { get; set; }
+        public string NameEn { get; set; }
 
-        [Display(Name = "Path to the pizza image")]
+        public string DescriptionLt { get; set; }
+        public string DescriptionEn { get; set; }
+
         public string ImagePath { get; set; }
-
-        [Display(Name = "Description")]
-        public string Description { get; set; }
 
         public IEnumerable<PizzaPriceInfo> Prices { get; set; }
     }

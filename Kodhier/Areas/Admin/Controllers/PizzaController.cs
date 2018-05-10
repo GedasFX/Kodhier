@@ -18,13 +18,13 @@ namespace Kodhier.Areas.Admin.Controllers
     public class PizzaController : Controller
     {
         private readonly KodhierDbContext _context;
-		private readonly string _rootPath;
+        private readonly string _rootPath;
 
-		public PizzaController(KodhierDbContext context, IHostingEnvironment env)
+        public PizzaController(KodhierDbContext context, IHostingEnvironment env)
         {
             _context = context;
-			_rootPath = env.WebRootPath;
-		}
+            _rootPath = env.WebRootPath;
+        }
 
         public IActionResult Index()
         {
@@ -32,8 +32,8 @@ namespace Kodhier.Areas.Admin.Controllers
                 .Where(p => !p.IsDepricated)
                 .Select(r => new PizzaViewModel
                 {
-                    Name = r.Name,
-                    Description = r.Description,
+                    Name = r.NameLt,
+                    Description = r.DescriptionEn,
                     ImagePath = r.ImagePath,
                     PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
@@ -50,7 +50,7 @@ namespace Kodhier.Areas.Admin.Controllers
             }
 
             var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Name == id);
+                .SingleOrDefaultAsync(m => m.NameLt == id);
             if (pizza == null)
             {
                 return NotFound();
@@ -58,8 +58,10 @@ namespace Kodhier.Areas.Admin.Controllers
 
             var model = new PizzaDetailsViewModel
             {
-                Name = pizza.Name,
-                Description = pizza.Description,
+                NameLt = pizza.NameLt,
+                DescriptionLt = pizza.DescriptionLt,
+                NameEn = pizza.NameEn,
+                DescriptionEn = pizza.DescriptionEn,
                 ImagePath = pizza.ImagePath,
                 Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategoryId)
             };
@@ -68,16 +70,16 @@ namespace Kodhier.Areas.Admin.Controllers
 
         // GET: Pizza/Create
         public IActionResult Create()
-		{
-		    var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
-		        .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
-		        .Select(Path.GetFileName);
+        {
+            var imgList = Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.jpg")
+                .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
+                .Select(Path.GetFileName);
 
-            return View(new PizzaCreateViewModel
-			{
-				PriceCategories = _context.PizzaPriceCategories,
-				ImageList = imgList
-			});
+            return View(new PizzaFormViewModel
+            {
+                PriceCategories = _context.PizzaPriceCategories,
+                ImageList = imgList
+            });
         }
 
         // POST: Pizza/Create
@@ -85,16 +87,18 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaCreateViewModel model)
+        public async Task<IActionResult> Create(PizzaFormViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             var dbPizza = new Pizza
             {
-                Name = model.Name,
-                PriceCategoryId = model.PriceCategoryId,
                 Id = Guid.NewGuid(),
-                Description = model.Description,
+                NameLt = model.NameLt,
+                NameEn = model.NameEn,
+                PriceCategoryId = model.PriceCategoryId,
+                DescriptionLt = model.DescriptionLt,
+                DescriptionEn = model.DescriptionEn,
                 ImagePath = "~/uploads/img/gallery/" + model.ImagePath
             };
 
@@ -112,7 +116,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Name == id);
+            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.NameLt == id);
             if (pizza == null)
             {
                 return NotFound();
@@ -122,14 +126,16 @@ namespace Kodhier.Areas.Admin.Controllers
                 .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
                 .Select(Path.GetFileName);
 
-            var vm = new PizzaEditViewModel
+            var vm = new PizzaFormViewModel
             {
-                Name = pizza.Name,
+                NameLt = pizza.NameLt,
+                NameEn = pizza.NameEn,
                 PriceCategoryId = pizza.PriceCategoryId,
-                Description = pizza.Description,
+                DescriptionLt = pizza.DescriptionLt,
+                DescriptionEn = pizza.DescriptionEn,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories,
-				ImageList = imgList
+                ImageList = imgList
             };
 
             return View(vm);
@@ -140,7 +146,7 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaEditViewModel model)
+        public async Task<IActionResult> Edit(string id, PizzaFormViewModel model)
         {
             if (id == string.Empty)
             {
@@ -149,9 +155,11 @@ namespace Kodhier.Areas.Admin.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            var pizza = _context.Pizzas.Single(p => p.Name == id);
-            pizza.Name = model.Name;
-            pizza.Description = model.Description;
+            var pizza = _context.Pizzas.Single(p => p.NameLt == id);
+            pizza.NameLt = model.NameLt;
+            pizza.DescriptionLt = model.DescriptionLt;
+            pizza.NameEn = model.NameEn;
+            pizza.DescriptionEn = model.DescriptionEn;
             pizza.ImagePath = "~/uploads/img/gallery/" + model.ImagePath;
             pizza.PriceCategoryId = model.PriceCategoryId;
 
@@ -180,7 +188,7 @@ namespace Kodhier.Areas.Admin.Controllers
             }
 
             var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Name == id);
+                .SingleOrDefaultAsync(m => m.NameLt == id);
             if (pizza == null)
             {
                 return NotFound();
@@ -188,8 +196,8 @@ namespace Kodhier.Areas.Admin.Controllers
 
             return View(new PizzaDeleteViewModel
             {
-                Name = pizza.Name,
-                Description = pizza.Description,
+                Name = pizza.NameLt,
+                Description = pizza.DescriptionLt,
                 ImagePath = pizza.ImagePath,
                 Prices = _context.PizzaPriceInfo.Where(ppi => ppi.PriceCategoryId == pizza.PriceCategoryId)
             });
@@ -199,7 +207,7 @@ namespace Kodhier.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.Name == id);
+            var pizza = await _context.Pizzas.SingleOrDefaultAsync(m => m.NameLt == id);
             _context.Pizzas.Remove(pizza);
 
             var execRes = new ExecutionResult();
@@ -216,10 +224,10 @@ namespace Kodhier.Areas.Admin.Controllers
                 pizza.IsDepricated = true;
                 if (await _context.SaveChangesAsync() > 0)
                     execRes.AddInfo("Pizza could not be fully deleted. Changed to depricated.");
-                else 
+                else
                     execRes.AddError("Database error. Pizza was not deleted.");
             }
-            
+
             execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }

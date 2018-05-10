@@ -36,7 +36,7 @@ namespace Kodhier.Areas.Admin.Controllers
 					Quantity = o.Quantity,
 					Size = o.Size,
 					Comment = o.Comment,
-					Name = o.Pizza.Name,
+					Name = o.Pizza.NameLt,
 					ImagePath = o.Pizza.ImagePath,
 					DeliveryAddress = o.DeliveryAddress
 				});

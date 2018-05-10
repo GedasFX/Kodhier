@@ -13,9 +13,9 @@
 
 <div class="row">
     <div class="main2 mx-auto text-center">
-        <img src=@Html.DisplayFor(model => model.ImagePath) class="rounded-circle img-fluid" />
-        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(model => model.Name)</h4>
-        <h5 class="text-white">@Html.DisplayFor(model => model.Description)</h5>
+        <img src=@Url.Content(Model.ImagePath) class="rounded-circle img-fluid" />
+        <h4 class="text-info text-center" style="margin-top:5px">@Model.Name</h4>
+        <h5 class="text-white">@Model.Description</h5>
         <br />
         <h5 class="text-white">
             @foreach (var price in Model.Prices)

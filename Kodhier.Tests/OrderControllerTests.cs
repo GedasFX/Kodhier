@@ -50,18 +50,18 @@ namespace Kodhier.Tests
             _context.PizzaPriceCategories.Add(ppc);
             _context.SaveChanges();
             _context.PizzaPriceInfo.Add(new PizzaPriceInfo {Id = 1, Price = 6.05m, PriceCategory = ppc, Size = 32});
-            _context.Pizzas.Add(new Pizza { Id = pId, Name = "Havaian", PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == 1) /*= new PizzaClass { Price = 46.5M, Size = 32, Tier = PizzaPriceTier.Low } })*/});
+            _context.Pizzas.Add(new Pizza { Id = pId, NameLt = "Havaian", PriceCategory = _context.PizzaPriceCategories.Single(c => c.Id == 1) /*= new PizzaClass { Price = 46.5M, Size = 32, Tier = PizzaPriceTier.Low } })*/});
             _context.SaveChangesAsync();
         }
 
         [Fact(DisplayName = "Create method add order to db with correct data")]
         public async Task Create_Order_success()
         {
-            var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
+            var pizza = _context.Pizzas.Single(e => e.NameLt == "Havaian");
+            var order = new OrderCreateViewModel { Name = pizza.NameLt, Description = pizza.DescriptionLt, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Name, order);
+            var res = await _controller.Create(pizza.NameLt, order);
 
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Index", ((RedirectToActionResult)res).ActionName);
@@ -70,18 +70,18 @@ namespace Kodhier.Tests
         [Fact(DisplayName = "Create method not add an order to db with forged or wrong data")]
         public async Task Create_Order_fail()
         {
-            var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = -1, SizeId = 1 };
+            var pizza = _context.Pizzas.Single(e => e.NameLt == "Havaian");
+            var order = new OrderCreateViewModel { Name = pizza.NameLt, Description = pizza.DescriptionLt, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = -1, SizeId = 1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            var res = await _controller.Create(pizza.Name, order);
+            var res = await _controller.Create(pizza.NameLt, order);
 
             Assert.IsType<ViewResult>(res);
 
-            order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 2 };
+            order = new OrderCreateViewModel { Name = pizza.NameLt, Description = pizza.DescriptionLt, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 2 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
-            res = await _controller.Create(pizza.Name, order);
+            res = await _controller.Create(pizza.NameLt, order);
 
             Assert.IsType<ViewResult>(res);
         }
@@ -89,12 +89,12 @@ namespace Kodhier.Tests
         [Fact(DisplayName = "Instead of making new order, system updates a preexisting unpaid order.")]
         public async Task CreateOrderAlreadyExists()
         {
-            var pizza = _context.Pizzas.Single(e => e.Name == "Havaian");
-            var order = new OrderCreateViewModel { Name = pizza.Name, Description = pizza.Description, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
+            var pizza = _context.Pizzas.Single(e => e.NameLt == "Havaian");
+            var order = new OrderCreateViewModel { Name = pizza.NameLt, Description = pizza.DescriptionLt, ImagePath = pizza.ImagePath, Comment = "dad", Quantity = 3, SizeId = 1 };
             if (!Validator.TryValidateObject(order, new ValidationContext(order), null, true))
                 _controller.ModelState.AddModelError("err", "Error");
 
-            var res = await _controller.Create(pizza.Name, order);
+            var res = await _controller.Create(pizza.NameLt, order);
             
         }
     }

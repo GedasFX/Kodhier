@@ -27,8 +27,8 @@ namespace Kodhier.Controllers
                     .Where(p => !p.IsDepricated)
                     .Select(p => new OrderViewModel
                     {
-                        Name = p.Name,
-                        Description = p.Description,
+                        Name = p.NameLt,
+                        Description = p.DescriptionLt,
                         ImagePath = p.ImagePath,
                         PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
@@ -46,7 +46,7 @@ namespace Kodhier.Controllers
             }
 
             var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.Name == id);
+                .SingleOrDefaultAsync(m => m.NameLt == id);
             if (pizza == null)
             {
                 exRes.AddError("Requested pizza could not be found.").PushTo(TempData);
@@ -57,9 +57,9 @@ namespace Kodhier.Controllers
             var vm = new OrderCreateViewModel
             {
                 ImagePath = pizza.ImagePath,
-                Name = pizza.Name,
+                Name = pizza.NameLt,
                 Prices = prices,
-                Description = pizza.Description
+                Description = pizza.DescriptionLt
             };
             vm.MinPrice = vm.Prices.DefaultIfEmpty(new PizzaPriceInfo()).Min(p => p.Price);
             return View(vm);
@@ -90,7 +90,7 @@ namespace Kodhier.Controllers
         {
             var execRes = new ExecutionResult();
 
-            var pizza = _context.Pizzas.SingleOrDefault(i => i.Name == id);
+            var pizza = _context.Pizzas.SingleOrDefault(i => i.NameLt == id);
             if (pizza == null)
             {
                 execRes.AddError("Requested pizza was not found. Please try again.").PushTo(TempData);

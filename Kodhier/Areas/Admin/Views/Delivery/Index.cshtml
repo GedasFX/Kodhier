@@ -33,7 +33,7 @@
 
             <td>
                 <form asp-action="Complete" method="post">
-                    <input name="id" value="@(item.Id)" type="hidden" />
+                    <input name="id" value="@item.Id" type="hidden" />
                     <input type="submit" value="Delivered" class="btn btn-outline-info" />
                 </form>
             </td>
@@ -52,7 +52,7 @@
         var map;
         var markers = [];
 
-        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress}));
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress }));
 
         function initMap() {
             geocoder = new google.maps.Geocoder();

@@ -91,9 +91,31 @@
     </script>
     <script>
         var autocomplete;
-        var geocoder;
         var map;
         var marker;
+
+        function updateMap() {
+            if (marker != null)
+                marker.setVisible(false);
+
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                marker.setVisible(false);
+                return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17); // Why 17? Because it looks good.
+            }
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+        }
 
         function initMap() {
             map = new window.google.maps.Map(document.getElementById('map'),
@@ -105,34 +127,21 @@
                 map: map
             });
 
-            geocoder = new window.google.maps.Geocoder();
             autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('address'),
                 { componentRestrictions: { country: "lt" } });
             autocomplete.bindTo('bounds', map);
 
-            autocomplete.addListener('place_changed',
-                function () {
-                    if (marker != null)
-                        marker.setVisible(false);
-
-                    var place = autocomplete.getPlace();
-                    if (!place.geometry) {
-                        // User entered the name of a Place that was not suggested and
-                        // pressed the Enter key, or the Place Details request failed.
-                        marker.setVisible(false);
-                        return;
-                    }
-
-                    // If the place has a geometry, then present it on a map.
-                    if (place.geometry.viewport) {
-                        map.fitBounds(place.geometry.viewport);
-                    } else {
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(17); // Why 17? Because it looks good.
-                    }
-                    marker.setPosition(place.geometry.location);
+            $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address=' +
+                $('#address').val() + '&sensor=false', null,
+                function (data) {
+                    var p = data.results[0].geometry.location;
+                    var latlng = new window.google.maps.LatLng(p.lat, p.lng);
+                    map.setCenter(latlng);
+                    map.setZoom(17);
+                    marker.setPosition(latlng);
                     marker.setVisible(true);
                 });
+            autocomplete.addListener('place_changed', updateMap);
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>

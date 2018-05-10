@@ -48,10 +48,10 @@ namespace Kodhier.Controllers
 					Quantity = o.Quantity,
 					Size = o.Size,
 					Comment = o.Comment,
-					Name = o.Pizza.Name,
+					Name = o.Pizza.NameLt,
 					ImagePath = o.Pizza.ImagePath,
 					Price = o.Price,
-					Description = o.Pizza.Description
+					Description = o.Pizza.DescriptionLt
 				});
 			return orders;
 		}

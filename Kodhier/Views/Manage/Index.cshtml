@@ -103,7 +103,6 @@
     </script>
     <script>
         var autocomplete;
-        var geocoder;
         var map;
         var marker;
 
@@ -139,8 +138,7 @@
             marker = new window.google.maps.Marker({
                 map: map
             });
-
-            geocoder = new window.google.maps.Geocoder();
+            
             autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('Address'),
                 { componentRestrictions: { country: "lt" } });
             autocomplete.bindTo('bounds', map);

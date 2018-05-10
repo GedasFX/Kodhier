@@ -10,6 +10,7 @@ using Kodhier.Services;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -36,7 +37,7 @@ namespace Kodhier.Controllers
 			_cache = cache;
 		}
 
-		private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId)
+		private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId, string culture)
 		{
 			var orders = _context.Orders
 				.Where(o => o.Client.Id == clientId)
@@ -48,17 +49,19 @@ namespace Kodhier.Controllers
 					Quantity = o.Quantity,
 					Size = o.Size,
 					Comment = o.Comment,
-					Name = o.Pizza.Name,
+					Name = culture == "lt-LT" ? o.Pizza.NameLt : o.Pizza.NameEn,
 					ImagePath = o.Pizza.ImagePath,
 					Price = o.Price,
-					Description = o.Pizza.Description
-				});
+					Description = culture == "lt-LT" ? o.Pizza.DescriptionLt : o.Pizza.DescriptionEn
+                });
 			return orders;
 		}
 
 		public async Task<IActionResult> Index()
 		{
-			var orders = await GetCheckoutOrders(User.GetId()).ToListAsync();
+		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            var orders = await GetCheckoutOrders(User.GetId(), cultCode).ToListAsync();
 			return orders.Count == 0 ? View("Empty") : View(orders);
 		}
 
@@ -99,9 +102,11 @@ namespace Kodhier.Controllers
 				return RedirectToAction(nameof(Index), "Manage");
 			}
 
-			var vm = new ConfirmCheckoutViewModel
+		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            var vm = new ConfirmCheckoutViewModel
 			{
-				CheckoutList = GetCheckoutOrders(clientId),
+				CheckoutList = GetCheckoutOrders(clientId, cultCode),
 				ConfirmAddress = user.Address,
 				PhoneNumber = user.PhoneNumber
 			};
@@ -119,11 +124,13 @@ namespace Kodhier.Controllers
 
 			var clientId = User.GetId();
 			var user = _context.Users.Single(u => u.Id == clientId);
-			var orders = GetCheckoutOrders(clientId);
+		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            var orders = GetCheckoutOrders(clientId, cultCode);
 
 			if (!ModelState.IsValid)
 			{
-				model.CheckoutList = GetCheckoutOrders(clientId);
+				model.CheckoutList = GetCheckoutOrders(clientId, cultCode);
 				model.Price = model.CheckoutList.Sum(o => o.Price * o.Quantity);
 
 				return View(model);

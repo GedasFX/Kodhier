@@ -75,7 +75,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
                 .Select(Path.GetFileName);
 
-            return View(new PizzaCreateViewModel
+            return View(new PizzaFormViewModel
             {
                 PriceCategories = _context.PizzaPriceCategories,
                 ImageList = imgList
@@ -87,16 +87,18 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaCreateViewModel model)
+        public async Task<IActionResult> Create(PizzaFormViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             var dbPizza = new Pizza
             {
-                NameLt = model.Name,
-                PriceCategoryId = model.PriceCategoryId,
                 Id = Guid.NewGuid(),
-                DescriptionLt = model.Description,
+                NameLt = model.NameLt,
+                NameEn = model.NameEn,
+                PriceCategoryId = model.PriceCategoryId,
+                DescriptionLt = model.DescriptionLt,
+                DescriptionEn = model.DescriptionEn,
                 ImagePath = "~/uploads/img/gallery/" + model.ImagePath
             };
 
@@ -124,11 +126,13 @@ namespace Kodhier.Areas.Admin.Controllers
                 .Concat(Directory.EnumerateFiles(Path.Combine(_rootPath, "uploads/img/gallery/"), "*.png"))
                 .Select(Path.GetFileName);
 
-            var vm = new PizzaEditViewModel
+            var vm = new PizzaFormViewModel
             {
-                Name = pizza.NameLt,
+                NameLt = pizza.NameLt,
+                NameEn = pizza.NameEn,
                 PriceCategoryId = pizza.PriceCategoryId,
-                Description = pizza.DescriptionLt,
+                DescriptionLt = pizza.DescriptionLt,
+                DescriptionEn = pizza.DescriptionEn,
                 ImagePath = pizza.ImagePath,
                 PriceCategories = _context.PizzaPriceCategories,
                 ImageList = imgList
@@ -142,7 +146,7 @@ namespace Kodhier.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,PriceCategoryId,ImagePath,Description")] PizzaEditViewModel model)
+        public async Task<IActionResult> Edit(string id, PizzaFormViewModel model)
         {
             if (id == string.Empty)
             {
@@ -152,8 +156,10 @@ namespace Kodhier.Areas.Admin.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var pizza = _context.Pizzas.Single(p => p.NameLt == id);
-            pizza.NameLt = model.Name;
-            pizza.DescriptionLt = model.Description;
+            pizza.NameLt = model.NameLt;
+            pizza.DescriptionLt = model.DescriptionLt;
+            pizza.NameEn = model.NameEn;
+            pizza.DescriptionEn = model.DescriptionEn;
             pizza.ImagePath = "~/uploads/img/gallery/" + model.ImagePath;
             pizza.PriceCategoryId = model.PriceCategoryId;
 

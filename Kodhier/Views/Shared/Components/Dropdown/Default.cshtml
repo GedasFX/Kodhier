@@ -7,11 +7,11 @@
         <strong>Welcome, @Model.Name</strong>
     </a>
     <ul class=" dropdown-menu">
-        <h6 class="dropdown-header">Balance</h6>
+        <h6 class="dropdown-header">@Localizer["Balance"]</h6>
         <li class="nav-itemBalance" title="Add balance">
             <a class="nav-link active" asp-controller="Manage" asp-action="Redeem">@Model.Coins</a>
         </li>
-        <h6 class="dropdown-header">Settings</h6>
+        <h6 class="dropdown-header">@Localizer["Settings"]</h6>
         <li class="nav-itemDropdown">
             <a class="nav-link active" asp-controller="Manage" asp-action="Index">@Localizer["Profile"]</a>
         </li>

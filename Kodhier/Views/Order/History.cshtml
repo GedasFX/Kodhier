@@ -1,43 +1,46 @@
 ﻿@using Microsoft.AspNetCore.Localization
 @model Kodhier.ViewModels.OrderViewModels.OrderHistoryViewModel[]
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "History";
+    ViewData["Title"] = Localizer["History"];
 
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>
+    ();
     var cultCode = requestCulture.RequestCulture.UICulture.Name;
-}
-<link rel="stylesheet" type="text/css" href="~/css/History.css" />
-<div class="modal-header">
-    <h2>History</h2>
-</div>
+    }
+    <link rel="stylesheet" type="text/css" href="~/css/History.css" />
+    <div class="modal-header">
+        <h2>History</h2>
+    </div>
 
-<div class="col-md-11 col-sm-11 mx-auto">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="mx-auto">
-                <div class="card-header">
-                    <h4>In progress</h4>
+    <div class="col-md-11 col-sm-11 mx-auto">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto">
+                    <div class="card-header">
+                        <h4>@Localizer["In progress"]</h4>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-12">
-        <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
-            <thead>
-                <tr>
-                    <th style="width:20%">Name</th>
-                    <th style="width:5%">Size</th>
-                    <th style="width:10%">Quantity</th>
-                    <th style="width:5%">Total price</th>
-                    <th style="width:30%">Order date</th>
-                    <th style="width:10%">Order status</th>
-                    <th style="width:20%"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
-                {
+        <div class="col-md-12">
+            <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
+                <thead>
+                    <tr>
+                        <th style="width:20%">@Localizer["Name"]</th>
+                        <th style="width:5%">@Localizer["Size"]</th>
+                        <th style="width:10%">@Localizer["Quantity"]</th>
+                        <th style="width:5%">@Localizer["Total price"]</th>
+                        <th style="width:30%">@Localizer["Order date"]</th>
+                        <th style="width:10%">@Localizer["Order status"]</th>
+                        <th style="width:20%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
+                    {
                     <tr>
                         <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>
                         <td data-th="Size">@item.Size</td>
@@ -49,56 +52,56 @@
                             <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
                         </td>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="7"><a asp-action="Index" class="btn btn-success">Order New Pizza</a></td>
-                <tr>
-            </tfoot>
-        </table>
-    </div>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7"><a asp-action="Index" class="btn btn-success">@Localizer["Order New Pizza"]</a></td>
+                    <tr>
+                </tfoot>
+            </table>
+        </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="mx-auto">
-                <div class="card-header">
-                    <h4>Previous orders</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto">
+                    <div class="card-header">
+                        <h4>@Localizer["Previous orders"]</h4>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
         <div class="col-md-12">
             <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
                 <thead>
                     <tr>
-                        <th style="width:20%">Name</th>
-                        <th style="width:5%">Size</th>
-                        <th style="width:10%">Quantity</th>
-                        <th style="width:5%">Total price</th>
-                        <th style="width:30%">Order date</th>
-                        <th style="width:10%">Order status</th>
+                        <th style="width:20%">@Localizer["Name"]</th>
+                        <th style="width:5%">@Localizer["Size"]</th>
+                        <th style="width:10%">@Localizer["Quantity"]</th>
+                        <th style="width:5%">@Localizer["Total price"]</th>
+                        <th style="width:30%">@Localizer["Order date"]</th>
+                        <th style="width:10%">@Localizer["Order status"]</th>
                         <th style="width:20%"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Where(m => m.Status == OrderStatus.Done))
                     {
-                        <tr>
-                            <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>
-                            <td data-th="Size">@item.Size</td>
-                            <td data-th="Quantity">@item.Quantity</td>
-                            <td data-th="Total price">@(item.Quantity * item.Price)</td>
-                            <td data-th="Date ordered">@item.DateCreated</td>
-                            <td data-th="Order status">@item.Status</td>
-                            <td class="actions" data-th="">
-                                <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>
+                        <td data-th="Size">@item.Size</td>
+                        <td data-th="Quantity">@item.Quantity</td>
+                        <td data-th="Total price">@(item.Quantity * item.Price)</td>
+                        <td data-th="Date ordered">@item.DateCreated</td>
+                        <td data-th="Order status">@item.Status</td>
+                        <td class="actions" data-th="">
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
         </div>
-</div>
+    </div>
 
 

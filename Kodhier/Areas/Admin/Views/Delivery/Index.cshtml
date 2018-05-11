@@ -6,40 +6,49 @@
 
 <h2>Delivery</h2>
 
-<b>Pending deliveries:</b>
+<form asp-action="Assign" method="post">
+    <input type="submit" value="Assign new" class="btn btn-outline-success" style="cursor:pointer" /> <!-- style overrides -->
+</form>
 
-<table class="table-striped">
+<b>Pending deliveries:</b>
+<table>
     <tr>
-        <th>ID</th>
+        <th>Name</th>
         <th>Quantity</th>
         <th>Size</th>
-        <th>Comment</th>
-        <th>Name</th>
-        <th>Image</th>
+        <th>Comment (gal nereikia?)</th>
         <th>Deliver to</th>
-        <th>Update</th>
+        <th>#</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.Id)</td>
-            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-            <td>@Html.DisplayFor(modelItem => item.Size)</td>
-            <td>@Html.DisplayFor(modelItem => item.Comment)</td>
-            <td>@Html.DisplayFor(modelItem => item.Name)</td>
-            <td>@Html.DisplayFor(modelItem => item.ImagePath)</td>
-            <td>@Html.DisplayFor(modelItem => item.DeliveryAddress)</td>
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+        <td>@Html.DisplayFor(modelItem => item.Size)</td>
+        <td>@Html.DisplayFor(modelItem => item.DeliveryAddress)</td>
 
-            <td>
-                <form asp-action="Complete" method="post">
-                    <input name="id" value="@item.Id" type="hidden" />
-                    <input type="submit" value="Delivered" class="btn btn-outline-info" />
-                </form>
-            </td>
-        </tr>
+        <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+        <td>
+            <input type="hidden" name="Color" value="@Html.DisplayFor(modelItem => item.DeliveryColor)" />
+            <!-- style overrides -->
+
+            <form asp-action="ChangeColor" method="post" style="display: inline-block;">
+                <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
+                <select name="Color" asp-items="@(new SelectList(new String[]{ "Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple" }))" onchange="$(this).parent().submit()"></select>
+            </form>
+            <form asp-action="Abandon" method="post" style="display: inline;">
+                <input name="id" value="@item.Id" type="hidden" />
+                <input type="submit" value="Abandon" class="btn btn-outline-warning" style="cursor:pointer" />
+            </form>
+            <form asp-action="Complete" method="post" style="display: inline;">
+                <input name="id" value="@item.Id" type="hidden" />
+                <input type="submit" value="Delivered" class="btn btn-outline-info" style="cursor:pointer" />
+            </form>
+        </td>
+    </tr>
     }
-
 </table>
 
 <br />
@@ -48,11 +57,20 @@
 
 @section Scripts {
     <script>
+        $(function () {
+            $("table tr").each(function (i, element) {
+                if (i == 0) return;
+                $(element).find("select").val($(element).find("input[name=Color]").val());
+            });
+        });
+    </script>
+
+    <script>
         var geocoder;
         var map;
         var markers = [];
 
-        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress }));
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = t.DeliveryColor.ToString() }));
 
         function initMap() {
             geocoder = new google.maps.Geocoder();
@@ -64,12 +82,14 @@
             );
 
             for (var i = 0; i < addresses.length; i++) {
+                var color = addresses[i].color.toLowerCase();
                 geocoder.geocode({ 'address': addresses[i].addr }, function (results, status) {
                     if (status == 'OK') {
                         //map.setCenter(results[0].geometry.location);
                         markers.push(new google.maps.Marker({
                             map: map,
-                            position: results[0].geometry.location
+                            position: results[0].geometry.location,
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
                         }));
                     } else {
                         alert('There was a problem displaying the address: ' + status);

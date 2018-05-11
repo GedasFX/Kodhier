@@ -62,7 +62,7 @@ namespace Kodhier.Areas.Admin.Controllers
             var order = _context.Orders.Single(o => o.Id == id);
 
             order.DeliveryDate = DateTime.Now;
-            order.Status = OrderStatus.Delivering;
+            order.Status = OrderStatus.Ready;
 
             await _context.SaveChangesAsync();
 

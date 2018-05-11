@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Kodhier.Models;
+using System;
 
 namespace Kodhier.ViewModels
 {
@@ -16,5 +14,6 @@ namespace Kodhier.ViewModels
 		public string ImagePath { get; set; }
 
 		public string DeliveryAddress { get; set; }
+		public ColorCode DeliveryColor { get; set; }
 	}
 }

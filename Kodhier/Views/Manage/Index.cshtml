@@ -35,50 +35,57 @@
                             <div class="form-group">
                                 <input asp-for="Email" class="form-control" />
                                 @if (Model.IsEmailConfirmed)
-        {
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-}
-else
-{
-                        <button asp-action="SendVerificationEmail" class="btn btn-outline-warning" style="margin-top: 10px;">@Localizer["Send verification email"]</button>
-}
+                                {
+                                    <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                                }
+                                else
+                                {
+                                    <button asp-action="SendVerificationEmail" class="btn btn-outline-warning" style="margin-top: 10px;">@Localizer["Send verification email"]</button>
+                                }
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="FirstName">@Localizer["First name"]</label>
-                                <input asp-for="FirstName" class="form-control" />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <div class="panel panel-primary panel-transparent">
+                                <div class="panel-heading">
+                                    <h6 class="legendLabel">@Localizer["Additional information"]</h6>
+                                    <p></p>
+                                    <div class="form-group">
+                                        <label asp-for="FirstName">@Localizer["First name"]</label>
+                                        <input asp-for="FirstName" class="form-control" />
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="LastName">@Localizer["Last name"]</label>
+                                        <input asp-for="LastName" class="form-control" />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BirthDate">@Localizer["Birth date"]</label>
+                                        <input asp-for="BirthDate" class="form-control" type="date" />
+                                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
+                                        <input asp-for="PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Address" id="address">@Localizer["Delivery address"]</label>
+                                        <input asp-for="Address" class="form-control" />
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                    <div class="checkbox">
+                                        <input asp-for="EmailSendPromotional" />
+                                        <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <input asp-for="EmailSendUpdates" />
+                                        <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="LastName">@Localizer["Last name"]</label>
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="BirthDate">@Localizer["Birth date"]</label>
-                                <input asp-for="BirthDate" class="form-control" type="date" />
-                                <span asp-validation-for="BirthDate" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="PhoneNumber">@Localizer["Phone number"]</label>
-                                <input asp-for="PhoneNumber" class="form-control" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Address" id="address">@Localizer["Delivery address"]</label>
-                                <input asp-for="Address" class="form-control" />
-                                <span asp-validation-for="Address" class="text-danger"></span>
-                            </div>
-                            <div class="checkbox">
-                                <input asp-for="EmailSendPromotional" />
-                                <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
-                            </div>
-                            <div class="checkbox">
-                                <input asp-for="EmailSendUpdates" />
-                                <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
-                            </div>
-                            @await Html.PartialAsync("_ManageNav")
-                            <button type="submit" class="btn btn-outline-success" style="margin-top: 10px;">@Localizer["Update profile"]</button>
+                            <p></p>
+                                @await Html.PartialAsync("_ManageNav")
+                                <button type="submit" class="btn btn-outline-success" style="margin-top: 10px;">@Localizer["Update profile"]</button>
                         </div>
                     </div>
                     <div class="col-md-6">

@@ -1,5 +1,4 @@
-﻿@model Kodhier.ViewModels.Admin.EmailViewModel
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayAdmin.cshtml";
 }
@@ -7,18 +6,19 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 <h2>Email management</h2>
-
+<input type="text" id="subj" class="form-control" placeholder="Subject" />
 <div id="editor">
     <p>Hello World!</p>
     <p>Some initial <strong>bold</strong> text</p>
     <p><br></p>
 </div>
-<button onclick="update()">Send</button><button onclick="send()">Confirm Send</button>
+<button onclick="update()">Send</button>
 <br/>
 <div id="out"></div>
-<form>
-    <input type="hidden" id="formHtml" />
-    <input type="submit" onclick="send()"/>
+<form asp-action="SendEmail">
+    <input type="hidden" id="formSubj" name="subject" />
+    <input type="hidden" id="formHtml" name="htmlMessage" />
+    <input type="submit" onclick="send()" />
 </form>
 @section Scripts {
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -32,6 +32,7 @@
         }
         function send() {
             $('#formHtml').val($('.ql-editor').html());
+            $('#formSubj').val($('#subj').val());
             return true;
         }
     </script>

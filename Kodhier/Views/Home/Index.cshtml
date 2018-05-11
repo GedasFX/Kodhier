@@ -9,12 +9,13 @@
 <div id="fullpage">
     <section>
         <div class="css-slider-wrapper" id="slideshow">
-            @for (int j = 1; j <= Model.Count()+1; j++)
+            @for (int j = 1; j <= Model.Count(); j++)
             {
                 <input type="radio" name="slider" class="slide-radio@(j)" @(j==1?"checked":"") id="slider_@(j)">
             }
+            <!-- Slider Pagination -->
             <div class="slider-pagination">
-                @for (int j = 1; j <= Model.Count()+1; j++)
+                @for (int j = 1; j <= Model.Count(); j++)
                 {
                     <label for="slider_@(j)" class="page@(j)"></label>
                 }

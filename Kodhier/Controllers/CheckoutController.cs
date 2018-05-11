@@ -42,6 +42,7 @@ namespace Kodhier.Controllers
 			var orders = _context.Orders
 				.Where(o => o.Client.Id == clientId)
 				.Where(o => o.Status == OrderStatus.Unpaid)
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
 				.OrderByDescending(c => c.PlacementDate)
 				.Select(o => new CheckoutViewModel
 				{
@@ -124,19 +125,23 @@ namespace Kodhier.Controllers
 
 			var clientId = User.GetId();
 			var user = _context.Users.Single(u => u.Id == clientId);
-		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
-		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
-            var orders = GetCheckoutOrders(clientId, cultCode);
-
-			if (!ModelState.IsValid)
+		    
+            if (!ModelState.IsValid)
 			{
-				model.CheckoutList = GetCheckoutOrders(clientId, cultCode);
+			    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+			    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+                model.CheckoutList = GetCheckoutOrders(clientId, cultCode);
 				model.Price = model.CheckoutList.Sum(o => o.Price * o.Quantity);
 
 				return View(model);
 			}
 
-			var price = orders.Sum(o => o.Price * o.Quantity);
+		    var orders = _context.Orders.Include(o => o.Pizza)
+		        .Where(o => o.Client.Id == clientId)
+		        .Where(o => o.Status == OrderStatus.Unpaid)
+		        .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14));
+            
+		    var price = orders.Sum(o => o.Price * o.Quantity);
 
 			if (price > user.Coins)
 			{

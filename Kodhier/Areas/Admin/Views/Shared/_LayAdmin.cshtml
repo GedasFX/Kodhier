@@ -54,8 +54,11 @@
                     <div class="user__info"><h4>User: @User.Claims.Single(c => c.Type == ClaimTypes.Name).Value </h4></div>
                 </div>
                 <ul class="navigation">
-                    <li><a asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i>System</a></li>
-
+                    <li class="navigation__sub">
+                        <a><i class="zmdi zmdi-settings"></i> System</a>
+                        <ul>
+                            <li><a asp-controller="News" asp-action="Index"><i class="zmdi zmdi-folder-star-alt"></i> News Settings</a></li>
+                        </ul>
                     <li class="navigation__sub">
                         <a><i class="zmdi zmdi-view-week"></i> Pizza Management</a>
                         <ul>

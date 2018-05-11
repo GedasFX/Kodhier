@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Birth date" xml:space="preserve">
-    <value>Gimimo data</value>
+  <data name="The Email field is not a valid e-mail address." xml:space="preserve">
+    <value>Neteisingai įvestas el. pašto adresas</value>
   </data>
-  <data name="Delivery address" xml:space="preserve">
-    <value>Pristatymo adresas</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>El. paštas</value>
-  </data>
-  <data name="First name" xml:space="preserve">
-    <value>Vardas</value>
-  </data>
-  <data name="Last name" xml:space="preserve">
-    <value>Pavardė</value>
-  </data>
-  <data name="Phone number" xml:space="preserve">
-    <value>Telefono numeris</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
-  </data>
-  <data name="Send order updates to email" xml:space="preserve">
-    <value>Siųsti užsakymo būsenas į el. paštą</value>
-  </data>
-  <data name="Send promotional to email" xml:space="preserve">
-    <value>Siųsti reklamas į el. paštą</value>
-  </data>
-  <data name="Send verification email" xml:space="preserve">
-    <value>Siųsti el. pašto patvirtinimo kodą</value>
-  </data>
-  <data name="Update profile" xml:space="preserve">
-    <value>Atnaujinti profilio duomenis</value>
-  </data>
-  <data name="User details" xml:space="preserve">
-    <value>Vartotojo duomenys</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Vartotojo vardas</value>
+  <data name="The Email field is required." xml:space="preserve">
+    <value>El. pašto laukas yra būtinas</value>
   </data>
 </root>

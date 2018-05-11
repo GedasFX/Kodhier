@@ -117,43 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Birth date" xml:space="preserve">
-    <value>Gimimo data</value>
+  <data name="History" xml:space="preserve">
+    <value>Užsakymo istorija</value>
   </data>
-  <data name="Delivery address" xml:space="preserve">
-    <value>Pristatymo adresas</value>
+  <data name="In progress" xml:space="preserve">
+    <value>Vykdomi užsakymai:</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>El. paštas</value>
+  <data name="Name" xml:space="preserve">
+    <value>Pavadinimas</value>
   </data>
-  <data name="First name" xml:space="preserve">
-    <value>Vardas</value>
+  <data name="Order date" xml:space="preserve">
+    <value>Užsakymo data</value>
   </data>
-  <data name="Last name" xml:space="preserve">
-    <value>Pavardė</value>
+  <data name="Order New Pizza" xml:space="preserve">
+    <value>Užsakyti naują picą</value>
   </data>
-  <data name="Phone number" xml:space="preserve">
-    <value>Telefono numeris</value>
+  <data name="Order status" xml:space="preserve">
+    <value>Užsakymo būsena</value>
   </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
+  <data name="Previous orders" xml:space="preserve">
+    <value>Įvykdyti užsakymai</value>
   </data>
-  <data name="Send order updates to email" xml:space="preserve">
-    <value>Siųsti užsakymo būsenas į el. paštą</value>
+  <data name="Quantity" xml:space="preserve">
+    <value>Kiekis</value>
   </data>
-  <data name="Send promotional to email" xml:space="preserve">
-    <value>Siųsti reklamas į el. paštą</value>
+  <data name="Size" xml:space="preserve">
+    <value>Dydis</value>
   </data>
-  <data name="Send verification email" xml:space="preserve">
-    <value>Siųsti el. pašto patvirtinimo kodą</value>
-  </data>
-  <data name="Update profile" xml:space="preserve">
-    <value>Atnaujinti profilio duomenis</value>
-  </data>
-  <data name="User details" xml:space="preserve">
-    <value>Vartotojo duomenys</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Vartotojo vardas</value>
+  <data name="Total price" xml:space="preserve">
+    <value>Visa kaina</value>
   </data>
 </root>

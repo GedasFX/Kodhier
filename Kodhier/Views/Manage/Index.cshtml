@@ -71,11 +71,11 @@
                             </div>
                             <div class="checkbox">
                                 <input asp-for="EmailSendPromotional" />
-                                <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
+                                <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email"]</label>
                             </div>
                             <div class="checkbox">
                                 <input asp-for="EmailSendUpdates" />
-                                <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
+                                <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email"]</label>
                             </div>
                             @await Html.PartialAsync("_ManageNav")
                             <button type="submit" class="btn btn-outline-success">@Localizer["Update profile"]</button>

@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done).OrderByDescending(m => m.DateCreated))
+                    @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
                     {
                     <tr>
                         <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>
@@ -95,9 +95,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <form asp-action="Create" asp-route-id="@item.Pizza.NameLt">
-                                <button type="submit" class="btn btn-danger btn-sm">New order</button>
-                            </form>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
                         </td>
                     </tr>
                     }

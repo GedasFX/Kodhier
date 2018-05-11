@@ -147,4 +147,7 @@
   <data name="Total price" xml:space="preserve">
     <value>Visa kaina</value>
   </data>
+  <data name="Order again" xml:space="preserve">
+    <value>Užsakyti dar kartą</value>
+  </data>
 </root>

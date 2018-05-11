@@ -12,7 +12,7 @@
 }
 <link rel="stylesheet" type="text/css" href="~/css/History.css" />
 <div class="modal-header">
-    <h2>History</h2>
+    <h2>@Localizer["History"]</h2>
 </div>
 
 
@@ -50,7 +50,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">@Localizer["Order again"]</button></a>
                         </td>
                     </tr>
                 }
@@ -96,7 +96,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">@Localizer["Order again"]</button></a>
                         </td>
                     </tr>
                 }

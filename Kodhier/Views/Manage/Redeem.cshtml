@@ -21,13 +21,13 @@
             </div>
             <div class="col-md-3 offset-md-5 offset-sm-4">
                 <div class="form-group">
-                    <input type="submit" value="Redeem" style="margin-top:5px" class="btn btn-outline-success" />
+                    <input type="submit" value= @Localizer["Redeem"] style="margin-top:5px" class="btn btn-outline-success" />
                 </div>
             </div>
             @if (ViewData["Error"] != null)
             {
                 <div class="alert alert-danger" role="alert">
-                    <p><strong>Error:</strong> @Localizer[@ViewData["Error"].ToString()]</p>
+                    <p><strong>Error:</strong> @ViewData["Error"].ToString()</p>
                 </div>
             }
             @if (TempData["Success"] != null)

@@ -4,5 +4,33 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayAdmin.cshtml";
 }
 
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 <h2>Email management</h2>
 
+<div id="editor">
+    <p>Hello World!</p>
+    <p>Some initial <strong>bold</strong> text</p>
+    <p><br></p>
+</div>
+<button onclick="update()">Send</button><button onclick="send()">Confirm Send</button>
+<br/>
+<div id="out"></div>
+<form>
+    <input type="submit" onclick="send()"/>
+</form>
+@section Scripts {
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor', {
+            modules: { toolbar: true },
+            theme: 'snow'
+        });
+        function update() {
+            $('#out').html($('.ql-editor').html());
+        }
+        function send() {
+
+        }
+    </script>
+}

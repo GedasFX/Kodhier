@@ -29,7 +29,7 @@ namespace Kodhier.Areas.Admin.Controllers
 
 			// check carefuly
 			var orders = _context.Orders
-				.Where(o => o.Status == OrderStatus.Delivering) // && o.DelivereeId == clientId
+				.Where(o => o.Status == OrderStatus.Delivering && o.DelivereeId == clientId)
 				.OrderByDescending(o => o.PaymentDate)
 				//.Take(50) // limit due to google maps api
 				.Select(o => new DeliveryViewModel
@@ -41,7 +41,7 @@ namespace Kodhier.Areas.Admin.Controllers
 					Name = o.Pizza.NameLt,
 					ImagePath = o.Pizza.ImagePath,
 					DeliveryAddress = o.DeliveryAddress,
-					DeliveryColor = ColorCode.Unassigned //o.DeliveryColor
+					DeliveryColor = ColorCode.Red //o.DeliveryColor
 				});
 			return View(orders);
 		}
@@ -53,12 +53,12 @@ namespace Kodhier.Areas.Admin.Controllers
 		public async Task<IActionResult> Assign()
 		{
 			var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
-				.FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready); // && o.DelivereeId == clientId
+				.FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == User.GetId())
 			if (newOrder == null)
 				return RedirectToAction(nameof(Index));
 
-			//newOrder.DeliveringDate = DateTime.Now();
-			//newOrder.DelivereeId = User.GetId();
+			newOrder.DeliveringDate = DateTime.Now;
+			newOrder.DelivereeId = User.GetId();
 			newOrder.Status = OrderStatus.Delivering;
 
 			await _context.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace Kodhier.Areas.Admin.Controllers
 
             var correctOrder = _context.Orders
 				.Where(o => o.Id == id)
-				.SingleOrDefault(o => o.Status == OrderStatus.Delivering);// && o.DelivereeId == clientId
+				.SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId())
 
 			if (correctOrder != null)
 			{
@@ -100,8 +100,8 @@ namespace Kodhier.Areas.Admin.Controllers
 
 			if (wrongOrder != null)
 			{
-				//wrongOrder.DeliveringDate = null;
-				//wrongOrder.DelivereeId = null;
+				wrongOrder.DeliveryDate = null;
+				wrongOrder.DelivereeId = null;
 				wrongOrder.Status = OrderStatus.Ready;
 			}
 

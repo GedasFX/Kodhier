@@ -70,7 +70,7 @@
         var map;
         var markers = [];
 
-        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = (t.DeliveryColor != Kodhier.Models.ColorCode.Unassigned) ? t.DeliveryColor.ToString() : "pink" }));
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = t.DeliveryColor.ToString() }));
 
         function initMap() {
             geocoder = new google.maps.Geocoder();

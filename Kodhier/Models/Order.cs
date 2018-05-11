@@ -36,9 +36,9 @@ namespace Kodhier.Models
 		public string ChefId { get; set; }
 		public virtual ApplicationUser Chef { get; set; }
 
-		//[ForeignKey("Deliveree")]
-		//public string DelivereeId { get; set; }
-		//public virtual ApplicationUser Deliveree { get; set; }
+		[ForeignKey("Deliveree")]
+		public string DelivereeId { get; set; }
+		public virtual ApplicationUser Deliveree { get; set; }
 		public ColorCode DeliveryColor { get; set; }
 	}
 }

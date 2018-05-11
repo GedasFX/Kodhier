@@ -106,12 +106,12 @@ namespace Kodhier.Controllers
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
             if (code == null)
             {
-                execRes.AddError("Provided code doesn't exist.").PushTo(TempData);
+                execRes.AddError(_localizer["Provided code doesn't exist."]).PushTo(TempData);
                 return View();
             }
             if (code.RedemptionDate != null)
             {
-                execRes.AddError("Provided code has already been used.").PushTo(TempData);
+                execRes.AddError(_localizer["Provided code has already been used."]).PushTo(TempData);
                 return View();
             }
 
@@ -125,9 +125,9 @@ namespace Kodhier.Controllers
 
             if (await _context.SaveChangesAsync() > 0)
                 execRes.AddInfo(
-                    $"Code has been succesfully redeemed. Added {code.Amount} to the acccount balance. New balance: {user.Coins}!");
+                    _localizer["Code has been succesfully redeemed. Added {0} to the acccount balance. New balance: {1}!", code.Amount, user.Coins]);
             else
-                execRes.AddError("Failed to use the code. Try again later.");
+                execRes.AddError(_localizer["Failed to use the code. Try again later."]);
 
             execRes.PushTo(TempData);
             return View();

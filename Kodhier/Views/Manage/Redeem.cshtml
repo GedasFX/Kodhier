@@ -1,6 +1,8 @@
-﻿@model RedeemViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model RedeemViewModel
 @{
-    ViewBag.Title = "Redeem code";
+    ViewBag.Title = Localizer["Redeem code"];
     Layout = "_Layout";
 }
 <div class="col-md-8 mx-auto">
@@ -25,7 +27,7 @@
             @if (ViewData["Error"] != null)
             {
                 <div class="alert alert-danger" role="alert">
-                    <p><strong>Error:</strong> @ViewData["Error"].ToString()</p>
+                    <p><strong>Error:</strong> @Localizer[@ViewData["Error"].ToString()]</p>
                 </div>
             }
             @if (TempData["Success"] != null)
@@ -37,6 +39,6 @@
         </form>
     </div>
 </div>
-    @section Scripts {
-        @await Html.PartialAsync("_ValidationScriptsPartial")
-    }
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

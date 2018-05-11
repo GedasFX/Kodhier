@@ -117,25 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin cp" xml:space="preserve">
-    <value>Admin valdymas</value>
+  <data name="Pizza could not be added to the cart. Please try again." xml:space="preserve">
+    <value>Picos pridėti į krepšelį nepavyko. Bandykite dar kartą.</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Likutis</value>
+  <data name="Pizza no longer exists. Please try another pizza." xml:space="preserve">
+    <value>Šiuo metu picos užsisakyti negalima. Pasirinkite kitą.</value>
   </data>
-  <data name="Log out" xml:space="preserve">
-    <value>Atsijungti</value>
+  <data name="Pizza was succesfully added to the cart." xml:space="preserve">
+    <value>Pica sėkmingai pridėta į krepšelį.</value>
   </data>
-  <data name="Order history" xml:space="preserve">
-    <value>Užsakymų istorija</value>
+  <data name="Requested pizza could not be found." xml:space="preserve">
+    <value>Klaida. Norima pica nerasta.</value>
   </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
+  <data name="Unexpected size was selected. Please try again." xml:space="preserve">
+    <value>Pasirinktas netinkamas dydis. Pabandykite dar kartą.</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Nustatymai</value>
-  </data>
-  <data name="Welcome," xml:space="preserve">
-    <value>Sveiki,</value>
+  <data name="You are logged out. Please log in to add the order." xml:space="preserve">
+    <value>Jūs atsijungėte nuo paskyros. Prisijunkite per naują.</value>
   </data>
 </root>

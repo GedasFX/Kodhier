@@ -10,16 +10,20 @@ using Kodhier.Mvc;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace Kodhier.Controllers
 {
     public class OrderController : Controller
     {
         private readonly KodhierDbContext _context;
+        private readonly IStringLocalizer<OrderController> _localizer;
 
-        public OrderController(KodhierDbContext context)
+        public OrderController(KodhierDbContext context,
+            IStringLocalizer<OrderController> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -52,7 +56,7 @@ namespace Kodhier.Controllers
                 .SingleOrDefaultAsync(m => m.NameLt == id);
             if (pizza == null)
             {
-                exRes.AddError("Requested pizza could not be found.").PushTo(TempData);
+                exRes.AddError(_localizer["Requested pizza could not be found."]).PushTo(TempData);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -96,7 +100,7 @@ namespace Kodhier.Controllers
             var pizza = _context.Pizzas.SingleOrDefault(i => i.NameLt == id);
             if (pizza == null)
             {
-                execRes.AddError("Requested pizza was not found. Please try again.").PushTo(TempData);
+                execRes.AddError(_localizer["Requested pizza was not found. Please try again."]).PushTo(TempData);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -109,21 +113,21 @@ namespace Kodhier.Controllers
 
             if (pizza.IsDepricated)
             {
-                execRes.AddError("Pizza no longer exists. Please try another pizza.").PushTo(TempData);
+                execRes.AddError(_localizer["Pizza no longer exists. Please try another pizza."]).PushTo(TempData);
                 return RedirectToAction(nameof(Index));
             }
 
             var ppi = _context.PizzaPriceInfo.SingleOrDefault(g => g.Id == model.SizeId);
             if (ppi == null || pizza.PriceCategoryId != ppi.PriceCategoryId)
             {
-                execRes.AddError("Unexpected size was selected. Please try again.").PushTo(TempData);
+                execRes.AddError(_localizer["Unexpected size was selected. Please try again."]).PushTo(TempData);
                 return RedirectToAction(nameof(Create), new { Id = id });
             }
 
             var userId = User.GetId();
             if (string.IsNullOrEmpty(userId))
             {
-                execRes.AddError("You are logged out. Please log in to add the order.").PushTo(TempData);
+                execRes.AddError(_localizer["You are logged out. Please log in to add the order."]).PushTo(TempData);
                 return RedirectToAction(nameof(Create), new { Id = id });
             }
 
@@ -156,9 +160,9 @@ namespace Kodhier.Controllers
             }
 
             if (await _context.SaveChangesAsync() > 0)
-                execRes.AddInfo("Order was succesfully added to the basket.");
+                execRes.AddInfo(_localizer["Pizza was succesfully added to the cart."]);
             else
-                execRes.AddError("Order could not be added to the basket. Please try again.");
+                execRes.AddError(_localizer["Pizza could not be added to the cart. Please try again."]);
 
             execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));

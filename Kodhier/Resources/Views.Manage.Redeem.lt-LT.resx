@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Incorrect input format." xml:space="preserve">
+    <value>Neteisingas kodo formatas.</value>
+  </data>
+  <data name="Redeem" xml:space="preserve">
+    <value>Patvirtinti</value>
+  </data>
   <data name="Redeem code" xml:space="preserve">
     <value>Kodo patvirtinimas</value>
   </data>

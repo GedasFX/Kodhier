@@ -117,25 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin cp" xml:space="preserve">
-    <value>Admin valdymas</value>
+  <data name="Address:" xml:space="preserve">
+    <value>Adresas:</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Likutis</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Kiekis</value>
   </data>
-  <data name="Log out" xml:space="preserve">
-    <value>Atsijungti</value>
+  <data name="Cart" xml:space="preserve">
+    <value>Krepšelis</value>
   </data>
-  <data name="Order history" xml:space="preserve">
-    <value>Užsakymų istorija</value>
+  <data name="Checkout" xml:space="preserve">
+    <value>Atsiskaitymas</value>
   </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
+  <data name="Continue" xml:space="preserve">
+    <value>Patvirtinimas</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Nustatymai</value>
+  <data name="Delivery details" xml:space="preserve">
+    <value>Pristatymo informacija</value>
   </data>
-  <data name="Welcome," xml:space="preserve">
-    <value>Sveiki,</value>
+  <data name="Ex: +37061212345" xml:space="preserve">
+    <value>Pvz.: +37061212345</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Pavadinimas</value>
+  </data>
+  <data name="Phone number:" xml:space="preserve">
+    <value>Telefono numeris:</value>
+  </data>
+  <data name="Place order" xml:space="preserve">
+    <value>Patvirtinti užsakymą</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Kaina</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>Grįžti</value>
+  </data>
+  <data name="Shipping address" xml:space="preserve">
+    <value>Pristatymo adresas</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Dydis</value>
+  </data>
+  <data name="Total:" xml:space="preserve">
+    <value>Viso:</value>
   </data>
 </root>

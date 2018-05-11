@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
 
 namespace Kodhier.Controllers
 {
@@ -25,17 +26,20 @@ namespace Kodhier.Controllers
 		private readonly IEmailSender _emailSender;
 		private readonly IHostingEnvironment _env;
 		private readonly IMemoryCache _cache;
+        private readonly IStringLocalizer<CheckoutController> _localizer;
 
-		public CheckoutController(KodhierDbContext context,
+        public CheckoutController(KodhierDbContext context,
 			IEmailSender emailSender,
 			IHostingEnvironment env,
-			IMemoryCache cache)
+			IMemoryCache cache,
+            IStringLocalizer<CheckoutController> localizer)
 		{
 			_context = context;
 			_emailSender = emailSender;
 			_env = env;
 			_cache = cache;
-		}
+            _localizer = localizer;
+        }
 
 		private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId, string culture)
 		{
@@ -66,26 +70,26 @@ namespace Kodhier.Controllers
 			return orders.Count == 0 ? View("Empty") : View(orders);
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(string id, int qty)
-		{
-			var execRes = new ExecutionResult();
-			var order = _context.Orders.Single(o => o.Id.Equals(Guid.Parse(id)));
-			if (order == null || order.ClientId != User.GetId())
-			{
-				execRes.AddError("Pizza you were trying to edit was not found. Please try again.").PushTo(TempData);
-				return RedirectToAction("Index");
-			}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, int qty)
+        {
+            var execRes = new ExecutionResult();
+            var order = _context.Orders.Single(o => o.Id.Equals(Guid.Parse(id)));
+            if (order == null || order.ClientId != User.GetId())
+            {
+                execRes.AddError(_localizer["Pizza you were trying to edit was not found. Please try again."]).PushTo(TempData);
+                return RedirectToAction("Index");
+            }
 
-			var oq = order.Quantity;
-			order.Quantity = qty;
+            var oq = order.Quantity;
+            order.Quantity = qty;
 
-			if (await _context.SaveChangesAsync() > 0)
-				execRes.AddSuccess($"Pizza amount was successfully changed from {oq} to {qty}.");
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddSuccess(_localizer["Pizza amount was successfully changed from {0} to {1}.", oq, qty]);
 			else
 			{
-				execRes.AddError("Order could not be processed. Please try again.");
+				execRes.AddError(_localizer["Order could not be processed. Please try again."]);
 			}
 
 			execRes.PushTo(TempData);
@@ -99,7 +103,7 @@ namespace Kodhier.Controllers
 
 			if (!user.EmailConfirmed)
 			{
-				new ExecutionResult().AddError("Your email is not confirmed. Please confirm it before proceeding.").PushTo(TempData);
+				new ExecutionResult().AddError(_localizer["Your email is not confirmed. Please confirm it before proceeding."]).PushTo(TempData);
 				return RedirectToAction(nameof(Index), "Manage");
 			}
 
@@ -146,7 +150,7 @@ namespace Kodhier.Controllers
 			if (price > user.Coins)
 			{
 				// insufficient PizzaCoins
-				execRes.AddError("Insufficient amount of coins in the balance.").PushTo(TempData);
+				execRes.AddError(_localizer["Insufficient amount of coins in the balance."]).PushTo(TempData);
 				return RedirectToAction("Index");
 			}
 
@@ -163,17 +167,17 @@ namespace Kodhier.Controllers
 			user.Coins -= price;
 
 			if (await _context.SaveChangesAsync() > 0)
-				execRes.AddSuccess("Pizza was ordered successfully .");
+				execRes.AddSuccess(_localizer["Pizza was ordered successfully."]);
 			else
 			{
-				execRes.AddError("Order could not be processed. Please try again.").PushTo(TempData);
+				execRes.AddError(_localizer["Order could not be processed. Please try again."]).PushTo(TempData);
 				return RedirectToAction("Index");
 			}
 
 			if (user.EmailSendUpdates)
 			{
 				await SendEmail(user);
-				execRes.AddInfo($"Email was sent to {user.Email}");
+				execRes.AddInfo(_localizer["Email was sent to {0}", user.Email]);
 			}
 
 			_cache.Remove(user.UserName);
@@ -218,13 +222,13 @@ namespace Kodhier.Controllers
 			{
 				_context.Orders.Remove(order);
 				if (await _context.SaveChangesAsync() > 0)
-					execRes.AddSuccess("Pizza was successfuly removed from the basket.");
+					execRes.AddSuccess(_localizer["Pizza was successfuly removed from the cart."]);
 
 				else
-					execRes.AddError("Pizza was not able to be removed from the basket. Please try again.");
+					execRes.AddError(_localizer["Pizza was not able to be removed from the cart. Please try again."]);
 			}
 			else
-				execRes.AddError("Requested pizza was not found. Please try again.");
+				execRes.AddError(_localizer["Requested pizza was not found. Please try again."]);
 
 			execRes.PushTo(TempData);
 			return RedirectToAction("Index");

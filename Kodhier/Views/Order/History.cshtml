@@ -6,8 +6,7 @@
 @{
     ViewData["Title"] = Localizer["History"];
 
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>
-    ();
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var cultCode = requestCulture.RequestCulture.UICulture.Name;
     }
     <link rel="stylesheet" type="text/css" href="~/css/History.css" />
@@ -49,7 +48,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">@Localizer["Order again"]</button></a>
                         </td>
                     </tr>
                     }
@@ -95,7 +94,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">@Localizer["Order again"]</button></a>
                         </td>
                     </tr>
                     }

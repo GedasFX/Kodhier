@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Kodhier.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    
     public class ManageController : Controller
     {
         private readonly KodhierDbContext _context;

@@ -44,9 +44,6 @@ namespace Kodhier.Controllers
             _env = env;
         }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -309,7 +306,6 @@ namespace Kodhier.Controllers
         {
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
                 return RedirectToAction(nameof(Login));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();

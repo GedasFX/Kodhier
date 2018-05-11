@@ -13,7 +13,6 @@
                 <div class="icon"><img src="~/images/icon.png"></div>
                 <h2>@ViewData["Title"]</h2>
             </header>
-            <div asp-validation-summary="All"></div>
             <div class="form-group">
                 <label asp-for="Username">@Localizer["Username"]</label>
                 <input asp-for="Username" class="form-control" type="text" placeholder=@Localizer["Enter Username"] />

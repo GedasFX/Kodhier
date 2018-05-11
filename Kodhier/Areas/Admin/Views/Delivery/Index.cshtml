@@ -36,7 +36,7 @@
 
             <form asp-action="ChangeColor" method="post" style="display: inline-block;">
                 <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
-                <select name="Color" asp-items="@(new SelectList(new String[]{ "Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple" }))" onchange="$(this).parent().submit()"></select>
+                <select name="Color" asp-items="@(new SelectList(new String[]{ "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))" onchange="$(this).parent().submit()"></select>
             </form>
             <form asp-action="Abandon" method="post" style="display: inline;">
                 <input name="id" value="@item.Id" type="hidden" />
@@ -70,7 +70,7 @@
         var map;
         var markers = [];
 
-        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = t.DeliveryColor.ToString() }));
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = (t.DeliveryColor != Kodhier.Models.ColorCode.Unassigned) ? t.DeliveryColor.ToString() : "pink" }));
 
         function initMap() {
             geocoder = new google.maps.Geocoder();

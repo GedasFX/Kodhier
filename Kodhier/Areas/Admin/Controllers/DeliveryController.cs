@@ -41,7 +41,7 @@ namespace Kodhier.Areas.Admin.Controllers
 					Name = o.Pizza.NameLt,
 					ImagePath = o.Pizza.ImagePath,
 					DeliveryAddress = o.DeliveryAddress,
-					DeliveryColor = ColorCode.Orange //o.DeliveryColor
+					DeliveryColor = ColorCode.Unassigned //o.DeliveryColor
 				});
 			return View(orders);
 		}
@@ -52,14 +52,14 @@ namespace Kodhier.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Assign()
 		{
-			var newDelivery = await _context.Orders.OrderBy(o => o.PaymentDate)
+			var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
 				.FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready); // && o.DelivereeId == clientId
-			if (newDelivery == null)
+			if (newOrder == null)
 				return RedirectToAction(nameof(Index));
 
-			//wrongOrder.DeliveringDate = DateTime.Now();
-			//newDelivery.DelivereeId = User.GetId();
-			newDelivery.Status = OrderStatus.Delivering;
+			//newOrder.DeliveringDate = DateTime.Now();
+			//newOrder.DelivereeId = User.GetId();
+			newOrder.Status = OrderStatus.Delivering;
 
 			await _context.SaveChangesAsync();
 
@@ -122,7 +122,6 @@ namespace Kodhier.Areas.Admin.Controllers
 				case "Orange": colorCode = ColorCode.Orange; break;
 				case "Yellow": colorCode = ColorCode.Yellow; break;
 				case "Green": colorCode = ColorCode.Green; break;
-				case "Cyan": colorCode = ColorCode.Cyan; break;
 				case "Blue": colorCode = ColorCode.Blue; break;
 				case "Purple": colorCode = ColorCode.Purple; break;
 				default: return RedirectToAction("Index");

@@ -12,7 +12,6 @@
     <h2>History</h2>
 </div>
 
-
 <div class="col-md-11 col-sm-11 mx-auto">
     <div class="row">
         <div class="col-md-12">
@@ -47,9 +46,7 @@
                         <td data-th="Date ordered">@item.DateCreated</td>
                         <td data-th="Order status">@item.Status</td>
                         <td class="actions" data-th="">
-                            <form asp-action="Create" asp-route-id="@item.Pizza.NameLt">
-                                <button type="submit" class="btn btn-danger btn-sm">New order</button>
-                            </form>
+                            <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
                         </td>
                     </tr>
                 }
@@ -95,9 +92,7 @@
                             <td data-th="Date ordered">@item.DateCreated</td>
                             <td data-th="Order status">@item.Status</td>
                             <td class="actions" data-th="">
-                                <form asp-action="Create" asp-route-id="@item.Pizza.NameLt">
-                                    <button type="submit" class="btn btn-danger btn-sm">New order</button>
-                                </form>
+                                <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-sm">New order</button></a>
                             </td>
                         </tr>
                     }

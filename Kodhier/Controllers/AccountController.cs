@@ -12,6 +12,7 @@ using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Kodhier.Extensions;
 using MimeKit;
 
 namespace Kodhier.Controllers
@@ -50,6 +51,8 @@ namespace Kodhier.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
+            if (User.GetId() != null)
+                return RedirectToAction("Index", "Home");
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -214,6 +217,8 @@ namespace Kodhier.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            if (User.GetId() != null)
+                return RedirectToAction("Index", "Home");
             ViewData["ReturnUrl"] = returnUrl;
             return View(new RegisterViewModel { SendEmailPromotional = true, SendEmailUpdate = true });
         }

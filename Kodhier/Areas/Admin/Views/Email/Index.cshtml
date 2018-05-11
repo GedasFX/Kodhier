@@ -17,6 +17,7 @@
 <br/>
 <div id="out"></div>
 <form>
+    <input type="hidden" id="formHtml" />
     <input type="submit" onclick="send()"/>
 </form>
 @section Scripts {
@@ -30,7 +31,8 @@
             $('#out').html($('.ql-editor').html());
         }
         function send() {
-
+            $('#formHtml').val($('.ql-editor').html());
+            return true;
         }
     </script>
 }

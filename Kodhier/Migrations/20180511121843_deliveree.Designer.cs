@@ -12,9 +12,10 @@ using System;
 namespace Kodhier.Migrations
 {
     [DbContext(typeof(KodhierDbContext))]
-    partial class KodhierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180511121843_deliveree")]
+    partial class deliveree
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

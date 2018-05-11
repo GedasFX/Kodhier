@@ -15,11 +15,11 @@ namespace Kodhier.Models
 
         public string DeliveryAddress { get; set; }
 
-        public DateTime PlacementDate { get; set; } // when first added to cart
-        public DateTime? PaymentDate { get; set; } // when checkout happened
-        public DateTime? CookingDate { get; set; } // when (?)
-        public DateTime? DeliveryDate { get; set; } // when (?)
-        public DateTime? CompletionDate { get; set; } // when delivered
+        public DateTime PlacementDate { get; set; }     // When user adds item to cart
+        public DateTime? PaymentDate { get; set; }      // When user checks out
+        public DateTime? CookingDate { get; set; }      // When chef clicks assign pizza
+        public DateTime? DeliveryDate { get; set; }     // When chef clicks finish pizza
+        public DateTime? CompletionDate { get; set; }   // When delivery clicks delivered
 
         public bool IsPaid { get; set; }
         public OrderStatus Status { get; set; }
@@ -39,6 +39,7 @@ namespace Kodhier.Models
 		[ForeignKey("Deliveree")]
 		public string DelivereeId { get; set; }
 		public virtual ApplicationUser Deliveree { get; set; }
+
 		public ColorCode DeliveryColor { get; set; }
 	}
 }

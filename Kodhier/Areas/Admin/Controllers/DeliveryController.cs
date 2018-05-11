@@ -52,12 +52,11 @@ namespace Kodhier.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Assign()
 		{
-			var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
-				.FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == User.GetId())
+		    var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
+		        .FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == User.GetId()); // edited
 			if (newOrder == null)
 				return RedirectToAction(nameof(Index));
 
-			newOrder.DeliveringDate = DateTime.Now;
 			newOrder.DelivereeId = User.GetId();
 			newOrder.Status = OrderStatus.Delivering;
 
@@ -73,9 +72,9 @@ namespace Kodhier.Areas.Admin.Controllers
             if (id == null)
                 return RedirectToAction("Index");
 
-            var correctOrder = _context.Orders
-				.Where(o => o.Id == id)
-				.SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId())
+		    var correctOrder = _context.Orders
+		        .Where(o => o.Id == id)
+		        .SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId()); //edited
 
 			if (correctOrder != null)
 			{
@@ -102,7 +101,6 @@ namespace Kodhier.Areas.Admin.Controllers
 			{
 				wrongOrder.DeliveryDate = null;
 				wrongOrder.DelivereeId = null;
-				wrongOrder.Status = OrderStatus.Ready;
 			}
 
 			await _context.SaveChangesAsync();
@@ -110,13 +108,13 @@ namespace Kodhier.Areas.Admin.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		public async Task<IActionResult> ChangeColor(Guid? id, String Color)
+		public async Task<IActionResult> ChangeColor(Guid? id, string color)
 		{
 			if (id == null)
 				return RedirectToAction("Index");
 
 			ColorCode colorCode;
-			switch (Color)
+			switch (color)
 			{
 				case "Red": colorCode = ColorCode.Red; break;
 				case "Orange": colorCode = ColorCode.Orange; break;
@@ -132,7 +130,7 @@ namespace Kodhier.Areas.Admin.Controllers
 				whatOrder.DeliveryColor = colorCode;
 
 			await _context.SaveChangesAsync();
-			return RedirectToAction("Index/"+Color);
+			return RedirectToAction("Index/"+color);
 		}
 	}
 }

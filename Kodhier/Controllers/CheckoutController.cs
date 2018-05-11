@@ -42,7 +42,7 @@ namespace Kodhier.Controllers
 			var orders = _context.Orders
 				.Where(o => o.Client.Id == clientId)
 				.Where(o => o.Status == OrderStatus.Unpaid)
-                .Where(o => o.PlacementDate < DateTime.Now.AddDays(-14))
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
 				.OrderByDescending(c => c.PlacementDate)
 				.Select(o => new CheckoutViewModel
 				{

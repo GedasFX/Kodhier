@@ -121,8 +121,6 @@ namespace Kodhier.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<DateTime?>("ReadyDate");
-
                     b.Property<int>("Size");
 
                     b.Property<int>("Status");

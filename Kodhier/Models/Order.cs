@@ -18,8 +18,7 @@ namespace Kodhier.Models
         public DateTime PlacementDate { get; set; }     // When user adds item to cart
         public DateTime? PaymentDate { get; set; }      // When user checks out
         public DateTime? CookingDate { get; set; }      // When chef clicks assign pizza
-        public DateTime? ReadyDate { get; set; }        // When chef clicks finish pizza
-        public DateTime? DeliveryDate { get; set; }     // When delivery clicks assign pizza
+        public DateTime? DeliveryDate { get; set; }     // When chef clicks finish pizza
         public DateTime? CompletionDate { get; set; }   // When delivery clicks delivered
 
         public bool IsPaid { get; set; }

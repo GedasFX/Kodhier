@@ -59,15 +59,12 @@ namespace Kodhier.Areas.Admin.Controllers
             if (id == null)
                 return NotFound();
 
-            var order = await _context.Orders.SingleOrDefaultAsync(o => o.Id == id);
+            var order = _context.Orders.Single(o => o.Id == id);
 
-            if (order != null)
-            {
-                order.ReadyDate = DateTime.Now;
-                order.Status = OrderStatus.Ready;
-                await _context.SaveChangesAsync();
-            }
+            order.DeliveryDate = DateTime.Now;
+            order.Status = OrderStatus.Ready;
 
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

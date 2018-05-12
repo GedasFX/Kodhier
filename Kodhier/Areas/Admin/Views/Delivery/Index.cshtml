@@ -18,7 +18,7 @@
         <th>Size</th>
         <th>Comment (gal nereikia?)</th>
         <th>Deliver to</th>
-        <th>#</th>
+        <th>###</th>
     </tr>
 
     @foreach (var item in Model)
@@ -70,7 +70,7 @@
         var map;
         var markers = [];
 
-        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = t.DeliveryColor.ToString() }));
+        var addresses = @Json.Serialize(Model.Select(t => new { addr = t.DeliveryAddress, color = t.DeliveryColor.ToString().ToLower() }));
 
         function initMap() {
             geocoder = new google.maps.Geocoder();
@@ -82,20 +82,24 @@
             );
 
             for (var i = 0; i < addresses.length; i++) {
-                var color = addresses[i].color.toLowerCase();
-                geocoder.geocode({ 'address': addresses[i].addr }, function (results, status) {
-                    if (status == 'OK') {
-                        //map.setCenter(results[0].geometry.location);
-                        markers.push(new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location,
-                            icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
-                        }));
-                    } else {
-                        alert('There was a problem displaying the address: ' + status);
-                    }
-                });
+                codeAddr(map, geocoder, i);
             }
+        }
+
+        function codeAddr(map, geocoder, i) {
+            var color = addresses[i].color;
+            geocoder.geocode({ 'address': addresses[i].addr, 'region': 'lt' }, function (results, status) {
+                if (status == 'OK') {
+                    //map.setCenter(results[0].geometry.location);
+                    markers.push(new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
+                    }));
+                } else {
+                    //alert('There was a problem displaying the address: ' + status);
+                }
+            });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>

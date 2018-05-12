@@ -30,10 +30,10 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
         [Display(Name = "Price category")]
         public int PriceCategoryId { get; set; }
 
-		// For display
-		public IEnumerable<PizzaPriceCategory> PriceCategories { get; set; }
+        // For display
+        public IEnumerable<PizzaPriceCategory> PriceCategories { get; set; }
 
-		// For image selection
-		public IEnumerable<string> ImageList { get; set; }
-	}
+        // For image selection
+        public IEnumerable<string> ImageList { get; set; }
+    }
 }

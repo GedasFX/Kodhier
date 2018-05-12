@@ -145,7 +145,7 @@
     <value>Komentarai</value>
   </data>
   <data name="Optional" xml:space="preserve">
-    <value>Komentarai neprivalomi</value>
+    <value>Neprivaloma</value>
   </data>
   <data name="Price per pizza:" xml:space="preserve">
     <value>Vienos picos kaina:</value>

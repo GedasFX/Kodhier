@@ -99,7 +99,7 @@ namespace Kodhier.Areas.Admin.Controllers
                 wrongOrder.DelivereeId = null;
                 await _context.SaveChangesAsync();
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 

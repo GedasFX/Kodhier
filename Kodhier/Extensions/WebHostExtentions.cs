@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Models;
 using Microsoft.AspNetCore.Hosting;

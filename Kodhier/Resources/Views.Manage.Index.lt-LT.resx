@@ -141,11 +141,11 @@
   <data name="Profile" xml:space="preserve">
     <value>Profilis</value>
   </data>
-  <data name="Send order updates to email" xml:space="preserve">
-    <value>Siųsti užsakymo būsenas į el. paštą</value>
+  <data name="Send order updates" xml:space="preserve">
+    <value>Siųsti užsakymų atnaujinimus</value>
   </data>
-  <data name="Send promotional to email" xml:space="preserve">
-    <value>Siųsti reklamas į el. paštą</value>
+  <data name="Send promotional emails" xml:space="preserve">
+    <value>Siųsti reklaminius laiškus</value>
   </data>
   <data name="Send verification email" xml:space="preserve">
     <value>Siųsti el. pašto patvirtinimo kodą</value>

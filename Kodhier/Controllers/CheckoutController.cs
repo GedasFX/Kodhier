@@ -19,56 +19,56 @@ using Microsoft.Extensions.Localization;
 
 namespace Kodhier.Controllers
 {
-	[Authorize]
-	public class CheckoutController : Controller
-	{
-		private readonly KodhierDbContext _context;
-		private readonly IEmailSender _emailSender;
-		private readonly IHostingEnvironment _env;
-		private readonly IMemoryCache _cache;
+    [Authorize]
+    public class CheckoutController : Controller
+    {
+        private readonly KodhierDbContext _context;
+        private readonly IEmailSender _emailSender;
+        private readonly IHostingEnvironment _env;
+        private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<CheckoutController> _localizer;
 
         public CheckoutController(KodhierDbContext context,
-			IEmailSender emailSender,
-			IHostingEnvironment env,
-			IMemoryCache cache,
+            IEmailSender emailSender,
+            IHostingEnvironment env,
+            IMemoryCache cache,
             IStringLocalizer<CheckoutController> localizer)
-		{
-			_context = context;
-			_emailSender = emailSender;
-			_env = env;
-			_cache = cache;
+        {
+            _context = context;
+            _emailSender = emailSender;
+            _env = env;
+            _cache = cache;
             _localizer = localizer;
         }
 
-		private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId, string culture)
-		{
-			var orders = _context.Orders
-				.Where(o => o.Client.Id == clientId)
-				.Where(o => o.Status == OrderStatus.Unpaid)
+        private IQueryable<CheckoutViewModel> GetCheckoutOrders(string clientId, string culture)
+        {
+            var orders = _context.Orders
+                .Where(o => o.Client.Id == clientId)
+                .Where(o => o.Status == OrderStatus.Unpaid)
                 .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
-				.OrderByDescending(c => c.PlacementDate)
-				.Select(o => new CheckoutViewModel
-				{
-					Id = o.Id,
-					Quantity = o.Quantity,
-					Size = o.Size,
-					Comment = o.Comment,
-					Name = culture == "lt-LT" ? o.Pizza.NameLt : o.Pizza.NameEn,
-					ImagePath = o.Pizza.ImagePath,
-					Price = o.Price,
-					Description = culture == "lt-LT" ? o.Pizza.DescriptionLt : o.Pizza.DescriptionEn
+                .OrderByDescending(c => c.PlacementDate)
+                .Select(o => new CheckoutViewModel
+                {
+                    Id = o.Id,
+                    Quantity = o.Quantity,
+                    Size = o.Size,
+                    Comment = o.Comment,
+                    Name = culture == "lt-LT" ? o.Pizza.NameLt : o.Pizza.NameEn,
+                    ImagePath = o.Pizza.ImagePath,
+                    Price = o.Price,
+                    Description = culture == "lt-LT" ? o.Pizza.DescriptionLt : o.Pizza.DescriptionEn
                 });
-			return orders;
-		}
+            return orders;
+        }
 
-		public async Task<IActionResult> Index()
-		{
-		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
-		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+        public async Task<IActionResult> Index()
+        {
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var orders = await GetCheckoutOrders(User.GetId(), cultCode).ToListAsync();
-			return orders.Count == 0 ? View("Empty") : View(orders);
-		}
+            return orders.Count == 0 ? View("Empty") : View(orders);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -87,151 +87,151 @@ namespace Kodhier.Controllers
 
             if (await _context.SaveChangesAsync() > 0)
                 execRes.AddSuccess(_localizer["Pizza amount was successfully changed from {0} to {1}.", oq, qty]);
-			else
-			{
-				execRes.AddError(_localizer["Order could not be processed. Please try again."]);
-			}
+            else
+            {
+                execRes.AddError(_localizer["Order could not be processed. Please try again."]);
+            }
 
-			execRes.PushTo(TempData);
-			return RedirectToAction("Index");
-		}
+            execRes.PushTo(TempData);
+            return RedirectToAction("Index");
+        }
 
-		public IActionResult Continue()
-		{
-			var clientId = User.GetId();
-			var user = _context.Users.Single(u => u.Id == clientId);
+        public IActionResult Continue()
+        {
+            var clientId = User.GetId();
+            var user = _context.Users.Single(u => u.Id == clientId);
 
-			if (!user.EmailConfirmed)
-			{
-				new ExecutionResult().AddError(_localizer["Your email is not confirmed. Please confirm it before proceeding."]).PushTo(TempData);
-				return RedirectToAction(nameof(Index), "Manage");
-			}
+            if (!user.EmailConfirmed)
+            {
+                new ExecutionResult().AddError(_localizer["Your email is not confirmed. Please confirm it before proceeding."]).PushTo(TempData);
+                return RedirectToAction(nameof(Index), "Manage");
+            }
 
-		    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
-		    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var vm = new ConfirmCheckoutViewModel
-			{
-				CheckoutList = GetCheckoutOrders(clientId, cultCode),
-				ConfirmAddress = user.Address,
-				PhoneNumber = user.PhoneNumber
-			};
+            {
+                CheckoutList = GetCheckoutOrders(clientId, cultCode),
+                ConfirmAddress = user.Address,
+                PhoneNumber = user.PhoneNumber
+            };
 
-			vm.Price = vm.CheckoutList.Sum(o => o.Price * o.Quantity);
+            vm.Price = vm.CheckoutList.Sum(o => o.Price * o.Quantity);
 
-			return View(vm);
-		}
+            return View(vm);
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Continue(ConfirmCheckoutViewModel model)
-		{
-			var execRes = new ExecutionResult();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Continue(ConfirmCheckoutViewModel model)
+        {
+            var execRes = new ExecutionResult();
 
-			var clientId = User.GetId();
-			var user = _context.Users.Single(u => u.Id == clientId);
-		    
+            var clientId = User.GetId();
+            var user = _context.Users.Single(u => u.Id == clientId);
+
             if (!ModelState.IsValid)
-			{
-			    var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
-			    var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            {
+                var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+                var cultCode = requestCulture.RequestCulture.UICulture.Name;
                 model.CheckoutList = GetCheckoutOrders(clientId, cultCode);
-				model.Price = model.CheckoutList.Sum(o => o.Price * o.Quantity);
+                model.Price = model.CheckoutList.Sum(o => o.Price * o.Quantity);
 
-				return View(model);
-			}
+                return View(model);
+            }
 
-		    var orders = _context.Orders.Include(o => o.Pizza)
-		        .Where(o => o.Client.Id == clientId)
-		        .Where(o => o.Status == OrderStatus.Unpaid)
-		        .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14));
-            
-		    var price = orders.Sum(o => o.Price * o.Quantity);
+            var orders = _context.Orders.Include(o => o.Pizza)
+                .Where(o => o.Client.Id == clientId)
+                .Where(o => o.Status == OrderStatus.Unpaid)
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14));
 
-			if (price > user.Coins)
-			{
-				// insufficient PizzaCoins
-				execRes.AddError(_localizer["Insufficient amount of coins in the balance."]).PushTo(TempData);
-				return RedirectToAction("Index");
-			}
+            var price = orders.Sum(o => o.Price * o.Quantity);
 
-			// looks good, go ahead
+            if (price > user.Coins)
+            {
+                // insufficient PizzaCoins
+                execRes.AddError(_localizer["Insufficient amount of coins in the balance."]).PushTo(TempData);
+                return RedirectToAction("Index");
+            }
 
-			foreach (var checkoutEntry in orders)
-			{
-				var order = _context.Orders.Single(o => o.Id == checkoutEntry.Id);
-				order.Status = OrderStatus.Queued;
-				order.IsPaid = true;
-				order.DeliveryAddress = model.ConfirmAddress;
-			}
+            // looks good, go ahead
 
-			user.Coins -= price;
+            foreach (var checkoutEntry in orders)
+            {
+                var order = _context.Orders.Single(o => o.Id == checkoutEntry.Id);
+                order.Status = OrderStatus.Queued;
+                order.IsPaid = true;
+                order.DeliveryAddress = model.ConfirmAddress;
+            }
 
-			if (await _context.SaveChangesAsync() > 0)
-				execRes.AddSuccess(_localizer["Pizza was ordered successfully."]);
-			else
-			{
-				execRes.AddError(_localizer["Order could not be processed. Please try again."]).PushTo(TempData);
-				return RedirectToAction("Index");
-			}
+            user.Coins -= price;
 
-			if (user.EmailSendUpdates)
-			{
-				await SendEmail(user);
-				execRes.AddInfo(_localizer["Email was sent to {0}", user.Email]);
-			}
+            if (await _context.SaveChangesAsync() > 0)
+                execRes.AddSuccess(_localizer["Pizza was ordered successfully."]);
+            else
+            {
+                execRes.AddError(_localizer["Order could not be processed. Please try again."]).PushTo(TempData);
+                return RedirectToAction("Index");
+            }
 
-			_cache.Remove(user.UserName);
+            if (user.EmailSendUpdates)
+            {
+                await SendEmail(user);
+                execRes.AddInfo(_localizer["Email was sent to {0}", user.Email]);
+            }
 
-			execRes.PushTo(TempData);
-			return RedirectToAction("Index", "Order");
-		}
+            _cache.Remove(user.UserName);
 
-		private async Task SendEmail(ApplicationUser user)
-		{
-			var pathToFile = _env.WebRootPath
-							 + Path.DirectorySeparatorChar
-							 + "Templates"
-							 + Path.DirectorySeparatorChar
-							 + "EmailTemplate"
-							 + Path.DirectorySeparatorChar
-							 + "Confirm_Order.html";
+            execRes.PushTo(TempData);
+            return RedirectToAction("Index", "Order");
+        }
 
-			const string subject = "Confirm Checkout";
-			var builder = new BodyBuilder();
+        private async Task SendEmail(ApplicationUser user)
+        {
+            var pathToFile = _env.WebRootPath
+                             + Path.DirectorySeparatorChar
+                             + "Templates"
+                             + Path.DirectorySeparatorChar
+                             + "EmailTemplate"
+                             + Path.DirectorySeparatorChar
+                             + "Confirm_Order.html";
 
-			using (var sourceReader = System.IO.File.OpenText(pathToFile))
-			{
-				builder.HtmlBody = sourceReader.ReadToEnd();
-			}
+            const string subject = "Confirm Checkout";
+            var builder = new BodyBuilder();
 
-			var messageBody = string.Format(builder.HtmlBody, user.UserName);
+            using (var sourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = sourceReader.ReadToEnd();
+            }
 
-			await _emailSender.SendEmailAsync(user.Email, subject, messageBody);
-		}
+            var messageBody = string.Format(builder.HtmlBody, user.UserName);
 
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Remove(Guid id)
-		{
-			var execRes = new ExecutionResult();
+            await _emailSender.SendEmailAsync(user.Email, subject, messageBody);
+        }
 
-			var order = _context.Orders
-				   .Where(o => o.Client.Id == User.GetId())
-				   .Single(o => o.Id == id);
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            var execRes = new ExecutionResult();
 
-			if (order != null)
-			{
-				_context.Orders.Remove(order);
-				if (await _context.SaveChangesAsync() > 0)
-					execRes.AddSuccess(_localizer["Pizza was successfuly removed from the cart."]);
+            var order = _context.Orders
+                   .Where(o => o.Client.Id == User.GetId())
+                   .Single(o => o.Id == id);
 
-				else
-					execRes.AddError(_localizer["Pizza was not able to be removed from the cart. Please try again."]);
-			}
-			else
-				execRes.AddError(_localizer["Requested pizza was not found. Please try again."]);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                if (await _context.SaveChangesAsync() > 0)
+                    execRes.AddSuccess(_localizer["Pizza was successfuly removed from the cart."]);
 
-			execRes.PushTo(TempData);
-			return RedirectToAction("Index");
-		}
-	}
+                else
+                    execRes.AddError(_localizer["Pizza was not able to be removed from the cart. Please try again."]);
+            }
+            else
+                execRes.AddError(_localizer["Requested pizza was not found. Please try again."]);
+
+            execRes.PushTo(TempData);
+            return RedirectToAction("Index");
+        }
+    }
 }

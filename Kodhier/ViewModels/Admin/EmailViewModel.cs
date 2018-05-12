@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Kodhier.Models;
-
-namespace Kodhier.ViewModels.Admin
+﻿namespace Kodhier.ViewModels.Admin
 {
     public class EmailViewModel
     {

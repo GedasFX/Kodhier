@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Kodhier.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Localization;
 using Xunit;
 
 namespace Kodhier.Tests
@@ -30,13 +31,14 @@ namespace Kodhier.Tests
 
             var m_User = new Mock<ClaimsPrincipal>();
             var m_Data = new Mock<ITempDataProvider>();
+            var m_localizer = new Mock<IStringLocalizer<OrderController>>();
             var httpContext = new DefaultHttpContext { User = m_User.Object };
             m_User.Setup(t => t.Claims).Returns(new[] { new Claim(ClaimTypes.NameIdentifier, "ec04ee08-f434-41d0-a208-15bd2dcb3389") });
-            _controller = new OrderController(_context)
+            _controller = new OrderController(_context, m_localizer.Object)
             {
-                ControllerContext = new ControllerContext { HttpContext = httpContext }
+                ControllerContext = new ControllerContext {HttpContext = httpContext},
+                TempData = new TempDataDictionary(httpContext, m_Data.Object)
             };
-            _controller.TempData = new TempDataDictionary(httpContext, m_Data.Object);
         }
 
         private void GenMockData()
@@ -95,7 +97,6 @@ namespace Kodhier.Tests
                 _controller.ModelState.AddModelError("err", "Error");
 
             var res = await _controller.Create(pizza.NameLt, order);
-            
         }
     }
 }

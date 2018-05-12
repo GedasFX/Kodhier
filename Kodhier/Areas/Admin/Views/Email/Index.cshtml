@@ -5,21 +5,38 @@
 
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
+<style>
+    .no-css {
+        all: initial;
+    }
+
+        .no-css #out {
+            background-color: white;
+        }
+</style>
+
 <h2>Email management</h2>
-<input type="text" id="subj" class="form-control" placeholder="Subject" />
-<div id="editor">
-    <p>Hello World!</p>
-    <p>Some initial <strong>bold</strong> text</p>
-    <p><br></p>
-</div>
-<button onclick="update()">Send</button>
-<br/>
-<div id="out"></div>
-<form asp-action="SendEmail">
-    <input type="hidden" id="formSubj" name="subject" />
+<form asp-action="SendEmail" onsubmit="return send()">
+    <input type="text" class="form-control" name="subject" placeholder="Subject" required />
     <input type="hidden" id="formHtml" name="htmlMessage" />
-    <input type="submit" onclick="send()" />
+
+    <div id="editor">
+        <p>Hello World!</p>
+        <p>Some initial <strong>bold</strong> text</p>
+        <p><br></p>
+    </div>
+    <br />
+    <input type="submit" />
 </form>
+<br/>
+<button onclick="update()">Preview</button>
+<br /><br />
+<div class="no-css">
+    <div id="out">
+        <p></p>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
@@ -28,12 +45,16 @@
             theme: 'snow'
         });
         function update() {
-            $('#out').html($('.ql-editor').html());
+            $('#out').html($('#editor .ql-editor').html());
         }
         function send() {
-            $('#formHtml').val($('.ql-editor').html());
-            $('#formSubj').val($('#subj').val());
+            if (!confirm('Are you sure?'))
+                return false;
+            if (!confirm('Are you really sure?'))
+                return false;
+            $('#formHtml').val($('#editor .ql-editor').html());
             return true;
         }
     </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

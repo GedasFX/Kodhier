@@ -93,14 +93,11 @@
                 var color = addresses[i].color.toLowerCase();
                 geocoder.geocode({ 'address': addresses[i].addr }, function (results, status) {
                     if (status === 'OK') {
-                        //map.setCenter(results[0].geometry.location);
                         markers.push(new window.google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location,
                             icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
                         }));
-                    } else {
-                        alert('There was a problem displaying the address: ' + status);
                     }
                 });
             }

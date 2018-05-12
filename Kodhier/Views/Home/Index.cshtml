@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<Kodhier.ViewModels.HomeViewModel>
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Home Page"];
@@ -8,72 +9,33 @@
 <div id="fullpage">
     <section>
         <div class="css-slider-wrapper" id="slideshow">
-            <input type="radio" name="slider" class="slide-radio1" checked id="slider_1">
-            <input type="radio" name="slider" class="slide-radio2" id="slider_2">
-            <input type="radio" name="slider" class="slide-radio3" id="slider_3">
-            <input type="radio" name="slider" class="slide-radio4" id="slider_4">
+            @for (int j = 1; j <= Model.Count(); j++)
+            {
+                <input type="radio" name="slider" class="slide-radio@(j)" @(j==1?"checked":"") id="slider_@(j)">
+            }
             <!-- Slider Pagination -->
             <div class="slider-pagination">
-                <label for="slider_1" class="page1"></label>
-                <label for="slider_2" class="page2"></label>
-                <label for="slider_3" class="page3"></label>
-                <label for="slider_4" class="page4"></label>
+                @for (int j = 1; j <= Model.Count(); j++)
+                {
+                    <label for="slider_@(j)" class="page@(j)"></label>
+                }
             </div>
-            <!-- Slider #1 -->
-            <div class="slider slide-1">
-                <div class="horizontal">
-                    <img class="img-responsive  rounded-circle" src="../../assets/img/picute3.jpg" style="max-width: 800px; max-height: 800px;">
+            @{ int i = 1; }
+            @foreach (var item in Model)
+            {
+                <div class="slider slide-@(i++)">
+                    <div class="horizontal">
+                        <img class="img-responsive  rounded-circle" src="@Url.Content(item.ImagePath)" style="max-width: 800px; max-height: 800px;">
+                    </div>
+                    <div class="slider-content">
+                        <h4>New product</h4>
+                        <h2>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </h2>
+                        <button type="button" class="buy-now-btn" name="button">@Html.DisplayFor(modelItem => item.MinPrice)</button>
+                    </div>
                 </div>
-                <div class="slider-content">
-                    <h4>New Product</h4>
-                    <h2>
-                        Portobello
-
-                    </h2>
-                    <button type="button" class="buy-now-btn" name="button">$130</button>
-                </div>
-            </div>
-            <!-- Slider #2 -->
-            <div class="slider slide-2">
-                <div class="horizontal">
-                    <img class="img-responsive  rounded-circle" src="../../assets/img/picute.jpg" style="max-width: 800px; max-height: 800px; ">
-                </div>
-                <div class="slider-content">
-                    <h4>New Product</h4>
-                    <h2>
-                        Chili
-                    </h2>
-                    <button type="button" class="buy-now-btn" name="button">$130</button>
-                </div>
-
-            </div>
-            <!-- Slider #3 -->
-            <div class="slider slide-3">
-                <div class="horizontal">
-                    <img class="img-responsive  rounded-circle" src="../../assets/img/picute2.jpg" style="max-width: 800px; max-height: 800px;  ">
-                </div>
-                <div class="slider-content">
-                    <h4>New Product</h4>
-                    <h2>
-                        Palermo
-                    </h2>
-                    <button type="button" class="buy-now-btn" name="button">$130</button>
-                </div>
-
-            </div>
-            <!-- Slider #4 -->
-            <div class="slider slide-4">
-                <div class="horizontal">
-                    <img class="img-responsive   rounded-circle" src="../../assets/img/picute4.jpg" style="max-width: 800px; max-height: 800px;">
-                </div>
-                <div class="slider-content">
-                    <h4>New Product</h4>
-                    <h2>
-                        Romana
-                    </h2>
-                    <button type="button" class="buy-now-btn" name="button">$130</button>
-                </div>
-            </div>
+            }
         </div>
     </section>
     <section>

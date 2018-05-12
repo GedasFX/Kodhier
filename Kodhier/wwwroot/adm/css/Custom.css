@@ -42,3 +42,7 @@ header{
     background-color: rgba(255,255,255,.09);
     transition: background-color .3s
 }
+
+option {
+    background-color: black;
+}

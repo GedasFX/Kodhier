@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done))
+                @foreach (var item in Model.Where(m => m.Status != OrderStatus.Done).OrderByDescending(m => m.DateCreated))
                 {
                     <tr>
                         <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>
@@ -82,7 +82,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Where(m => m.Status == OrderStatus.Done))
+                    @foreach (var item in Model.Where(m => m.Status == OrderStatus.Done).OrderByDescending(m => m.DateCreated))
                     {
                         <tr>
                             <td data-th="Name">@(cultCode == "lt-LT" ? item.Pizza.NameLt : item.Pizza.NameEn)</td>

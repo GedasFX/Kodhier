@@ -120,6 +120,9 @@
   <data name="Admin cp" xml:space="preserve">
     <value>Admin valdymas</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Likutis</value>
+  </data>
   <data name="Log out" xml:space="preserve">
     <value>Atsijungti</value>
   </data>
@@ -128,5 +131,11 @@
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profilis</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Nustatymai</value>
+  </data>
+  <data name="Welcome," xml:space="preserve">
+    <value>Sveiki,</value>
   </data>
 </root>

@@ -84,7 +84,7 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 execRes.AddError("Database error occured. Price information could not be added.");
             }
-            
+
             execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
@@ -148,7 +148,7 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 execRes.AddError("Price category is still in use by some pizzas. Make sure to unlink all pizzas before proceeding.");
             }
-            
+
             execRes.PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }

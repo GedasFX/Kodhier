@@ -12,11 +12,11 @@
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
 }
 
-<div class="form-group" title="@Localizer["Request culture provider:"] @requestCulture?.Provider?.GetType().Name">
+<div class="form-group">
     <form id="selectLanguage" asp-controller="Home"
           asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
           method="post" class="form-group" role="form">
-        <label asp-for="@requestCulture.RequestCulture.UICulture.Name">@Localizer["Language:"]</label> 
+        <label asp-for="@requestCulture.RequestCulture.UICulture.Name">@Localizer["Language:"]</label>
         <select name="culture" class="form-control" onchange="this.form.submit()" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>
     </form>
 </div>

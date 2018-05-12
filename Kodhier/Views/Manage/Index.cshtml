@@ -41,7 +41,7 @@
                                 }
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-                            <hr/>
+                            <hr />
                             <div class="panel panel-primary panel-transparent">
                                 <div class="panel-heading">
                                     <div class="form-group">
@@ -56,17 +56,17 @@
                                     </div>
                                     <div class="checkbox">
                                         <input asp-for="EmailSendPromotional" />
-                                        <label asp-for="EmailSendPromotional">@Localizer["Send promotional to email."]</label>
+                                        <label asp-for="EmailSendPromotional">@Localizer["Send promotional emails"]</label>
                                     </div>
                                     <div class="checkbox">
                                         <input asp-for="EmailSendUpdates" />
-                                        <label asp-for="EmailSendUpdates">@Localizer["Send order updates to email."]</label>
+                                        <label asp-for="EmailSendUpdates">@Localizer["Send order updates"]</label>
                                     </div>
                                 </div>
                             </div>
                             <p></p>
-                                @await Html.PartialAsync("_ManageNav")
-                                <button type="submit" class="btn btn-outline-success" style="margin-top: 10px;">@Localizer["Update profile"]</button>
+                            @await Html.PartialAsync("_ManageNav")
+                            <button type="submit" class="btn btn-outline-success" style="margin-top: 10px;">@Localizer["Update profile"]</button>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -126,7 +126,7 @@
             marker = new window.google.maps.Marker({
                 map: map
             });
-            
+
             autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('Address'),
                 { componentRestrictions: { country: "lt" } });
             autocomplete.bindTo('bounds', map);

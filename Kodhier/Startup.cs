@@ -26,7 +26,7 @@ namespace Kodhier
             AutoMapperConfig.RegisterMappings();
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -39,7 +39,7 @@ namespace Kodhier
                     options.UseSqlServer(Configuration.GetConnectionString("StagingConnection")));
             else if (HostingEnvironment.IsProduction())
                 services.AddDbContext<KodhierDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection"))); 
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
             {
@@ -62,9 +62,6 @@ namespace Kodhier
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
 
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>

@@ -41,22 +41,24 @@ namespace Kodhier.Areas.Admin.Controllers
 					Name = o.Pizza.NameLt,
 					ImagePath = o.Pizza.ImagePath,
 					DeliveryAddress = o.DeliveryAddress,
-					DeliveryColor = o.DeliveryColor
+					DeliveryColor = ColorCode.Red //o.DeliveryColor
 				});
 			return View(orders);
 		}
 
 		// Ready <-> Delivering -> Done
+		// TODO: Assign each order a deliveree?
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Assign()
 		{
-		    var assignOrder = await _context.Orders.OrderBy(o => o.PaymentDate).FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready);
-			if (assignOrder == null)
+		    var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
+		        .FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == User.GetId()); // edited
+			if (newOrder == null)
 				return RedirectToAction(nameof(Index));
 
-			assignOrder.DelivereeId = User.GetId();
-			assignOrder.Status = OrderStatus.Delivering;
+			newOrder.DelivereeId = User.GetId();
+			newOrder.Status = OrderStatus.Delivering;
 
 			await _context.SaveChangesAsync();
 
@@ -70,14 +72,14 @@ namespace Kodhier.Areas.Admin.Controllers
             if (id == null)
                 return RedirectToAction("Index");
 
-		    var completeOrder = _context.Orders
+		    var correctOrder = _context.Orders
 		        .Where(o => o.Id == id)
-		        .SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId());
+		        .SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId()); //edited
 
-			if (completeOrder != null)
+			if (correctOrder != null)
 			{
-				completeOrder.CompletionDate = DateTime.Now;
-				completeOrder.Status = OrderStatus.Done;
+				correctOrder.CompletionDate = DateTime.Now;
+				correctOrder.Status = OrderStatus.Done;
 				await _context.SaveChangesAsync();
 			}
 
@@ -91,14 +93,14 @@ namespace Kodhier.Areas.Admin.Controllers
 			if (id == null)
 				return NotFound();
 
-			var abandonOrder = _context.Orders
+			var wrongOrder = _context.Orders
 				.Where(o => o.Id == id)
 				.SingleOrDefault(o => o.Status == OrderStatus.Delivering);
 
-			if (abandonOrder != null)
+			if (wrongOrder != null)
 			{
-				abandonOrder.DelivereeId = null;
-				abandonOrder.Status = OrderStatus.Ready;
+				wrongOrder.DeliveryDate = null;
+				wrongOrder.DelivereeId = null;
 			}
 
 			await _context.SaveChangesAsync();
@@ -123,12 +125,12 @@ namespace Kodhier.Areas.Admin.Controllers
 				default: return RedirectToAction("Index");
 			}
 
-			var colorOrder = _context.Orders.SingleOrDefault(o => o.Id == id);
-			if (colorOrder != null)
-				colorOrder.DeliveryColor = colorCode;
+			var whatOrder = _context.Orders.SingleOrDefault(o => o.Id == id);
+			if (whatOrder != null)
+				whatOrder.DeliveryColor = colorCode;
 
 			await _context.SaveChangesAsync();
-			return RedirectToAction("Index");
+			return RedirectToAction("Index/"+color);
 		}
 	}
 }

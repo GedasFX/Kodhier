@@ -11,126 +11,129 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kodhier.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Delivery")]
-	public class DeliveryController : Controller
-	{
-		private readonly KodhierDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Delivery")]
+    public class DeliveryController : Controller
+    {
+        private readonly KodhierDbContext _context;
 
-		public DeliveryController(KodhierDbContext context)
-		{
-			_context = context;
-		}
+        public DeliveryController(KodhierDbContext context)
+        {
+            _context = context;
+        }
 
-        // TODO: Talk about implementation
-		public IActionResult Index()
-		{
-			var clientId = User.GetId();
+        public IActionResult Index()
+        {
+            var userId = User.GetId();
 
-			// check carefuly
-			var orders = _context.Orders
-				.Where(o => o.Status == OrderStatus.Delivering && o.DelivereeId == clientId)
-				.OrderByDescending(o => o.PaymentDate)
-				//.Take(50) // limit due to google maps api
-				.Select(o => new DeliveryViewModel
-				{
-					Id = o.Id.ToString(),
-					Quantity = o.Quantity,
-					Size = o.Size,
-					Comment = o.Comment,
-					Name = o.Pizza.NameLt,
-					ImagePath = o.Pizza.ImagePath,
-					DeliveryAddress = o.DeliveryAddress,
-					DeliveryColor = ColorCode.Red //o.DeliveryColor
-				});
-			return View(orders);
-		}
+            var orders = _context.Orders
+                .Where(o => o.Status == OrderStatus.Delivering && o.DelivereeId == userId)
+                .OrderByDescending(o => o.PaymentDate)
+                .Select(o => new DeliveryViewModel
+                {
+                    Id = o.Id.ToString(),
+                    Quantity = o.Quantity,
+                    Size = o.Size,
+                    Comment = o.Comment,
+                    Name = o.Pizza.NameLt,
+                    ImagePath = o.Pizza.ImagePath,
+                    DeliveryAddress = o.DeliveryAddress,
+                    DeliveryColor = o.DeliveryColor
+                });
+            return View(orders);
+        }
 
-		// Ready <-> Delivering -> Done
-		// TODO: Assign each order a deliveree?
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Assign()
-		{
-		    var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
-		        .FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == User.GetId()); // edited
-			if (newOrder == null)
-				return RedirectToAction(nameof(Index));
+        // Ready <-> Delivering -> Done
+        // TODO: Assign each order a deliveree?
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Assign()
+        {
+            var newOrder = await _context.Orders.OrderBy(o => o.PaymentDate)
+                .FirstOrDefaultAsync(o => o.Status == OrderStatus.Ready && o.DelivereeId == null);
+            if (newOrder == null)
+                return RedirectToAction(nameof(Index));
 
-			newOrder.DelivereeId = User.GetId();
-			newOrder.Status = OrderStatus.Delivering;
+            newOrder.DelivereeId = User.GetId();
+            newOrder.DeliveryDate = DateTime.Now;
+            newOrder.Status = OrderStatus.Delivering;
 
-			await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-			return RedirectToAction(nameof(Index));
-		}
+            return RedirectToAction(nameof(Index));
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Complete(Guid? id)
-		{
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Complete(Guid? id)
+        {
             if (id == null)
                 return RedirectToAction("Index");
 
-		    var correctOrder = _context.Orders
-		        .Where(o => o.Id == id)
-		        .SingleOrDefault(o => o.Status == OrderStatus.Delivering && o.DelivereeId == User.GetId()); //edited
+            var correctOrder = await _context.Orders.SingleOrDefaultAsync(o => o.Id == id);
 
-			if (correctOrder != null)
-			{
-				correctOrder.CompletionDate = DateTime.Now;
-				correctOrder.Status = OrderStatus.Done;
-				await _context.SaveChangesAsync();
-			}
+            if (correctOrder != null)
+            {
+                correctOrder.CompletionDate = DateTime.Now;
+                correctOrder.Status = OrderStatus.Done;
+                await _context.SaveChangesAsync();
+            }
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Abandon(Guid? id)
-		{
-			if (id == null)
-				return NotFound();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Abandon(Guid? id)
+        {
+            if (id == null)
+                return NotFound();
 
-			var wrongOrder = _context.Orders
-				.Where(o => o.Id == id)
-				.SingleOrDefault(o => o.Status == OrderStatus.Delivering);
+            var wrongOrder = _context.Orders
+                .SingleOrDefault(o => o.Id == id);
 
-			if (wrongOrder != null)
-			{
-				wrongOrder.DeliveryDate = null;
-				wrongOrder.DelivereeId = null;
-			}
+            if (wrongOrder != null)
+            {
+                wrongOrder.Status = OrderStatus.Ready;
+                wrongOrder.DeliveryDate = null;
+                wrongOrder.DelivereeId = null;
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
 
-			await _context.SaveChangesAsync();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeColor(Guid? id, string color)
+        {
+            if (id == null)
+                return RedirectToAction("Index");
 
-			return RedirectToAction(nameof(Index));
-		}
+            ColorCode colorCode;
+            switch (color)
+            {
+                case "Red": colorCode = ColorCode.Red; break;
+                case "Orange": colorCode = ColorCode.Orange; break;
+                case "Yellow": colorCode = ColorCode.Yellow; break;
+                case "Green": colorCode = ColorCode.Green; break;
+                case "Blue": colorCode = ColorCode.Blue; break;
+                case "Purple": colorCode = ColorCode.Purple; break;
+                default: return RedirectToAction("Index");
+            }
 
-		public async Task<IActionResult> ChangeColor(Guid? id, string color)
-		{
-			if (id == null)
-				return RedirectToAction("Index");
+            var whatOrder = _context.Orders.SingleOrDefault(o => o.Id == id);
+            if (whatOrder != null)
+                whatOrder.DeliveryColor = colorCode;
 
-			ColorCode colorCode;
-			switch (color)
-			{
-				case "Red": colorCode = ColorCode.Red; break;
-				case "Orange": colorCode = ColorCode.Orange; break;
-				case "Yellow": colorCode = ColorCode.Yellow; break;
-				case "Green": colorCode = ColorCode.Green; break;
-				case "Blue": colorCode = ColorCode.Blue; break;
-				case "Purple": colorCode = ColorCode.Purple; break;
-				default: return RedirectToAction("Index");
-			}
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
 
-			var whatOrder = _context.Orders.SingleOrDefault(o => o.Id == id);
-			if (whatOrder != null)
-				whatOrder.DeliveryColor = colorCode;
-
-			await _context.SaveChangesAsync();
-			return RedirectToAction("Index/"+color);
-		}
-	}
+        [HttpGet]
+        public int AvailableCount()
+        {
+            return _context.Orders.Count(o => o.Status == OrderStatus.Ready && o.DelivereeId == null);
+        }
+    }
 }

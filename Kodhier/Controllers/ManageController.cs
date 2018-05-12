@@ -79,10 +79,7 @@ namespace Kodhier.Controllers
                 Address = user.Address,
                 IsEmailConfirmed = user.EmailConfirmed,
                 EmailSendPromotional = user.EmailSendPromotional,
-                EmailSendUpdates = user.EmailSendUpdates,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                BirthDate = user.BirthDate
+                EmailSendUpdates = user.EmailSendUpdates
             };
 
             return View(model);
@@ -175,27 +172,6 @@ namespace Kodhier.Controllers
             if (model.Address != adress)
             {
                 user.Address = model.Address;
-                await _context.SaveChangesAsync();
-            }
-
-            var firstName = user.FirstName;
-            if (model.FirstName != firstName)
-            {
-                user.FirstName = model.FirstName;
-                await _context.SaveChangesAsync();
-            }
-
-            var lastName = user.LastName;
-            if (model.PhoneNumber != lastName)
-            {
-                user.LastName = model.LastName;
-                await _context.SaveChangesAsync();
-            }
-
-            var birthDate = user.BirthDate;
-            if (model.BirthDate != birthDate)
-            {
-                user.BirthDate = model.BirthDate;
                 await _context.SaveChangesAsync();
             }
 

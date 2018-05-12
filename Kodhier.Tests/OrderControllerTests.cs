@@ -44,9 +44,9 @@ namespace Kodhier.Tests
             var uId = new Guid("ec04ee08-f434-41d0-a208-15bd2dcb3389");
             var pId = Guid.NewGuid();
             var ppc = new PizzaPriceCategory { Description = "LOL", Id = 1 };
-            var user = new ApplicationUser() { Id = uId.ToString(), BirthDate = new DateTime(), Email = "asdf@jkl.lt", FirstName = "ASdF", UserName = "AwDcV" };
+            var user = new ApplicationUser { Id = uId.ToString(), Email = "asdf@jkl.lt", UserName = "AwDcV" };
             _context.Users.Add(user);
-            _context.Users.Add(new ApplicationUser() { Id = Guid.NewGuid().ToString(), BirthDate = new DateTime(), Email = "dummy@jkdl.lt", FirstName = "dummy", UserName = "dumb" });
+            _context.Users.Add(new ApplicationUser { Id = Guid.NewGuid().ToString(), Email = "dummy@jkdl.lt", UserName = "dumb" });
             _context.PizzaPriceCategories.Add(ppc);
             _context.SaveChanges();
             _context.PizzaPriceInfo.Add(new PizzaPriceInfo {Id = 1, Price = 6.05m, PriceCategory = ppc, Size = 32});

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Kodhier.Data;
 using Kodhier.Extensions;
@@ -140,10 +142,11 @@ namespace Kodhier.Controllers
                 return View(model);
             }
 
-            var orders = _context.Orders.Include(o => o.Pizza)
+            var orders = await _context.Orders.Include(o => o.Pizza)
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => o.Status == OrderStatus.Unpaid)
-                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14));
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
+                .ToArrayAsync();
 
             var price = orders.Sum(o => o.Price * o.Quantity);
 
@@ -176,7 +179,7 @@ namespace Kodhier.Controllers
 
             if (user.EmailSendUpdates)
             {
-                await SendEmail(user);
+                await SendEmail(user, orders.ToArray());
                 execRes.AddInfo(_localizer["Email was sent to {0}", user.Email]);
             }
 
@@ -186,27 +189,59 @@ namespace Kodhier.Controllers
             return RedirectToAction("Index", "Order");
         }
 
-        private async Task SendEmail(ApplicationUser user)
+        private async Task SendEmail(ApplicationUser user, Order[] cart)
         {
-            var pathToFile = _env.WebRootPath
-                             + Path.DirectorySeparatorChar
-                             + "Templates"
-                             + Path.DirectorySeparatorChar
-                             + "EmailTemplate"
-                             + Path.DirectorySeparatorChar
-                             + "Confirm_Order.html";
+            string template, css;
 
-            const string subject = "Confirm Checkout";
-            var builder = new BodyBuilder();
-
-            using (var sourceReader = System.IO.File.OpenText(pathToFile))
+            using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Order.html"))
             {
-                builder.HtmlBody = sourceReader.ReadToEnd();
+                template = sourceReader.ReadToEnd();
+            }
+            using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Order.css"))
+            {
+                css = sourceReader.ReadToEnd();
             }
 
-            var messageBody = string.Format(builder.HtmlBody, user.UserName);
+            var messageBody = FormatBody(template, css, user, cart);
 
-            await _emailSender.SendEmailAsync(user.Email, subject, messageBody);
+            await _emailSender.SendEmailAsync(user.Email, _localizer["Confirm Checkout"], messageBody);
+        }
+
+        private string FormatBody(string template, string css, ApplicationUser user, Order[] cart)
+        {
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
+            var totalPrice = cart.Sum(o => o.Price * o.Quantity);
+
+            var htmlCart = new StringBuilder();
+            foreach (var order in cart)
+            {
+                htmlCart.Append(
+                    cultCode == "lt-LT"
+                        ? $"<tr><td>{order.Pizza.NameLt}</td><td class=\"alignright\">{order.Price} €</td></tr>"
+                        : $"<tr><td>{order.Pizza.NameEn}</td><td class=\"alignright\">{order.Price} €</td></tr>");
+            }
+            // Format rules:
+            // {0} - Amount paid. Includes money.
+            // {1} - _localizer["Thank you for using Kodhier services"]
+            // {2} - user
+            // {3} - order id
+            // {4} - payment date
+            // {5} - formatted cart with html
+            // {6} - _localizer["Total"]
+            // {7} - total money with symbol
+            // {8} - CSS of ducument
+            return string.Format(template,
+                string.Format(_localizer["{0} € Paid"], totalPrice),
+                _localizer["Thank you for using Kodhier services"],
+                user.UserName,
+                cart.First().Id,
+                cart.First().PaymentDate,
+                htmlCart,
+                _localizer["Total"],
+                $"{totalPrice} €",
+                css
+            );
         }
 
         [ValidateAntiForgeryToken]

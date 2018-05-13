@@ -245,16 +245,9 @@ namespace Kodhier.Controllers
                         token = ctoken
                     }, HttpContext.Request.Scheme);
 
-                    var pathToFile = _env.WebRootPath
-                            + Path.DirectorySeparatorChar
-                            + "Templates"
-                            + Path.DirectorySeparatorChar
-                            + "EmailTemplate"
-                            + Path.DirectorySeparatorChar
-                            + "Confirm_Email.html";
                     var subject = "Confirm Account Registration";
                     var builder = new BodyBuilder();
-                    using (var sourceReader = System.IO.File.OpenText(pathToFile))
+                    using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Email.html"))
                     {
                         builder.HtmlBody = sourceReader.ReadToEnd();
                     }
@@ -410,16 +403,9 @@ namespace Kodhier.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
 
-                var pathToFile = _env.WebRootPath
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Templates"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "EmailTemplate"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Password_Reset.html";
                 var subject = "Slaptažodžio atkūrimas";
                 var builder = new BodyBuilder();
-                using (var sourceReader = System.IO.File.OpenText(pathToFile))
+                using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Password_Reset.html"))
                 {
                     builder.HtmlBody = sourceReader.ReadToEnd();
                 }

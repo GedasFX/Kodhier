@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Confirm Checkout" xml:space="preserve">
+    <value>Užsakymas patvirtintas</value>
+  </data>
   <data name="Email was sent to {0}" xml:space="preserve">
     <value>Patvirtinimo laiškas išsiųstas į {0}</value>
   </data>
@@ -144,7 +147,16 @@
   <data name="Requested pizza was not found. Please try again." xml:space="preserve">
     <value>Tokios picos nėra. Bandykite dar kartą.</value>
   </data>
+  <data name="Thank you for using Kodhier services" xml:space="preserve">
+    <value>Dėkojame, kad naudojatės Kodhier paslaugomis</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Viso</value>
+  </data>
   <data name="Your email is not confirmed. Please confirm it before proceeding." xml:space="preserve">
     <value>Jūsų el. paštas nepatvirtintas. Prašome patvirtinti ir bandyti dar kartą.</value>
+  </data>
+  <data name="{0} € Paid" xml:space="preserve">
+    <value>Sumokėta {0} €</value>
   </data>
 </root>

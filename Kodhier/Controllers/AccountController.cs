@@ -10,8 +10,6 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using Kodhier.Extensions;
 using MimeKit;
 
@@ -26,22 +24,18 @@ namespace Kodhier.Controllers
         private readonly ILogger _logger;
         private readonly IStringLocalizer<AccountController> _localizer;
 
-        private IHostingEnvironment _env;
-
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IStringLocalizer<AccountController> localizer,
-            IHostingEnvironment env)
+            IStringLocalizer<AccountController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _localizer = localizer;
-            _env = env;
         }
 
         [HttpGet]

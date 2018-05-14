@@ -4,52 +4,65 @@
     ViewData["Title"] = "Delivery";
 }
 
-<h2>Delivery</h2>
+<link href="~/adm/css/Custom.css" rel="stylesheet" />
 
-<form asp-action="Assign">
-    <input type="submit" class="btn btn-info" value="Get New Order" />
-</form>
-<div><p>Pending deliveries: <span id="availableOrders"></span></p></div>
+<header class="content__title">
+    <h1>Delivery</h1>
+</header>
+
+<div class="row">
+    <div class="mx-auto">
+        <form asp-action="Assign">
+            <input type="submit" class="btn btn-info" value="Get New Order" />
+        </form>
+        <div><p>Pending deliveries: <span id="availableOrders"></span></p></div>
+    </div>
+</div>
 <br />
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Size</th>
-        <th>Comment</th>
-        <th>Address</th>
-        <th>Color code</th>
-    </tr>
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table mb-sm-1 table-responsive">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Address</th>
+                    <th>Color code</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Quantity</td>
-            <td>@item.Size</td>
-            <td>@item.Comment</td>
-            <td>@item.DeliveryAddress</td>
-            <td>
-                <form asp-action="ChangeColor" method="post" style="display: inline-block;">
-                    <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
-                    <select name="Color" data-color="@item.DeliveryColor" asp-items="@(new SelectList(new[] { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))"></select>
-                </form>
-                <form asp-action="Abandon" method="post" style="display: inline;">
-                    <input name="id" value="@item.Id" type="hidden" />
-                    <input type="submit" value="Abandon" class="btn btn-outline-warning" style="cursor:pointer" />
-                </form>
-                <form asp-action="Complete" method="post" style="display: inline;">
-                    <input name="id" value="@item.Id" type="hidden" />
-                    <input type="submit" value="Delivered" class="btn btn-outline-info" style="cursor:pointer" />
-                </form>
-            </td>
-        </tr>
-    }
-</table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.DeliveryAddress</td>
+                    <td>
+                        <form asp-action="ChangeColor" method="post" style="display: inline-block;">
+                            <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
+                            <select name="Color" data-color="@item.DeliveryColor" asp-items="@(new SelectList(new[] { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))"></select>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Abandon" method="post" style="display: inline;">
+                            <input name="id" value="@item.Id" type="hidden" />
+                            <input type="submit" value="Abandon" class="btn btn-outline-warning" style="cursor:pointer; margin: 5px" />
+                        </form>
+                        <form asp-action="Complete" method="post" style="display: inline;">
+                            <input name="id" value="@item.Id" type="hidden" />
+                            <input type="submit" value="Delivered" class="btn btn-outline-info" style="cursor:pointer; margin: 5px" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
 
-<br />
-<div id="map" style="width: 480px; height: 480px;"></div>
-
+    <div class="col-lg-6">
+        <div id="map" class="mapstyle"></div>
+    </div>
+</div>
 
 @section Scripts {
     <script>

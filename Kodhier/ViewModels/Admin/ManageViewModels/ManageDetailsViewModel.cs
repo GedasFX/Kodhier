@@ -9,5 +9,10 @@ namespace Kodhier.ViewModels.Admin.ManageViewModels
 
         public string NewRole { get; set; }
         public IEnumerable<string> AllRoles { get; set; }
+
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public decimal Balance { get; set; }
+        public string Address { get; set; }
     }
 }

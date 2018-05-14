@@ -43,7 +43,11 @@ namespace Kodhier.Areas.Admin.Controllers
             {
                 UserRoles = userRoles,
                 Username = user.UserName,
-                AllRoles = _roles
+                AllRoles = _roles,
+                Balance = user.Coins,
+                Email = user.Email,
+                Phone = user.PhoneNumber,
+                Address = user.Address
             });
         }
 

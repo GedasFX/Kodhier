@@ -14,11 +14,11 @@
     <table id="cart" class="table table-hover table-dark table-condensed table-responsive">
         <thead>
             <tr>
-                <th style="width:65%">@Localizer["Product"]</th>
-                <th style="width:5%" class="text-center">@Localizer["Size"]</th>
+                <th style="width:40%">@Localizer["Product"]</th>
+                <th style="width:10%" class="text-center">@Localizer["Size"]</th>
                 <th style="width:10%">@Localizer["Quantity"]</th>
-                <th style="width:5%" class="text-center">@Localizer["Price"]</th>
-                <th style="width:5%" class="text-center">@Localizer["Price"]</th>
+                <th style="width:15%" class="text-center">@Localizer["Price"]</th>
+                <th style="width:15%" class="text-center">@Localizer["Total price"]</th>
                 <th style="width:10%"></th>
             </tr>
         </thead>
@@ -27,25 +27,19 @@
             {
                 <tr id="@Html.DisplayFor(modelItem => item.Id)">
                     <td data-th="Product">
-                        <div class="row">
-                            <div class="col-md-2 col-lg-2 col-sm-2 hidden-xs"><img id="pizza" src=@Url.Content(item.ImagePath) class="img-responsive rounded-circle img-fluid" /></div>
-                            <div class="col-md-10 col-lg-10 col-sm-10">
-                                <h4 class="nomargin">@Html.DisplayFor(modelItem => item.Name)</h4>
-                                <p>@item.Description</p>
-                                <p>@item.Comment</p>
-                            </div>
-                        </div>
+                        <img id="pizza" src=@Url.Content(item.ImagePath) class="img-responsive rounded-circle img-fluid" />
+                        <h4 class="nomargin" style="padding: 10px 15px;">@Html.DisplayFor(modelItem => item.Name)</h4>
                     </td>
 
                     <td data-th="Size" class="text-center">@Html.DisplayFor(modelItem => item.Size)</td>
                     <td data-th="Quantity">
                         <form asp-action="Edit" asp-route-id="@item.Id" class="form-group">
                             <input type="number" class="btn form-control text-center" name="qty" value="@item.Quantity" />
-                            <input type="submit" class="btn btn-sm btn-success" value="Change" />
+                            <input type="submit" class="btn btn-sm btn-success" value=@Localizer["Change"] />
                         </form>
                     </td>
                     <td data-th="Price" class="text-center">@(item.Price)</td>
-                    <td data-th="Price" class="text-center">@(item.Quantity * item.Price)</td>
+                    <td data-th="Total price" class="text-center">@(item.Quantity * item.Price)</td>
                     <td class="actions" data-th="">
                         <form asp-action="Remove" asp-route-id="@item.Id">
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
@@ -58,7 +52,7 @@
             <tr>
                 <td><a asp-controller="Order" asp-action="Index" class="btn btn-warning"><i class="fa fa-angle-left"></i> @Localizer["Continue Shopping"]</a></td>
                 <td colspan="3" class="hidden-xs"></td>
-                <td class="hidden-xs text-center"><strong>Total @Model.Sum(a => a.Price * a.Quantity)</strong></td>
+                <td class="hidden-xs text-center"><strong>@Localizer["Total"] @Model.Sum(a => a.Price * a.Quantity)</strong></td>
                 <td><a asp-action="Continue" class="btn btn-success btn-block">@Localizer["Checkout"] <i class="fa fa-angle-right"></i></a></td>
             </tr>
         </tfoot>

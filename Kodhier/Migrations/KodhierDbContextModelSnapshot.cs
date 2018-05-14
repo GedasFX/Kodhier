@@ -30,8 +30,6 @@ namespace Kodhier.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<DateTime?>("BirthDate");
-
                     b.Property<decimal>("Coins");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -45,10 +43,6 @@ namespace Kodhier.Migrations
                     b.Property<bool>("EmailSendPromotional");
 
                     b.Property<bool>("EmailSendUpdates");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -101,7 +95,11 @@ namespace Kodhier.Migrations
 
                     b.Property<DateTime?>("CookingDate");
 
+                    b.Property<string>("DelivereeId");
+
                     b.Property<string>("DeliveryAddress");
+
+                    b.Property<int>("DeliveryColor");
 
                     b.Property<DateTime?>("DeliveryDate");
 
@@ -117,6 +115,8 @@ namespace Kodhier.Migrations
 
                     b.Property<int>("Quantity");
 
+                    b.Property<DateTime?>("ReadyDate");
+
                     b.Property<int>("Size");
 
                     b.Property<int>("Status");
@@ -126,6 +126,8 @@ namespace Kodhier.Migrations
                     b.HasIndex("ChefId");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("DelivereeId");
 
                     b.HasIndex("PizzaId");
 
@@ -325,6 +327,10 @@ namespace Kodhier.Migrations
                     b.HasOne("Kodhier.Models.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
+
+                    b.HasOne("Kodhier.Models.ApplicationUser", "Deliveree")
+                        .WithMany()
+                        .HasForeignKey("DelivereeId");
 
                     b.HasOne("Kodhier.Models.Pizza", "Pizza")
                         .WithMany("Orders")

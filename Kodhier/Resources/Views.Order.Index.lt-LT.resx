@@ -120,13 +120,19 @@
   <data name="Details" xml:space="preserve">
     <value>Plačiau</value>
   </data>
-  <data name="from" xml:space="preserve">
-    <value>nuo</value>
+  <data name="From" xml:space="preserve">
+    <value>Nuo</value>
   </data>
   <data name="Your order was accepted successfully!" xml:space="preserve">
     <value>Užsakymas sėkmingas!</value>
   </data>
   <data name="Add to cart" xml:space="preserve">
     <value>Pridėti į krepšelį</value>
+  </data>
+  <data name="Pizza was succesfully added to the basket." xml:space="preserve">
+    <value>Pica sėkmingai pridėta į krepšelį.</value>
+  </data>
+  <data name="MENU" xml:space="preserve">
+    <value>MENIU</value>
   </data>
 </root>

@@ -159,6 +159,12 @@
   <data name="Register" xml:space="preserve">
     <value>Registruotis</value>
   </data>
+  <data name="Send order updates" xml:space="preserve">
+    <value>Siųsti užsakymų atnaujinimus</value>
+  </data>
+  <data name="Send promotional emails" xml:space="preserve">
+    <value>Siųsti reklaminius laiškus</value>
+  </data>
   <data name="Username" xml:space="preserve">
     <value>Vartotojo vardas</value>
   </data>

@@ -62,9 +62,6 @@ namespace Kodhier.Controllers
             _env = env;
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -81,12 +78,8 @@ namespace Kodhier.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage,
                 EmailSendPromotional = user.EmailSendPromotional,
-                EmailSendUpdates = user.EmailSendUpdates,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                BirthDate = user.BirthDate
+                EmailSendUpdates = user.EmailSendUpdates
             };
 
             return View(model);
@@ -113,12 +106,12 @@ namespace Kodhier.Controllers
             var code = _context.PrepaidCodes.SingleOrDefault(c => c.Id == Guid.Parse(model.Id));
             if (code == null)
             {
-                execRes.AddError("Provided code doesn't exist.").PushTo(TempData);
+                execRes.AddError(_localizer["Provided code doesn't exist."]).PushTo(TempData);
                 return View();
             }
             if (code.RedemptionDate != null)
             {
-                execRes.AddError("Provided code has already been used.").PushTo(TempData);
+                execRes.AddError(_localizer["Provided code has already been used."]).PushTo(TempData);
                 return View();
             }
 
@@ -132,9 +125,9 @@ namespace Kodhier.Controllers
 
             if (await _context.SaveChangesAsync() > 0)
                 execRes.AddInfo(
-                    $"Code has been succesfully redeemed. Added {code.Amount} to the acccount balance. New balance: {user.Coins}!");
+                    _localizer["Code has been succesfully redeemed. Added {0} to the acccount balance. New balance: {1}!", code.Amount, user.Coins]);
             else
-                execRes.AddError("Failed to use the code. Try again later.");
+                execRes.AddError(_localizer["Failed to use the code. Try again later."]);
 
             execRes.PushTo(TempData);
             return View();
@@ -144,6 +137,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel model)
         {
+            var execRes = new ExecutionResult();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -181,27 +175,6 @@ namespace Kodhier.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var firstName = user.FirstName;
-            if (model.FirstName != firstName)
-            {
-                user.FirstName = model.FirstName;
-                await _context.SaveChangesAsync();
-            }
-
-            var lastName = user.LastName;
-            if (model.PhoneNumber != lastName)
-            {
-                user.LastName = model.LastName;
-                await _context.SaveChangesAsync();
-            }
-
-            var birthDate = user.BirthDate;
-            if (model.BirthDate != birthDate)
-            {
-                user.BirthDate = model.BirthDate;
-                await _context.SaveChangesAsync();
-            }
-
             if (user.EmailSendPromotional != model.EmailSendPromotional ||
                 user.EmailSendUpdates != model.EmailSendUpdates)
             {
@@ -210,7 +183,7 @@ namespace Kodhier.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            StatusMessage = _localizer["Your profile has been updated"];
+            execRes.AddInfo(_localizer["Your profile has been updated"]).PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
@@ -218,6 +191,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
         {
+            var execRes = new ExecutionResult();
             if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
@@ -257,7 +231,7 @@ namespace Kodhier.Controllers
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 
-            StatusMessage = _localizer["Verification email sent. Please check your email."];
+            execRes.AddInfo(_localizer["Verification email sent. Please check your email."]).PushTo(TempData);
             return RedirectToAction(nameof(Index));
         }
 
@@ -276,7 +250,7 @@ namespace Kodhier.Controllers
                 return RedirectToAction(nameof(SetPassword));
             }
 
-            var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
+            var model = new ChangePasswordViewModel();
             return View(model);
         }
 
@@ -284,6 +258,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            var execRes = new ExecutionResult();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -304,7 +279,7 @@ namespace Kodhier.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = _localizer["Your password has been changed."];
+            execRes.AddInfo(_localizer["Your password has been changed."]).PushTo(TempData);
 
             return RedirectToAction(nameof(ChangePassword));
         }
@@ -325,7 +300,7 @@ namespace Kodhier.Controllers
                 return RedirectToAction(nameof(ChangePassword));
             }
 
-            var model = new SetPasswordViewModel { StatusMessage = StatusMessage };
+            var model = new SetPasswordViewModel();
             return View(model);
         }
 
@@ -333,6 +308,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
         {
+            var execRes = new ExecutionResult();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -352,7 +328,7 @@ namespace Kodhier.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            StatusMessage = "Your password has been set.";
+            execRes.AddInfo("Your password has been set.").PushTo(TempData);
 
             return RedirectToAction(nameof(SetPassword));
         }
@@ -371,7 +347,6 @@ namespace Kodhier.Controllers
                 .Where(auth => model.CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
             model.ShowRemoveButton = await _userManager.HasPasswordAsync(user) || model.CurrentLogins.Count > 1;
-            model.StatusMessage = StatusMessage;
 
             return View(model);
         }
@@ -392,6 +367,7 @@ namespace Kodhier.Controllers
         [HttpGet]
         public async Task<IActionResult> LinkLoginCallback()
         {
+            var execRes = new ExecutionResult();
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -413,7 +389,7 @@ namespace Kodhier.Controllers
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            execRes.AddInfo("The external login was added.").PushTo(TempData);
             return RedirectToAction(nameof(ExternalLogins));
         }
 
@@ -421,6 +397,7 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
         {
+            var execRes = new ExecutionResult();
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -434,13 +411,14 @@ namespace Kodhier.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            StatusMessage = "The external login was removed.";
+            execRes.AddSuccess("The external login was removed.").PushTo(TempData);
             return RedirectToAction(nameof(ExternalLogins));
         }
 
         [HttpGet]
         public async Task<IActionResult> TwoFactorAuthentication()
         {
+            var execRes = new ExecutionResult();
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {

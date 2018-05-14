@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Kodhier.ViewModels.CheckoutViewModel>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["History"];
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/Order.css" />
+<header>
+    <h1>@Localizer["Order history"]</h1>
+</header>
+
+<div class="container col-md-4 offset-md-4">
+    <div class="products">
+        @Localizer["Order history is empty"]
+    </div>
+</div>

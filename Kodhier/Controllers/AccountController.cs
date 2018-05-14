@@ -10,8 +10,7 @@ using Kodhier.Models;
 using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
+using Kodhier.Extensions;
 using MimeKit;
 
 namespace Kodhier.Controllers
@@ -25,31 +24,26 @@ namespace Kodhier.Controllers
         private readonly ILogger _logger;
         private readonly IStringLocalizer<AccountController> _localizer;
 
-        private IHostingEnvironment _env;
-
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IStringLocalizer<AccountController> localizer,
-            IHostingEnvironment env)
+            IStringLocalizer<AccountController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _localizer = localizer;
-            _env = env;
         }
-
-        [TempData]
-        public string ErrorMessage { get; set; }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
+            if (User.GetId() != null)
+                return RedirectToAction("Index", "Home");
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -214,6 +208,8 @@ namespace Kodhier.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            if (User.GetId() != null)
+                return RedirectToAction("Index", "Home");
             ViewData["ReturnUrl"] = returnUrl;
             return View(new RegisterViewModel { SendEmailPromotional = true, SendEmailUpdate = true });
         }
@@ -243,16 +239,9 @@ namespace Kodhier.Controllers
                         token = ctoken
                     }, HttpContext.Request.Scheme);
 
-                    var pathToFile = _env.WebRootPath
-                            + Path.DirectorySeparatorChar
-                            + "Templates"
-                            + Path.DirectorySeparatorChar
-                            + "EmailTemplate"
-                            + Path.DirectorySeparatorChar
-                            + "Confirm_Email.html";
                     var subject = "Confirm Account Registration";
                     var builder = new BodyBuilder();
-                    using (var sourceReader = System.IO.File.OpenText(pathToFile))
+                    using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Email.html"))
                     {
                         builder.HtmlBody = sourceReader.ReadToEnd();
                     }
@@ -304,7 +293,6 @@ namespace Kodhier.Controllers
         {
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
                 return RedirectToAction(nameof(Login));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -409,16 +397,9 @@ namespace Kodhier.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
 
-                var pathToFile = _env.WebRootPath
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Templates"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "EmailTemplate"
-                        + Path.DirectorySeparatorChar.ToString()
-                        + "Password_Reset.html";
                 var subject = "Slaptažodžio atkūrimas";
                 var builder = new BodyBuilder();
-                using (var sourceReader = System.IO.File.OpenText(pathToFile))
+                using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Password_Reset.html"))
                 {
                     builder.HtmlBody = sourceReader.ReadToEnd();
                 }

@@ -33,6 +33,12 @@
     <Compile Remove="Migrations\20180421192341_emailpromo.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Templates\EmailTemplate\Confirm_Email.html" />
+    <Content Include="Templates\EmailTemplate\Confirm_Order.html" />
+    <Content Include="Templates\EmailTemplate\Password_Reset.html" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />

@@ -47,11 +47,11 @@
                             </div>
                             @* TODO: Make this less ugly. *@
                             <div class="col-12">
-                                <h2>Price per pizza: <span id="priceValue"></span> €</h2>
+                                <h2>@Localizer["Price per pizza:"] <span id="priceValue"></span> €</h2>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label asp-for="Comment">@Localizer["Comment"]</label>
-                                <input asp-for="Comment" class="form-control" placeholder="Optional" />
+                                <input asp-for="Comment" class="form-control" placeholder="@Localizer["Optional"]" />
                                 <span asp-validation-for="Comment" class="text-danger"></span>
                             </div>
                             <div class="form-group">

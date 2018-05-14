@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Code has been succesfully redeemed. Added {0} to the acccount balance. New balance: {1}!" xml:space="preserve">
+    <value>Kodas sėkmingai panaudotas. Jūs gavote {0}. Dabar Jūsų likutis: {1}!</value>
+  </data>
+  <data name="Failed to use the code. Try again later." xml:space="preserve">
+    <value>Nepavyko aktyvuoti kodo. Pabandykite vėliau.</value>
+  </data>
+  <data name="Provided code doesn't exist." xml:space="preserve">
+    <value>Neteisingai įvestas kodas.</value>
+  </data>
+  <data name="Provided code has already been used." xml:space="preserve">
+    <value>Įvestas kodas yra panaudotas.</value>
+  </data>
   <data name="Verification email sent. Please check your email." xml:space="preserve">
     <value>Kodas išsiūstas. Pasitikrinkite el. paštą.</value>
   </data>

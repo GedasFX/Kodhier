@@ -15,6 +15,7 @@ using Kodhier.ViewModels;
 using Moq;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
 
 namespace Kodhier.Tests
 {
@@ -115,7 +116,7 @@ namespace Kodhier.Tests
             var httpContext = new DefaultHttpContext() { User = m_User.Object };
             var manageCtrl =
                 new Controllers.ManageController(null, null, null, null, null, _context,
-                    new Mock<IMemoryCache>().Object, null, null)
+                    new Mock<IMemoryCache>().Object, new Mock<IStringLocalizer<Controllers.ManageController>>().Object, null)
                 {
                     ControllerContext = new ControllerContext {HttpContext = httpContext},
                     TempData = new TempDataDictionary(httpContext, m_Data.Object)

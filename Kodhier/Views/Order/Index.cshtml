@@ -2,27 +2,27 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = Localizer["Index"];
+    ViewData["Title"] = Localizer["Meniu"];
 }
 <link rel="stylesheet" type="text/css" href="~/css/Order.css" />
 <div class="col-md-8 offset-md-2">
     <header>
-        <h1>MENIU</h1>
+        <h1>@Localizer["MENU"]</h1>
     </header>
-    @if (TempData["CreateSuccess"] != null && (bool)TempData["CreateSuccess"])
-    {
-        <div class="alert alert-success" role="alert">
-            <strong>Your order was accepted successfully!</strong>
-        </div>
+    @{
+        var grouping = Model.GroupBy(m => m.PriceInfo.First().PriceCategoryId);
     }
-    <div class="row">
-        @foreach (var item in Model)
-        {
+    @* Order by increasingly by price in categories *@
+    @foreach (var group in grouping.OrderBy(m => m.First().PriceInfo.Min(c => c.Price)))
+    {
+        <div class="row">
+            @foreach (var item in group)
+            {
             <div class="col-sm-4 col-md-3">
                 <div class="main" method="post" id="@Html.DisplayFor(modelItem => item.Description)">
                     <div class="products">
                         <img src=@Url.Content(item.ImagePath) class="rounded-circle img-fluid" />
-                        <h4 class="text-info text-center" style="margin-top:5px">@Html.DisplayFor(modelItem => item.Name)</h4>
+                        <h4 class="text-info text-center" style="margin-top: 5px">@Html.DisplayFor(modelItem => item.Name)</h4>
 
                         <div title="Pizza size">
                             @foreach (var price in item.PriceInfo)
@@ -33,10 +33,11 @@
                         </div>
 
                         <h4 class="text-white">@Localizer["From"] @(item.PriceInfo.Any() ? item.PriceInfo.Min(c => c.Price) : 0) €</h4>
-                        <a asp-action="Create" asp-route-id="@item.Name" asp-route-returnurl="@ViewData[" ReturnUrl"]" style="margin-top:5px" class="btn btn-outline-success">@Localizer["Add to cart"]</a>
+                        <a asp-action="Create" asp-route-id="@item.Name" asp-route-returnurl="@ViewData[" ReturnUrl"]" style="margin-top: 5px" class="btn btn-outline-success">@Localizer["Add to cart"]</a>
                     </div>
                 </div>
             </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>

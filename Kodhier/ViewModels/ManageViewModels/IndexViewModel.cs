@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Kodhier.ViewModels.ManageViewModels
 {
@@ -9,8 +8,8 @@ namespace Kodhier.ViewModels.ManageViewModels
 
         public bool IsEmailConfirmed { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "The Email field is required.")]
+        [EmailAddress(ErrorMessage = "The Email field is not a valid e-mail address.")]
         public string Email { get; set; }
 
         [Phone]
@@ -20,14 +19,5 @@ namespace Kodhier.ViewModels.ManageViewModels
 
         public bool EmailSendUpdates { get; set; }
         public bool EmailSendPromotional { get; set; }
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Birth date")]
-        public DateTime? BirthDate { get; set; }
-
-        public string StatusMessage { get; set; }
     }
 }

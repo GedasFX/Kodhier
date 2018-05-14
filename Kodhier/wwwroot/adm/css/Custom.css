@@ -26,3 +26,28 @@ header{
 .gap20{
     margin-top: 20px;
 }
+
+.layUserPanel {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: .9rem;
+    padding: 1rem;
+    background-color: rgba(255,255,255,.09);
+    transition: background-color .3s
+}
+
+option {
+    background-color: black;
+}
+
+.mapstyle{
+    width: 100%;
+    height: 400px;
+}

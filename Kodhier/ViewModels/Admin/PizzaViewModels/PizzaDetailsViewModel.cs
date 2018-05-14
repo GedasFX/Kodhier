@@ -1,6 +1,5 @@
 ﻿using Kodhier.Models;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Kodhier.ViewModels.Admin.PizzaViewModels
 {

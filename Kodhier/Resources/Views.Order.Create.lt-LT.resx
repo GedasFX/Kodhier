@@ -123,8 +123,8 @@
   <data name="Details" xml:space="preserve">
     <value>Plačiau</value>
   </data>
-  <data name="from" xml:space="preserve">
-    <value>nuo</value>
+  <data name="From" xml:space="preserve">
+    <value>Nuo</value>
   </data>
   <data name="Order" xml:space="preserve">
     <value>Užsakyti</value>
@@ -138,7 +138,16 @@
   <data name="Quantity" xml:space="preserve">
     <value>Kiekis</value>
   </data>
-  <data name="Size" xml:space="preserve">
-    <value>Dydis</value>
+  <data name="Size (in cm)" xml:space="preserve">
+    <value>Dydis (cm)</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Komentarai</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Neprivaloma</value>
+  </data>
+  <data name="Price per pizza:" xml:space="preserve">
+    <value>Vienos picos kaina:</value>
   </data>
 </root>

@@ -84,7 +84,18 @@ namespace Kodhier.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (qty < 1)
+            {
+                execRes.AddError(_localizer["Quantity must be a positive whole number"]).PushTo(TempData);
+                return RedirectToAction(nameof(Index));
+            }
+
             var oq = order.Quantity;
+            if (qty == oq)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             order.Quantity = qty;
 
             if (await _context.SaveChangesAsync() > 0)

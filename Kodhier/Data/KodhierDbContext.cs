@@ -14,6 +14,8 @@ namespace Kodhier.Data
         public DbSet<PizzaPriceInfo> PizzaPriceInfo { get; set; }
         public DbSet<PizzaPriceCategory> PizzaPriceCategories { get; set; }
 
+        public DbSet<News> News { get; set; }
+
         public KodhierDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Kodhier.ViewModels.Admin.NewsViewModel
+@{
     Layout = "~/Areas/Admin/Views/Shared/_LayAdmin.cshtml";
     ViewData["Title"] = "Home Page";
 }
@@ -8,120 +9,41 @@
     <small>Update your news!</small>
 </header>
 <div class="row">
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Slide - 1</h4>
-                <ul class="icon-list ">
-                    <li><i class="zmdi zmdi-comment-text"></i></li>
-                    <li><i class="zmdi zmdi-comment-alt-text"></i></li>
-                    <li><i class="zmdi zmdi-image"></i></li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Disable order button</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Enable slide</span>
-                        </label>
-                    </li>
-                </ul>
-                <div class="float-right form-group">
-                    <input type="submit" value="Change" class="btn btn-outline-success" style="cursor:pointer; margin:5px 5px 5px 20px" />
+    @for (var i = 0; i < 4; i++)
+    {
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Update" asp-route-id="@Model.Slides[i].Id">
+                        <h4 class="card-title">Slide - @(i + 1)</h4>
+                        <ul class="icon-list ">
+                            <li><input type="text" class="form-control" name="Title" placeholder="Title" value="@Model.Slides[i].Title" /></li>
+                            <li><input type="text" class="form-control" name="Caption" placeholder="Caption" value="@Model.Slides[i].Caption" /></li>
+                            <li><select name="PizzaId" data-selection="@Model.Slides[i].PizzaId" asp-items="@(new SelectList(Model.Pizzas, "Id", "NameLt"))"></select></li>
+                            <li>
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="IsActive" @(Model.Slides[i].IsActive ? "checked" : "") />
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Enable slide</span>
+                                </label>
+                            </li>
+                        </ul>
+                        <div class="float-right form-group">
+                            <input type="submit" value="Change" class="btn btn-outline-success" style="cursor: pointer; margin: 5px 5px 5px 20px" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Slide - 2</h4>
-                <ul class="icon-list ">
-                    <li><i class="zmdi zmdi-comment-text"></i></li>
-                    <li><i class="zmdi zmdi-comment-alt-text"></i></li>
-                    <li><i class="zmdi zmdi-image"></i></li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Disable order button</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Enable slide</span>
-                        </label>
-                    </li>
-                </ul>
-                <div class="float-right form-group">
-                    <input type="submit" value="Change" class="btn btn-outline-success" style="cursor:pointer; margin:5px 5px 5px 20px" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Slide - 3</h4>
-                <ul class="icon-list ">
-                    <li><i class="zmdi zmdi-comment-text"></i></li>
-                    <li><i class="zmdi zmdi-comment-alt-text"></i></li>
-                    <li><i class="zmdi zmdi-image"></i></li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Disable order button</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Enable slide</span>
-                        </label>
-                    </li>
-                </ul>
-                <div class="float-right form-group">
-                    <input type="submit" value="Change" class="btn btn-outline-success" style="cursor:pointer; margin:5px 5px 5px 20px" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Slide - 4</h4>
-                <ul class="icon-list ">
-                    <li><i class="zmdi zmdi-comment-text"></i></li>
-                    <li><i class="zmdi zmdi-comment-alt-text"></i></li>
-                    <li><i class="zmdi zmdi-image"></i></li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Disable order button</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input">
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Enable slide</span>
-                        </label>
-                    </li>
-                </ul>
-                <div class="float-right form-group">
-                    <input type="submit" value="Change" class="btn btn-outline-success" style="cursor:pointer; margin:5px 5px 5px 20px" />
-                </div>
-            </div>
-        </div>
-    </div>
+
+    }
 </div>
+
+@section Scripts {
+    <script>
+        $('form select').each(function (i, e) {
+            $(e).val($(e).data('selection'));
+        });
+    </script>
+}

@@ -40,6 +40,9 @@ namespace Kodhier.Areas.Admin.Controllers
         {
             var news = await _context.News.SingleOrDefaultAsync(n => id == n.Id);
 
+            if (model.PizzaId == null)
+                return RedirectToAction(nameof(Index));
+
             news.Caption = model.Caption;
             news.IsActive = model.IsActive == "on";
             news.Title = model.Title;

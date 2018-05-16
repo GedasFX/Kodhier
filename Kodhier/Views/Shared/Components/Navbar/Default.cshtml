@@ -1,10 +1,15 @@
 ﻿@model Kodhier.ViewModels.NavbarViewModel
 @using Kodhier.Extensions
 
-<ul class="nav navbar-nav">
-    <li>
-        <a class="nav-link active" asp-controller="Checkout" asp-action="Index"><img class="rounded-circle" style="width:40px;" src="~/images/cart.jpg"></a>
-        <label>@Model.Quantity</label>
-    </li>
-</ul>
+    <ul class="nav navbar-nav">
+        <li>
+            <div class="row">
+                <a class="nav-link active" asp-controller="Checkout" asp-action="Index">
+                    <i class="typcn typcn-shopping-cart" style="width:60px; height:50px"></i>
+
+                </a>
+                <label id="cart_icon" style=" margin-top:0px;  top:-4px;right:22px;  font-size:15px; position:relative;">@Model.Quantity</label>
+            </div>
+        </li>
+    </ul>
 

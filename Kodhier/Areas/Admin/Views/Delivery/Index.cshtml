@@ -13,7 +13,7 @@
 <div class="row">
     <div class="mx-auto">
         <form asp-action="Assign">
-            <input type="submit" class="btn btn-info" value="Get New Order" />
+            <input type="submit" class="btn btn-info" value="Get New Order"  style="cursor:pointer;" />
         </form>
         <div><p>Pending deliveries: <span id="availableOrders"></span></p></div>
     </div>
@@ -103,17 +103,21 @@
             );
 
             for (var i = 0; i < addresses.length; i++) {
-                var color = addresses[i].color.toLowerCase();
-                geocoder.geocode({ 'address': addresses[i].addr }, function (results, status) {
-                    if (status === 'OK') {
-                        markers.push(new window.google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location,
-                            icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
-                        }));
-                    }
-                });
+                codeAddr(map, geocoder, i);
             }
+        }
+
+        function codeAddr(map, geocoder, i) {
+            var color = addresses[i].color.toLowerCase();
+            geocoder.geocode({ 'address': addresses[i].addr, 'region': 'lt' }, function (results, status) {
+                if (status === 'OK') {
+                    markers.push(new window.google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
+                    }));
+                }
+            });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzAKx9JC4eS_8qbGX9iz5ZwRfJ1u8Zf4o&libraries=places&callback=initMap" async defer></script>

@@ -6,6 +6,12 @@
     var count = Model.Count();
 }
 
+<style>
+    .buy-now-btn:after {
+        content: '@Localizer["Buy now"]';
+    }
+</style>
+
 <!-- Slider Wrapper -->
 <div id="fullpage">
     <section>
@@ -28,7 +34,7 @@
             {
                 <div class="slider slide-@(++i)">
                     <div class="horizontal">
-                        <img class="img-responsive rounded-circle" src="@Url.Content(item.PizzaImgPath)" style="max-width: 800px; max-height: 800px;">
+                        <img class="img-responsive rounded-circle" src="@Url.Content(item.PizzaImgPath)" style="max-width: 800px; max-height: 800px; margin-left: 20px;">
                     </div>
                     <div class="slider-content">
                         <h4>@item.Title</h4>

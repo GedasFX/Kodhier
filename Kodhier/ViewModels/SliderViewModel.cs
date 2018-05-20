@@ -1,4 +1,6 @@
-﻿namespace Kodhier.ViewModels
+﻿using Kodhier.Models;
+
+namespace Kodhier.ViewModels
 {
     public class SliderViewModel
     {
@@ -8,5 +10,6 @@
         public decimal Price { get; set; }
 
         public string PizzaImgPath { get; set; }
+        public Pizza Pizza { get; set; }
     }
 }

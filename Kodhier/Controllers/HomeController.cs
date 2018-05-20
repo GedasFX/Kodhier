@@ -34,6 +34,7 @@ namespace Kodhier.Controllers
                     Title = cultCode == "lt-LT" ? n.TitleLt : n.TitleEn,
                     Caption = cultCode == "lt-LT" ? n.CaptionLt : n.CaptionEn,
                     Price = n.Pizza.PriceCategory.PizzaPriceInfos.Min(ppi => ppi.Price),
+                    Pizza = n.Pizza,
                     PizzaImgPath = n.ImagePath
                 });
             return View(vm);

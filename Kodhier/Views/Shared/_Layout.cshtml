@@ -55,16 +55,10 @@
                 @await Html.PartialAsync("_LoginPartial")
 
             </ul>
-
             @if (User.GetId() != null)
             {
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a class="nav-link active" asp-controller="Checkout" asp-action="Index"><img class="rounded-circle" style="width:40px;" src="~/images/cart.jpg"></a>
-                    </li>
-                </ul>
+                 @await Component.InvokeAsync("Navbar")
             }
-
         </div>
     </nav>
     <div class="page-content">

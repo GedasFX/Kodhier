@@ -153,7 +153,6 @@ body {
     }
 
     .buy-now-btn:after {
-        content: 'Buy Now';
         font-size: 12px;
         font-weight: bold;
         text-transform: uppercase;
@@ -464,11 +463,13 @@ body {
     height: 50px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 1em green;
-    box-shadow: 0 0 1em green;
     border-radius: 25px;
     text-align: center;
 }
+    .nav-itemLogged:hover {
+        text-shadow: 0 0 1em green;
+        box-shadow: 0 0 1em green;
+    }
 
 .nav-itemGreetings {
     margin-left: 10px;

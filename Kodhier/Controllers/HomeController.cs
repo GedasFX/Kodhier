@@ -22,6 +22,8 @@ namespace Kodhier.Controllers
 
         public IActionResult Index()
         {
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var vm = _context.News
                 .Include(n => n.Pizza)
                 .Include(n => n.Pizza.PriceCategory)
@@ -29,10 +31,10 @@ namespace Kodhier.Controllers
                 .Where(n => n.IsActive)
                 .Select(n => new SliderViewModel
                 {
-                    Title = n.Title,
-                    Caption = n.Caption,
+                    Title = cultCode == "lt-LT" ? n.TitleLt : n.TitleEn,
+                    Caption = cultCode == "lt-LT" ? n.CaptionLt : n.CaptionEn,
                     Price = n.Pizza.PriceCategory.PizzaPriceInfos.Min(ppi => ppi.Price),
-                    PizzaImgPath = n.Pizza.ImagePath
+                    PizzaImgPath = n.ImagePath
                 });
             return View(vm);
         }

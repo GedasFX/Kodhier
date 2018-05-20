@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.ComponentModel;
 
 namespace Kodhier.Models
 {

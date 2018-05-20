@@ -18,9 +18,28 @@
                     <form asp-action="Update" asp-route-id="@Model.Slides[i].Id">
                         <h4 class="card-title">Slide - @(i + 1)</h4>
                         <ul class="icon-list ">
-                            <li><input type="text" class="form-control" name="Title" placeholder="Title" value="@Model.Slides[i].Title" /></li>
-                            <li><input type="text" class="form-control" name="Caption" placeholder="Caption" value="@Model.Slides[i].Caption" /></li>
-                            <li><select name="PizzaId" data-selection="@Model.Slides[i].PizzaId" asp-items="@(new SelectList(Model.Pizzas, "Id", "NameLt"))"></select></li>
+                            <li><input type="text" class="form-control" name="TitleLt" placeholder="Title (LT)" value="@Model.Slides[i].TitleLt" /></li>
+                            <li><input type="text" class="form-control" name="CaptionLt" placeholder="Caption (LT)" value="@Model.Slides[i].CaptionLt" /></li>
+                            <li><input type="text" class="form-control" name="TitleEn" placeholder="Title (EN)" value="@Model.Slides[i].TitleEn" /></li>
+                            <li><input type="text" class="form-control" name="CaptionEn" placeholder="Caption (EN)" value="@Model.Slides[i].CaptionEn" /></li>
+                            <br />
+                            <li>
+                                <div>
+                                    <div class="form-group">
+                                        <label for="PizzaId@(i)" class="control-label">Pizza</label>
+                                        <select id="PizzaId@(i)" name="PizzaId" data-selection="@Model.Slides[i].PizzaId" asp-items="@(new SelectList(Model.Pizzas, "Id", "NameLt"))" class="form-control"></select>
+                                        <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="form-group">
+                                    <label for="ImagePath@(i)" class="control-label">Image path</label>
+                                    <select id="ImagePath@(i)" name="ImagePath" data-selection="@Model.Slides[i].ImagePath" asp-items="@(new SelectList(Model.Images))" class="form-control"></select>
+                                    <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                </div>
+                            </li>
                             <li>
                                 <label class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" name="IsActive" @(Model.Slides[i].IsActive ? "checked" : "") />

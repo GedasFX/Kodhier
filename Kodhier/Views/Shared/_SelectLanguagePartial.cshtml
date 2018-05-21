@@ -20,7 +20,7 @@
     <div class="dropdown-toggle" data-toggle="dropdown">
         <img src="~/images/flag_@(requestCulture).png" class="flag" alt="@requestCulture" />
     </div>
-    <div class="dropdown-menu form-group">
+    <div class="dropdown-menu form-group  dropdown-menu-right">
         @foreach (var ci in cultureItems)
         {
             <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-group" role="form">

@@ -53,27 +53,22 @@
             <ul class="nav navbar-nav mx-auto">
 
                 @await Html.PartialAsync("_LoginPartial")
-
             </ul>
             @if (User.GetId() != null)
             {
-                 @await Component.InvokeAsync("Navbar")
+                @await Component.InvokeAsync("Navbar")
             }
+            <ul class="nav navbar-nav">
+                @await Html.PartialAsync("_SelectLanguagePartial")
+
+            </ul>
+
         </div>
     </nav>
     <div class="page-content">
         @await Html.PartialAsync("_InfoBoxPartial", executionResult)
         @RenderBody()
         <hr />
-    </div>
-    <div class="footer">
-        <footer>
-            <div>
-                <div class="col-md-2 text-md-center text-sm-center mx-auto">
-                    @await Html.PartialAsync("_SelectLanguagePartial")
-                </div>
-            </div>
-        </footer>
     </div>
 
 

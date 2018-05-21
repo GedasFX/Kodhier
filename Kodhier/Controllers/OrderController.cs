@@ -46,6 +46,8 @@ namespace Kodhier.Controllers
 
         public async Task<IActionResult> Create(string id)
         {
+            var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var exRes = new ExecutionResult();
             if (string.IsNullOrEmpty(id))
             {
@@ -64,9 +66,9 @@ namespace Kodhier.Controllers
             var vm = new OrderCreateViewModel
             {
                 ImagePath = pizza.ImagePath,
-                Name = pizza.NameLt,
+                Name = cultCode == "lt-LT" ? pizza.NameLt : pizza.NameEn,
                 Prices = prices,
-                Description = pizza.DescriptionLt
+                Description = cultCode == "lt-LT" ? pizza.DescriptionLt : pizza.DescriptionEn
             };
             vm.MinPrice = vm.Prices.DefaultIfEmpty(new PizzaPriceInfo()).Min(p => p.Price);
             return View(vm);

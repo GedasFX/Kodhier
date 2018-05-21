@@ -7,7 +7,7 @@ namespace Kodhier.ViewModels.OrderViewModels
     public class OrderCreateViewModel
     {
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
+        [Range(1, 100, ErrorMessage = "Quantity must be greater than 0 and must be a reasonable amount")]
         public int Quantity { get; set; }
 
         // Pizza details for displaying information about pizza

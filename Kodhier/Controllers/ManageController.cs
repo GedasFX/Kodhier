@@ -210,24 +210,17 @@ namespace Kodhier.Controllers
                 token = ctoken
             }, HttpContext.Request.Scheme);
 
-            var pathToFile = _env.WebRootPath
-                    + Path.DirectorySeparatorChar
-                    + "Templates"
-                    + Path.DirectorySeparatorChar
-                    + "EmailTemplate"
-                    + Path.DirectorySeparatorChar
-                    + "Confirm_Email.html";
-            var subject = "Confirm Account Registration";
-            var builder = new BodyBuilder();
-            using (var sourceReader = System.IO.File.OpenText(pathToFile))
+            var subject = _localizer["Confirm Account Registration"];
+            string text;
+            using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Email.html"))
             {
-                builder.HtmlBody = sourceReader.ReadToEnd();
+                text = sourceReader.ReadToEnd();
             }
 
             //{0} : tokeURL
             //{1} : Email
             //{2} : Username           
-            var messageBody = string.Format(builder.HtmlBody, ctokenlink, model.Email, model.Username);
+            var messageBody = string.Format(text, ctokenlink, model.Email, model.Username);
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 

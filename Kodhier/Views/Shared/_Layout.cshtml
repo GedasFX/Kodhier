@@ -51,15 +51,18 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav mx-auto">
-
                 @await Html.PartialAsync("_LoginPartial")
-                @await Html.PartialAsync("_SelectLanguagePartial")
-
             </ul>
             @if (User.GetId() != null)
             {
-                 @await Component.InvokeAsync("Navbar")
+                @await Component.InvokeAsync("Navbar")
             }
+            <ul class="nav navbar-nav">
+
+                @await Html.PartialAsync("_SelectLanguagePartial")
+
+            </ul>
+
         </div>
     </nav>
     <div class="page-content">

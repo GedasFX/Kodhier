@@ -2,55 +2,28 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Options
-@using System.Globalization;
-@using Microsoft.AspNetCore.Localization;
-@using Microsoft.AspNetCore.Mvc.Razor;
-@using Microsoft.Extensions.Options;
 @inject IViewLocalizer Localizer
 @inject IOptions<RequestLocalizationOptions> LocOptions
 @{
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var cultureItems = LocOptions.Value.SupportedUICultures
-        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
-        .ToList();
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture.Name;
+    var cultureItems = LocOptions.Value.SupportedUICultures;
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
 }
 
 
 
 <li class="dropdown nav-itemGreetings form-group" role="presentation">
-    @if (requestCulture.RequestCulture.UICulture.Name == "en-US")
-    {
-        <label asp-for="@requestCulture.RequestCulture.UICulture.Name" class="dropdown-toggle" data-toggle="dropdown"><img src="~/images/us_flagpng.png" style="width:40px;height:20px" /></label>
-    }
-    else
-    {
-        <label asp-for="@requestCulture.RequestCulture.UICulture.Name" class="dropdown-toggle" data-toggle="dropdown"><img src="~/images/lt.png" style="width:40px;height:20px" /></label>
-    }
-    <span class="caret"></span>
+    <label class="dropdown-toggle" data-toggle="dropdown">
+        <img src="~/images/flag_@(requestCulture).png" style="width:40px; height:20px" alt="@requestCulture" />
+    </label>
 
     <div class="dropdown-menu form-group" aria-labelledby="dropdown_target">
-        @foreach (SelectListItem ci in cultureItems)
+        @foreach (var ci in cultureItems)
         {
-            if (ci.Value == "en-US")
-            {
-                <form id="selectLanguage" asp-controller="Home"
-                      asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
-                      method="post" class="form-group" role="form">
-                    <label name="culture" class="dropdown-item" onchange="this.form.submit()" asp-for="@requestCulture.RequestCulture.UICulture.Name"><img src="~/images/lt.png" style="width:40px;height:20px" /></label>
-                    <!--   <a class="dropdown-item"><img src="~/images/lt.png" style="width:40px;height:20px" /></a></a>-->
-                </form>
-
-            }
-            else
-            {
-                <form id="selectLanguage" asp-controller="Home"
-                      asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
-                      method="post" class="form-group" role="form">
-                    <label name="culture" class="dropdown-item" onchange="this.form.submit()" asp-for="@requestCulture.RequestCulture.UICulture.Name"><img src="~/images/us_flagpng.png" style="width:40px;height:20px" /></label>
-                </form>
-                <!--  <a class="dropdown-item"><img src="~/images/us_flagpng.png" style="width:40px;height:20px" /></a>-->
-            }
+            <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-group" role="form">
+                <input name="culture" type="hidden" value="@ci.Name" />
+                <div class="dropdown-item" onclick="this.parentElement.submit()"><img src="~/images/flag_@(ci.Name).png" style="width: 40px; height: 20px" /></div>
+            </form>
         }
     </div>
 </li>

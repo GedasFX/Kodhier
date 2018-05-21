@@ -53,17 +53,15 @@
             <ul class="nav navbar-nav mx-auto">
 
                 @await Html.PartialAsync("_LoginPartial")
-
             </ul>
-
             @if (User.GetId() != null)
             {
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a class="nav-link active" asp-controller="Checkout" asp-action="Index"><img class="rounded-circle" style="width:40px;" src="~/images/cart.jpg"></a>
-                    </li>
-                </ul>
+                @await Component.InvokeAsync("Navbar")
             }
+            <ul class="nav navbar-nav">
+                @await Html.PartialAsync("_SelectLanguagePartial")
+
+            </ul>
 
         </div>
     </nav>
@@ -71,15 +69,6 @@
         @await Html.PartialAsync("_InfoBoxPartial", executionResult)
         @RenderBody()
         <hr />
-    </div>
-    <div class="footer">
-        <footer>
-            <div>
-                <div class="col-md-2 text-md-center text-sm-center mx-auto">
-                    @await Html.PartialAsync("_SelectLanguagePartial")
-                </div>
-            </div>
-        </footer>
     </div>
 
 

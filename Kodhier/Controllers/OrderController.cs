@@ -142,9 +142,9 @@ namespace Kodhier.Controllers
                 order.Quantity += model.Quantity;
                 order.PlacementDate = DateTime.Now;
                 // Adds a new line to the comment with the new comment.
-                order.Comment = string.IsNullOrEmpty(order.Comment)
+                order.CookingComment = string.IsNullOrEmpty(order.CookingComment)
                     ? model.Comment : string.IsNullOrEmpty(model.Comment)
-                        ? order.Comment : $"{order.Comment}\n-----\n{model.Comment}";
+                        ? order.CookingComment : $"{order.CookingComment}\n-----\n{model.Comment}";
             }
             else
             {
@@ -153,7 +153,7 @@ namespace Kodhier.Controllers
                     Id = Guid.NewGuid(),
                     Pizza = pizza,
                     ClientId = userId,
-                    Comment = model.Comment,
+                    CookingComment = model.Comment,
                     Quantity = model.Quantity,
                     Price = ppi.Price,
                     Size = ppi.Size,

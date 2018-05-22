@@ -34,8 +34,8 @@ namespace Kodhier.Areas.Admin.Controllers
                     Id = o.Id.ToString(),
                     Quantity = o.Quantity,
                     Size = o.Size,
-                    Comment = o.Comment,
-                    Name = o.Pizza.NameLt,
+                    Comment = o.DeliveryComment,
+                    Name = o.Pizza.NameEn,
                     ImagePath = o.Pizza.ImagePath,
                     DeliveryAddress = o.DeliveryAddress,
                     DeliveryColor = o.DeliveryColor
@@ -44,7 +44,6 @@ namespace Kodhier.Areas.Admin.Controllers
         }
 
         // Ready <-> Delivering -> Done
-        // TODO: Assign each order a deliveree?
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Assign()

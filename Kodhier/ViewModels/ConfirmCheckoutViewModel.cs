@@ -12,6 +12,8 @@ namespace Kodhier.ViewModels
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        public string Comment { get; set; }
+
         public decimal Price { get; set; }
         public IEnumerable<CheckoutViewModel> CheckoutList { get; set; }
     }

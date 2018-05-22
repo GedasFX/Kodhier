@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Quantity must be greater than 0 and must be a reasonable amount" xml:space="preserve">
-    <value>Kiekis turi būti tarp 1 ir 100</value>
+  <data name="Comment cannot be longer than 255 characters" xml:space="preserve">
+    <value>Komentaras negali būti ilgesnis nei 255 simboliai</value>
   </data>
 </root>

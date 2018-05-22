@@ -12,6 +12,7 @@ namespace Kodhier.ViewModels
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        [MaxLength(255, ErrorMessage = "Comment cannot be longer than 255 characters")]
         public string Comment { get; set; }
 
         public decimal Price { get; set; }

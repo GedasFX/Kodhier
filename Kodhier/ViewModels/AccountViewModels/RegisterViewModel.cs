@@ -6,10 +6,12 @@ namespace Kodhier.ViewModels.AccountViewModels
     {
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress(ErrorMessage = "The Email field is not a valid e-mail address.")]
+        [MaxLength(100, ErrorMessage = "Email cannot be longer than 100 characters.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "The Username field is required.")]
+        [MaxLength(20, ErrorMessage = "Username cannot be longer than 20 characters.")]
         [Display(Name = "Username")]
         public string Username { get; set; }
 

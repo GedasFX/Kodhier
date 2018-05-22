@@ -20,6 +20,8 @@ namespace Kodhier.ViewModels.OrderViewModels
         [Required]
         [Display(Name = "Size")]
         public int SizeId { get; set; }
+
+        [MaxLength(255, ErrorMessage = "Comment cannot be longer than 255 characters")]
         public string Comment { get; set; }
 
         // Filled from controller

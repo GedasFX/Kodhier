@@ -138,4 +138,10 @@
   <data name="The {0} must be at least {2} and at max {1} characters long." xml:space="preserve">
     <value>Slaptažodis turi būti nuo {2} iki {1} simbolių ilgio</value>
   </data>
+  <data name="Email cannot be longer than 100 characters." xml:space="preserve">
+    <value>El. pašto adresas negali būti ilgesnis nei 100 simbolių.</value>
+  </data>
+  <data name="Username cannot be longer than 20 characters." xml:space="preserve">
+    <value>Vartotojo vardas negali būti ilgesnis nei 20 simbolių.</value>
+  </data>
 </root>

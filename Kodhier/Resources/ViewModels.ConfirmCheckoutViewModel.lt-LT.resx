@@ -117,55 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Address:" xml:space="preserve">
-    <value>Adresas:</value>
+  <data name="You must provide a delivery addess" xml:space="preserve">
+    <value>Privalote pateikti pristatymo adresą</value>
   </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Kiekis</value>
-  </data>
-  <data name="Cart" xml:space="preserve">
-    <value>Krepšelis</value>
-  </data>
-  <data name="Checkout" xml:space="preserve">
-    <value>Atsiskaitymas</value>
-  </data>
-  <data name="Comment:" xml:space="preserve">
-    <value>Komentaras:</value>
-  </data>
-  <data name="Continue" xml:space="preserve">
-    <value>Patvirtinimas</value>
-  </data>
-  <data name="Delivery details" xml:space="preserve">
-    <value>Pristatymo informacija</value>
-  </data>
-  <data name="Ex: +37061212345" xml:space="preserve">
-    <value>Pvz.: +37061212345</value>
-  </data>
-  <data name="Ex: Door code" xml:space="preserve">
-    <value>Pvz.: Durų kodas</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Pavadinimas</value>
-  </data>
-  <data name="Phone number:" xml:space="preserve">
-    <value>Telefono numeris:</value>
-  </data>
-  <data name="Place order" xml:space="preserve">
-    <value>Patvirtinti užsakymą</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Kaina</value>
-  </data>
-  <data name="Return" xml:space="preserve">
-    <value>Grįžti</value>
-  </data>
-  <data name="Shipping address" xml:space="preserve">
-    <value>Pristatymo adresas</value>
-  </data>
-  <data name="Size" xml:space="preserve">
-    <value>Dydis</value>
-  </data>
-  <data name="Total:" xml:space="preserve">
-    <value>Viso:</value>
+  <data name="You must provide a phone number" xml:space="preserve">
+    <value>Privalote pateikti telefono numerį</value>
   </data>
 </root>

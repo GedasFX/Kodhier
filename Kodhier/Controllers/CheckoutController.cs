@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +9,9 @@ using Kodhier.Mvc;
 using Kodhier.Services;
 using Kodhier.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 
@@ -26,19 +22,16 @@ namespace Kodhier.Controllers
     {
         private readonly KodhierDbContext _context;
         private readonly IEmailSender _emailSender;
-        private readonly IHostingEnvironment _env;
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<CheckoutController> _localizer;
 
         public CheckoutController(KodhierDbContext context,
             IEmailSender emailSender,
-            IHostingEnvironment env,
             IMemoryCache cache,
             IStringLocalizer<CheckoutController> localizer)
         {
             _context = context;
             _emailSender = emailSender;
-            _env = env;
             _cache = cache;
             _localizer = localizer;
         }
@@ -48,14 +41,14 @@ namespace Kodhier.Controllers
             var orders = _context.Orders
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => o.Status == OrderStatus.Unpaid)
-                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-7))
                 .OrderByDescending(c => c.PlacementDate)
                 .Select(o => new CheckoutViewModel
                 {
                     Id = o.Id,
                     Quantity = o.Quantity,
                     Size = o.Size,
-                    Comment = o.Comment,
+                    Comment = o.CookingComment,
                     Name = culture == "lt-LT" ? o.Pizza.NameLt : o.Pizza.NameEn,
                     ImagePath = o.Pizza.ImagePath,
                     Price = o.Price,
@@ -156,7 +149,7 @@ namespace Kodhier.Controllers
             var orders = await _context.Orders.Include(o => o.Pizza)
                 .Where(o => o.Client.Id == clientId)
                 .Where(o => o.Status == OrderStatus.Unpaid)
-                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-14))
+                .Where(o => o.PlacementDate > DateTime.Now.AddDays(-7)) // Each item is only valid for 7 days
                 .ToArrayAsync();
 
             var price = orders.Sum(o => o.Price * o.Quantity);
@@ -176,6 +169,7 @@ namespace Kodhier.Controllers
                 order.Status = OrderStatus.Queued;
                 order.IsPaid = true;
                 order.DeliveryAddress = model.ConfirmAddress;
+                order.DeliveryComment = model.Comment;
             }
 
             user.Coins -= price;

@@ -27,6 +27,7 @@
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Address</th>
+                    <th>Comment</th>
                     <th>Color code</th>
                     <th>Action</th>
                 </tr>
@@ -38,6 +39,7 @@
                     <td>@item.Name</td>
                     <td>@item.Quantity</td>
                     <td>@item.DeliveryAddress</td>
+                    <td>@item.Comment</td>
                     <td>
                         <form asp-action="ChangeColor" method="post" style="display: inline-block;">
                             <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />

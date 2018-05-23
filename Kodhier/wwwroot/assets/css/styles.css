@@ -599,7 +599,6 @@ body {
         padding-top: 60px;
     }
 
-
 @media (max-width: 767px) {
     .imgPhone {
         max-width: 200px;
@@ -621,4 +620,19 @@ body {
     .buy-now-btn {
         margin-top: 50px;
     }
+}
+
+.backToMeniubtn {
+    color: #ffc107;
+}
+
+    .backToMeniubtn:hover {
+        cursor: pointer;
+        text-shadow: 0 0 1em;
+        color: #ffc107;
+    }
+
+.btn-wrap-text {
+    white-space: normal !important;
+    word-wrap: break-word !important;
 }

@@ -6,24 +6,10 @@ body {
     color: rgb(255,255,255);
 }
 
-#fullpage {
-    height: 70vh;
+.flag {
+    width: 40px;
+    height: 20px;
 }
-
-    #fullpage section {
-        height: 70vh;
-        width: 100%;
-        padding-top: 100px;
-    }
-
-        #fullpage section:nth-child(1) {
-            background: none;
-        }
-
-        #fullpage section:nth-child(2) {
-            background: no-repeat;
-        }
-
 
 .css-slider-wrapper {
     width: 100%;

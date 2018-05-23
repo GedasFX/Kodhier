@@ -1,5 +1,4 @@
-﻿using System;
-using Kodhier.Models;
+﻿using Kodhier.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

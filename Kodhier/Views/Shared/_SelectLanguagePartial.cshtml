@@ -7,6 +7,7 @@
 @{
     var requestCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture.Name;
     var cultureItems = LocOptions.Value.SupportedUICultures;
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
 }
 <style type="text/css">
     .flag {
@@ -22,7 +23,7 @@
     <div class="dropdown-menu dropdown-menu-right form-group">
         @foreach (var ci in cultureItems)
         {
-            <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" method="post" class="form-group" role="form">
+            <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-group" role="form">
                 <input name="culture" type="hidden" value="@ci.Name" />
                 <div class="nav-itemDropdown" onclick="this.parentElement.submit()">
                     <img src="~/images/flag_@(ci.Name).png" class="flag" alt="@ci.Name" /> <span style="color: aliceblue; text-transform: capitalize">@ci.NativeName.Split(' ')[0]</span>

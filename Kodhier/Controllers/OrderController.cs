@@ -37,6 +37,7 @@ namespace Kodhier.Controllers
                         Name = cultCode == "lt-LT" ? p.NameLt : p.NameEn,
                         Description = cultCode == "lt-LT" ? p.DescriptionLt : p.DescriptionEn,
                         ImagePath = p.ImagePath,
+                        PathName = p.NameEn,
                         PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
                         .ToArray()
@@ -55,7 +56,7 @@ namespace Kodhier.Controllers
             }
 
             var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.NameLt == id);
+                .SingleOrDefaultAsync(m => m.NameEn == id);
             if (pizza == null)
             {
                 exRes.AddError(_localizer["Requested pizza could not be found."]).PushTo(TempData);

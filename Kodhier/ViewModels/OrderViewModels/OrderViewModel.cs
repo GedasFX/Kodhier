@@ -17,5 +17,7 @@ namespace Kodhier.ViewModels.OrderViewModels
 
         [Display(Name = "Price information")]
         public PizzaPriceInfo[] PriceInfo { get; set; }
+
+        public string PathName { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace Kodhier.Controllers
         }
 
         [HttpPost]
-        public IActionResult SetLanguage(string culture)
+        public IActionResult SetLanguage(string culture, string returnUrl)
         {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
@@ -49,7 +49,7 @@ namespace Kodhier.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
 
-            return RedirectToAction("Index");
+            return LocalRedirect(returnUrl);
         }
 
         public IActionResult Error()

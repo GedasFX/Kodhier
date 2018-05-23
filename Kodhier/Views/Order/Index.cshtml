@@ -12,7 +12,7 @@
     @{
         var grouping = Model.GroupBy(m => m.PriceInfo.First().PriceCategoryId);
     }
-    @* Order by increasingly by price in categories *@
+    @* Order by price in categories *@
     @foreach (var group in grouping.OrderBy(m => m.First().PriceInfo.Min(c => c.Price)))
     {
         <div class="row">
@@ -33,7 +33,7 @@
                         </div>
 
                         <h4 class="text-white">@Localizer["From"] @(item.PriceInfo.Any() ? item.PriceInfo.Min(c => c.Price) : 0) €</h4>
-                        <a asp-action="Create" asp-route-id="@item.Name" asp-route-returnurl="@ViewData[" ReturnUrl"]" style="margin-top: 5px" class="btn btn-outline-success">@Localizer["Add to cart"]</a>
+                        <a asp-action="Create" asp-route-id="@item.PathName" asp-route-returnurl="@ViewData[" ReturnUrl"]" style="margin-top: 5px" class="btn btn-outline-success">@Localizer["Add to cart"]</a>
                     </div>
                 </div>
             </div>

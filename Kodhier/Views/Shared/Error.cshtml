@@ -2,14 +2,19 @@
 @{
     ViewData["Title"] = "Error";
 }
-<div class="products">
-    <h1 class="text-danger">Error.</h1>
-    <h2 class="text-danger">An error occurred while processing your request.</h2>
 
+    <header>
+        <h1 class="text-danger">Error.</h1>
+        <h2 class="text-danger">An error occurred while processing your request.</h2>
+    </header>
+
+<div class="container col-md-4 offset-md-4">
+    <div class="products">
     @if (Model.ShowRequestId)
     {
         <p>
             <strong>Request ID:</strong> <code>@Model.RequestId</code>
         </p>
     }
+    </div>
 </div>

@@ -37,6 +37,7 @@ namespace Kodhier.Controllers
                         Name = cultCode == "lt-LT" ? p.NameLt : p.NameEn,
                         Description = cultCode == "lt-LT" ? p.DescriptionLt : p.DescriptionEn,
                         ImagePath = p.ImagePath,
+                        PathName = p.NameEn,
                         PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == p.PriceCategoryId)
                         .ToArray()
@@ -55,7 +56,7 @@ namespace Kodhier.Controllers
             }
 
             var pizza = await _context.Pizzas
-                .SingleOrDefaultAsync(m => m.NameLt == id);
+                .SingleOrDefaultAsync(m => m.NameEn == id);
             if (pizza == null)
             {
                 exRes.AddError(_localizer["Requested pizza could not be found."]).PushTo(TempData);
@@ -100,7 +101,7 @@ namespace Kodhier.Controllers
         {
             var execRes = new ExecutionResult();
 
-            var pizza = _context.Pizzas.SingleOrDefault(i => i.NameLt == id);
+            var pizza = _context.Pizzas.SingleOrDefault(i => i.NameEn == id);
             if (pizza == null)
             {
                 execRes.AddError(_localizer["Requested pizza was not found. Please try again."]).PushTo(TempData);
@@ -142,9 +143,9 @@ namespace Kodhier.Controllers
                 order.Quantity += model.Quantity;
                 order.PlacementDate = DateTime.Now;
                 // Adds a new line to the comment with the new comment.
-                order.Comment = string.IsNullOrEmpty(order.Comment)
+                order.CookingComment = string.IsNullOrEmpty(order.CookingComment)
                     ? model.Comment : string.IsNullOrEmpty(model.Comment)
-                        ? order.Comment : $"{order.Comment}\n-----\n{model.Comment}";
+                        ? order.CookingComment : $"{order.CookingComment}\n-----\n{model.Comment}";
             }
             else
             {
@@ -153,7 +154,7 @@ namespace Kodhier.Controllers
                     Id = Guid.NewGuid(),
                     Pizza = pizza,
                     ClientId = userId,
-                    Comment = model.Comment,
+                    CookingComment = model.Comment,
                     Quantity = model.Quantity,
                     Price = ppi.Price,
                     Size = ppi.Size,

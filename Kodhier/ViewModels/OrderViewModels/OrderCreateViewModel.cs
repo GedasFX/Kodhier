@@ -6,7 +6,7 @@ namespace Kodhier.ViewModels.OrderViewModels
 {
     public class OrderCreateViewModel
     {
-        [Required]
+        [Required (ErrorMessage = "The Quantity field is required.")]
         [Range(1, 100, ErrorMessage = "Quantity must be greater than 0 and must be a reasonable amount")]
         public int Quantity { get; set; }
 
@@ -20,6 +20,8 @@ namespace Kodhier.ViewModels.OrderViewModels
         [Required]
         [Display(Name = "Size")]
         public int SizeId { get; set; }
+
+        [MaxLength(255, ErrorMessage = "Comment cannot be longer than 255 characters")]
         public string Comment { get; set; }
 
         // Filled from controller

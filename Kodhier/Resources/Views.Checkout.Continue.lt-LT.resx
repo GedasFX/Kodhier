@@ -129,6 +129,9 @@
   <data name="Checkout" xml:space="preserve">
     <value>Atsiskaitymas</value>
   </data>
+  <data name="Comment:" xml:space="preserve">
+    <value>Komentaras:</value>
+  </data>
   <data name="Continue" xml:space="preserve">
     <value>Patvirtinimas</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Ex: +37061212345" xml:space="preserve">
     <value>Pvz.: +37061212345</value>
+  </data>
+  <data name="Ex: Door code" xml:space="preserve">
+    <value>Pvz.: Durų kodas</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Pavadinimas</value>

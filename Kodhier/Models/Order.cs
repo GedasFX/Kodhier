@@ -11,7 +11,8 @@ namespace Kodhier.Models
         public int Size { get; set; }
         public decimal Price { get; set; }
 
-        public string Comment { get; set; }
+        public string CookingComment { get; set; }
+        public string DeliveryComment { get; set; }
 
         public string DeliveryAddress { get; set; }
 

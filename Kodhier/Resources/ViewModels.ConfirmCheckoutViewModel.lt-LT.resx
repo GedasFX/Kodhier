@@ -117,28 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add balance" xml:space="preserve">
-    <value>Aktyvuoti kodą</value>
+  <data name="Comment cannot be longer than 255 characters" xml:space="preserve">
+    <value>Komentaras negali būti ilgesnis nei 255 simboliai</value>
   </data>
-  <data name="Admin cp" xml:space="preserve">
-    <value>Admin valdymas</value>
+  <data name="You must provide a delivery addess" xml:space="preserve">
+    <value>Privalote pateikti pristatymo adresą</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Likutis</value>
-  </data>
-  <data name="Log out" xml:space="preserve">
-    <value>Atsijungti</value>
-  </data>
-  <data name="Order history" xml:space="preserve">
-    <value>Užsakymų istorija</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Nustatymai</value>
-  </data>
-  <data name="Welcome," xml:space="preserve">
-    <value>Sveiki,</value>
+  <data name="You must provide a phone number" xml:space="preserve">
+    <value>Privalote pateikti telefono numerį</value>
   </data>
 </root>

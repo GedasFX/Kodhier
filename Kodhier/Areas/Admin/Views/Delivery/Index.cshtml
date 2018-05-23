@@ -27,6 +27,7 @@
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Address</th>
+                    <th>Comment</th>
                     <th>Color code</th>
                     <th>Action</th>
                 </tr>
@@ -34,27 +35,30 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.DeliveryAddress</td>
-                    <td>
-                        <form asp-action="ChangeColor" method="post" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
-                            <select name="Color" data-color="@item.DeliveryColor" asp-items="@(new SelectList(new[] { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))"></select>
-                        </form>
-                    </td>
-                    <td>
-                        <form asp-action="Abandon" method="post" style="display: inline;">
-                            <input name="id" value="@item.Id" type="hidden" />
-                            <input type="submit" value="Abandon" class="btn btn-outline-warning" style="cursor:pointer; margin: 5px" />
-                        </form>
-                        <form asp-action="Complete" method="post" style="display: inline;">
-                            <input name="id" value="@item.Id" type="hidden" />
-                            <input type="submit" value="Delivered" class="btn btn-outline-info" style="cursor:pointer; margin: 5px" />
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.DeliveryAddress</td>
+                <td>@item.Comment</td>
+                <td>
+                    <form asp-action="ChangeColor" method="post" style="display: inline-block;">
+                        <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
+                        
+                            <select name="Color" data-color="@item.DeliveryColor" asp-items="@(new SelectList(new[] { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))" class="formTextColor form-control"></select>
+                        
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="Abandon" method="post" style="display: inline;">
+                        <input name="id" value="@item.Id" type="hidden" />
+                        <input type="submit" value="Abandon" class="btn btn-outline-warning" style="cursor:pointer; margin: 5px" />
+                    </form>
+                    <form asp-action="Complete" method="post" style="display: inline;">
+                        <input name="id" value="@item.Id" type="hidden" />
+                        <input type="submit" value="Delivered" class="btn btn-outline-info" style="cursor:pointer; margin: 5px" />
+                    </form>
+                </td>
+            </tr>
             }
         </table>
     </div>

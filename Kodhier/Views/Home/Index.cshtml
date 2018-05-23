@@ -34,12 +34,12 @@
             {
                 <div class="slider slide-@(++i)">
                     <div class="horizontal">
-                        <img class="img-responsive rounded-circle" src="@Url.Content("uploads/img/gallery/" + item.PizzaImgPath)" style="max-width: 800px; max-height: 800px; margin-left: 20px;">
+                        <img class="imgPhone rounded-circle SliderImgMax" src="@Url.Content("uploads/img/gallery/" + item.PizzaImgPath)">
                     </div>
                     <div class="slider-content">
                         <h4>@item.Title</h4>
                         <h2>@item.Caption</h2>
-                        <a asp-action="Create" asp-controller="Order" asp-route-id="@item.Pizza.NameLt"><button type="button" class="buy-now-btn" name="button">@item.Price € </button></a>
+                        <a asp-action="Create" asp-controller="Order" asp-route-id="@item.Pizza.NameEn"><button type="button" class="buy-now-btn" name="button">@item.Price € </button></a>
                     </div>
                 </div>
             }

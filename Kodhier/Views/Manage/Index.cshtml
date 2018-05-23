@@ -37,7 +37,7 @@
                                 }
                                 else
                                 {
-                                    <button asp-action="SendVerificationEmail" class="btn btn-outline-warning" style="margin-top: 10px;">@Localizer["Send verification email"]</button>
+                                    <button asp-action="SendVerificationEmail" class="btn btn-outline-warning btn-wrap-text" style="margin-top: 10px;">@Localizer["Send verification email"]</button>
                                 }
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
@@ -64,7 +64,7 @@
                             </div>
                             <p></p>
                             @await Html.PartialAsync("_ManageNav")
-                            <button type="submit" class="btn btn-outline-success" style="margin-top: 10px;">@Localizer["Update profile"]</button>
+                            <button type="submit" class="btn  btn-outline-success btn-wrap-text" style="margin-top: 10px;">@Localizer["Update profile"]</button>
                         </div>
                     </div>
                     <div class="col-md-6">

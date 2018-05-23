@@ -99,7 +99,7 @@
                             <td data-th="Date ordered">@item.DateCreated</td>
                             <td data-th="Order status">@item.Status</td>
                             <td class="actions" data-th="">
-                                <a asp-action="Create" asp-route-id="@item.Pizza.NameEn"><button type="button" class="btn btn-danger btn-sm">@Localizer["Order again"]</button></a>
+                                <a asp-action="Create" asp-route-id="@item.Pizza.NameEn"><button type="button" class="btn btn-danger btn-orderAgain">@Localizer["Order again"]</button></a>
                             </td>
                         </tr>
                     }

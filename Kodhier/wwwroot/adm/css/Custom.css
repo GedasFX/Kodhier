@@ -66,3 +66,8 @@ option {
 .MaxImgfield{
     max-width: 200px;
 }
+
+.formTextColor{
+    color: white;
+    cursor: pointer;
+}

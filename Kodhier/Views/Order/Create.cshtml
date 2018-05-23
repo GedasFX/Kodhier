@@ -1,5 +1,6 @@
 ﻿@model Kodhier.ViewModels.OrderViewModels.OrderCreateViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Routing
 @inject IViewLocalizer Localizer
 
 @{
@@ -25,13 +26,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-12">
-                            <dl class="dl-horizontal">
+                            <dl>
                                 <dt>@Localizer["Price"]</dt>
                                 <dd>@Localizer["From"] @Model.MinPrice €</dd>
                                 <dt>@Model.Description</dt>
                             </dl>
                         </div>
-                        <form asp-action="Create" asp-route-id="@Model.Name">
+                        <form asp-action="Create" asp-route-id="@Context.GetRouteData().Values["id"]">
                             <input asp-for="Description" hidden />
                             <input asp-for="ImagePath" hidden />
                             <input asp-for="Name" hidden />
@@ -45,7 +46,6 @@
                                 <select asp-for="SizeId" asp-items="@(new SelectList(Model.Prices, "Id", "Size"))" class="form-control"></select>
                                 <span asp-validation-for="SizeId" class="text-danger"></span>
                             </div>
-                            @* TODO: Make this less ugly. *@
                             <div class="col-12">
                                 <h2>@Localizer["Price per pizza:"] <span id="priceValue"></span> €</h2>
                             </div>

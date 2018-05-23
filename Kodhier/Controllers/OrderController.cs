@@ -101,7 +101,7 @@ namespace Kodhier.Controllers
         {
             var execRes = new ExecutionResult();
 
-            var pizza = _context.Pizzas.SingleOrDefault(i => i.NameLt == id);
+            var pizza = _context.Pizzas.SingleOrDefault(i => i.NameEn == id);
             if (pizza == null)
             {
                 execRes.AddError(_localizer["Requested pizza was not found. Please try again."]).PushTo(TempData);

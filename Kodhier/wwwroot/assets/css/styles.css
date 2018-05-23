@@ -636,3 +636,7 @@ body {
     white-space: normal !important;
     word-wrap: break-word !important;
 }
+
+.btn-orderAgain {
+    min-width: 200px;
+}

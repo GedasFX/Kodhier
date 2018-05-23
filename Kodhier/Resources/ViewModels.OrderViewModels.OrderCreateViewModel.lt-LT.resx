@@ -120,4 +120,10 @@
   <data name="Comment cannot be longer than 255 characters" xml:space="preserve">
     <value>Komentaras negali būti ilgesnis nei 255 simboliai</value>
   </data>
+  <data name="Quantity must be greater than 0 and must be a reasonable amount" xml:space="preserve">
+    <value>Kiekis turi būti racionalus ir didesnis už 0</value>
+  </data>
+  <data name="The Quantity field is required." xml:space="preserve">
+    <value>Įveskite kiekį</value>
+  </data>
 </root>

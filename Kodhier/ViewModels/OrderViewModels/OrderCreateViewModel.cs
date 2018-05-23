@@ -6,7 +6,7 @@ namespace Kodhier.ViewModels.OrderViewModels
 {
     public class OrderCreateViewModel
     {
-        [Required]
+        [Required (ErrorMessage = "The Quantity field is required.")]
         [Range(1, 100, ErrorMessage = "Quantity must be greater than 0 and must be a reasonable amount")]
         public int Quantity { get; set; }
 

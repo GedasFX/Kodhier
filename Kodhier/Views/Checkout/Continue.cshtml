@@ -65,6 +65,7 @@
                             <div class="form-group">
                                 <div style="text-align: left"><label asp-for="Comment">@Localizer["Comment:"]</label></div>
                                 <input asp-for="Comment" class="form-control" placeholder="@Localizer["Ex: Door code"]" />
+                                <span asp-validation-for="Comment" class="text-danger"></span>
                             </div>
                             <div style="position: absolute; bottom: 5%; width: 90%">
                                 <input type="submit" value="@Localizer["Place order"]" class="btn btn-success btn-block" style="margin-top: 5px" />

@@ -599,3 +599,13 @@ body {
     .sticky + .content {
         padding-top: 60px;
     }
+
+.backToMeniubtn {
+    color: #ffc107;
+}
+
+    .backToMeniubtn:hover {
+        cursor: pointer;
+        text-shadow: 0 0 1em;
+        color: #ffc107;
+    }

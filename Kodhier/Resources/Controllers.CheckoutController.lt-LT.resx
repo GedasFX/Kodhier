@@ -145,7 +145,7 @@
     <value>Picos, kurią bandėte pakeisti, nėra. Bandykite Dar kartą.</value>
   </data>
   <data name="Quantity must be a positive whole number" xml:space="preserve">
-    <value>Kiekis privalo būti natūralus skaičius</value>
+    <value>Kiekis privalo būti teigiamas, sveikas skaičius</value>
   </data>
   <data name="Requested pizza was not found. Please try again." xml:space="preserve">
     <value>Tokios picos nėra. Bandykite dar kartą.</value>

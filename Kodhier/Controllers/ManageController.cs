@@ -15,10 +15,7 @@ using Kodhier.Services;
 using Kodhier.ViewModels.ManageViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using Kodhier.Mvc;
-using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -35,8 +32,6 @@ namespace Kodhier.Controllers
         private readonly IMemoryCache _cache;
         private readonly IStringLocalizer<ManageController> _localizer;
 
-        private readonly IHostingEnvironment _env;
-
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
@@ -48,8 +43,7 @@ namespace Kodhier.Controllers
           UrlEncoder urlEncoder,
           KodhierDbContext context,
           IMemoryCache cache,
-          IStringLocalizer<ManageController> localizer,
-          IHostingEnvironment env)
+          IStringLocalizer<ManageController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -59,7 +53,6 @@ namespace Kodhier.Controllers
             _context = context;
             _cache = cache;
             _localizer = localizer;
-            _env = env;
         }
 
         [HttpGet]
@@ -203,24 +196,31 @@ namespace Kodhier.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-            var ctokenlink = Url.Action("ConfirmEmail", "Account", new
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new
             {
                 userid = user.Id,
-                token = ctoken
+                token = code
             }, HttpContext.Request.Scheme);
 
-            var subject = _localizer["Confirm Account Registration"];
+            var subject = _localizer["Confirm email"];
             string text;
             using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Email.html"))
             {
                 text = sourceReader.ReadToEnd();
             }
 
-            //{0} : tokeURL
-            //{1} : Email
-            //{2} : Username           
-            var messageBody = string.Format(text, ctokenlink, model.Email, model.Username);
+            //{0} : Username
+            //{1} : _localizer["Thank you for registering"]
+            //{2} : Token URL
+            //{3} : Confirm email
+                        
+            var messageBody = string.Format(text, 
+                user.UserName, 
+                _localizer["thank you for registering"], 
+                callbackUrl,
+                _localizer["Confirm email"]
+            );
 
             await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
 

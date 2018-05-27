@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Confirm email";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Confirm email"];
 }
 <link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
 

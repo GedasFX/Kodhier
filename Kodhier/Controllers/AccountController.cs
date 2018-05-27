@@ -11,7 +11,6 @@ using Kodhier.Services;
 using Kodhier.ViewModels.AccountViewModels;
 using Microsoft.Extensions.Localization;
 using Kodhier.Extensions;
-using MimeKit;
 
 namespace Kodhier.Controllers
 {
@@ -220,48 +219,23 @@ namespace Kodhier.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var user = new ApplicationUser
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Username,
-                    Email = model.Email,
-                    EmailSendUpdates = model.SendEmailUpdate,
-                    EmailSendPromotional = model.SendEmailPromotional
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var ctoken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-                    var ctokenlink = Url.Action("ConfirmEmail", "Account", new
-                    {
-                        userid = user.Id,
-                        token = ctoken
-                    }, HttpContext.Request.Scheme);
-
-                    var subject = "Confirm Account Registration";
-                    var builder = new BodyBuilder();
-                    using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Email.html"))
-                    {
-                        builder.HtmlBody = sourceReader.ReadToEnd();
-                    }
-
-                    //{0} : tokenurl
-                    //{1} : Email
-                    //{2} : Username
-                    var messageBody = string.Format(builder.HtmlBody,
-                        ctokenlink,
-                        model.Email,
-                        model.Username);
-
-                    await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
+                UserName = model.Username,
+                Email = model.Email,
+                EmailSendUpdates = model.SendEmailUpdate,
+                EmailSendPromotional = model.SendEmailPromotional
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                _logger.LogInformation("User created a new account with password.");
+                return RedirectToLocal(returnUrl);
             }
+            AddErrors(result);
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -383,41 +357,46 @@ namespace Kodhier.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
-                }
-
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-
-                var subject = "Slaptažodžio atkūrimas";
-                var builder = new BodyBuilder();
-                using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Password_Reset.html"))
-                {
-                    builder.HtmlBody = sourceReader.ReadToEnd();
-                }
-                //{0} : Username
-                //{1} : URL
-
-                string messageBody = string.Format(builder.HtmlBody,
-                    user.UserName,
-                    callbackUrl
-                    );
-
-                await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
-
+                // Don't reveal that the user does not exist or is not confirmed
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 
+            // For more information on how to enable account confirmation and password reset please
+            // visit https://go.microsoft.com/fwlink/?LinkID=532713
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+
+            var subject = _localizer["Password reset"];
+
+            string template;
+            using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Password_Reset.html"))
+            {
+                template = sourceReader.ReadToEnd();
+            }
+
+            //{0} : _localizer["Hello"]
+            //{1} : Username
+            //{2} : Explanation
+            //{3} : URL
+            //{4} : Confirm reset
+            var messageBody = string.Format(template,
+                _localizer["Hello"],
+                user.UserName,
+                _localizer["A reset password was requested. If it was you, proceed to click the link below to reset the password"],
+                callbackUrl,
+                _localizer["Confirm reset"]
+            );
+
+            await _emailSender.SendEmailAsync(model.Email, subject, messageBody);
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+
             // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         [HttpGet]

@@ -30,6 +30,11 @@ table td {
     vertical-align: top;
 }
 
+table {
+    width: 100%;
+    border-spacing: 0;
+}
+
 /* -------------------------------------
             BODY & CONTAINER
         ------------------------------------- */

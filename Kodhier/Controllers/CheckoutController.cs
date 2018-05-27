@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -170,6 +171,7 @@ namespace Kodhier.Controllers
                 order.IsPaid = true;
                 order.DeliveryAddress = model.ConfirmAddress;
                 order.DeliveryComment = model.Comment;
+                order.PaymentDate = DateTime.Now;
             }
 
             user.Coins -= price;
@@ -197,34 +199,32 @@ namespace Kodhier.Controllers
         private async Task SendEmail(ApplicationUser user, Order[] cart)
         {
             string template, css;
-
             using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Order.html"))
-            {
                 template = sourceReader.ReadToEnd();
-            }
             using (var sourceReader = System.IO.File.OpenText("Templates/EmailTemplate/Confirm_Order.css"))
-            {
                 css = sourceReader.ReadToEnd();
-            }
 
             var messageBody = FormatBody(template, css, user, cart);
 
             await _emailSender.SendEmailAsync(user.Email, _localizer["Confirm Checkout"], messageBody);
         }
 
-        private string FormatBody(string template, string css, ApplicationUser user, Order[] cart)
+        private string FormatBody(string template, string css, ApplicationUser user, IReadOnlyList<Order> cart)
         {
             var requestCulture = HttpContext.Features.Get<IRequestCultureFeature>();
             var cultCode = requestCulture.RequestCulture.UICulture.Name;
             var totalPrice = cart.Sum(o => o.Price * o.Quantity);
-
             var htmlCart = new StringBuilder();
+
             foreach (var order in cart)
             {
-                htmlCart.Append(
-                    cultCode == "lt-LT"
-                        ? $"<tr><td>{order.Pizza.NameLt}</td><td class=\"alignright\">{order.Price} €</td></tr>"
-                        : $"<tr><td>{order.Pizza.NameEn}</td><td class=\"alignright\">{order.Price} €</td></tr>");
+                var name = cultCode == "lt-LT" ? order.Pizza.NameLt : order.Pizza.NameEn;
+                htmlCart.Append("<tr>" +
+                                    $"<td class=\"alignleft\">{name}</td>" +
+                                    $"<td class=\"aligncenter\">{order.Price / order.Quantity} €</td>" +
+                                    $"<td class=\"aligncenter\">{order.Quantity}</td>" +
+                                    $"<td class=\"alignright\">{order.Price} €</td>" +
+                                "</tr>");
             }
             // Format rules:
             // {0} - Amount paid. Includes money.
@@ -236,16 +236,30 @@ namespace Kodhier.Controllers
             // {6} - _localizer["Total"]
             // {7} - total money with symbol
             // {8} - CSS of ducument
+            // {9} - _localizer["Username"]
+            // {10} - _localizer["Order ID"]
+            // {11} - _localizer["Payment date"]
+            // {12} - _localizer["Name"]
+            // {13} - _localizer["Unit price"]
+            // {14} - _localizer["Quantity"]
+            // {15} - _localizer["Subtotal"]
             return string.Format(template,
                 string.Format(_localizer["{0} € Paid"], totalPrice),
                 _localizer["Thank you for using Kodhier services"],
                 user.UserName,
-                cart.First().Id,
-                cart.First().PaymentDate,
+                cart[0].Id,
+                cart[0].PaymentDate,
                 htmlCart,
                 _localizer["Total"],
                 $"{totalPrice} €",
-                css
+                css,
+                _localizer["Username"],
+                _localizer["Order ID"],
+                _localizer["Payment date"],
+                _localizer["Name"],
+                _localizer["Unit price"],
+                _localizer["Quantity"],
+                _localizer["Subtotal"]
             );
         }
 

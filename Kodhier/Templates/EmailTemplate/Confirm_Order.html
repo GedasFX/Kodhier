@@ -9,6 +9,13 @@
 // {6} - _localizer["Total"]
 // {7} - total money with symbol
 // {8} - CSS of ducument
+// {9} - _localizer["Username"]
+// {10} - _localizer["Order ID"]
+// {11} - _localizer["Payment date"]
+// {12} - _localizer["Name"]
+// {13} - _localizer["Unit price"]
+// {14} - _localizer["Quantity"]
+// {15} - _localizer["Subtotal"]
 -->
 <!DOCTYPE html>
 <html>
@@ -19,98 +26,86 @@
     <style>
         {8}
     </style>
+    <link href="Confirm_Order.css" rel="stylesheet" />
 </head>
 
 <body itemscope itemtype="http://schema.org/EmailMessage">
-
-    <table class="body-wrap">
-        <tr>
-            <td></td>
-            <td class="container" width="600">
-                <div class="content">
-                    <table class="main" width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="content-wrap aligncenter">
-                                <table width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td>
-                                            <img src="http://91.211.246.254/assets/img/minishef.png" alt="Kodhier logo">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block">
-                                            <h1 class="aligncenter">{0}</h1>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block">
-                                            <h2 class="aligncenter">{1}.</h2>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block aligncenter">
-                                            <table class="invoice">
-                                                <tr>
-                                                    <td>
-                                                        <b>Customer username: </b>{2}
-                                                    <br>
-                                                        <b>Order id: </b>{3}
-                                                    <br>
-                                                    <b>Order date: </b>{4}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="alignleft">Order</th>
-                                                                    <th class="aligncenter">Quantity</th>
-                                                                    <th class="aligncenter">Unit price</th>
-                                                                    <th class="alignright">Subtotal</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="alignleft">5.1</td>
-                                                                    <td class="aligncenter">5.2</td>
-                                                                    <td class="aligncenter">5.3</td>
-                                                                    <td class="alignright">5.4</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                <tr class="total">
-                                                    <td class="alignright" width="80%">{6}</td>
-                                                    <td class="alignright">{7}</td>
-                                                </tr>                                                
-                                            </table>
-                                        </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block aligncenter">
-                                            Kodhier
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="footer">
-                        <table width="100%">
+    <div class="body-wrap">
+        <div class="container" width="600">
+            <div class="content">
+                <div class="main">
+                    <div class="content-wrap aligncenter">
+                        <table>
                             <tr>
-                                <td class="aligncenter content-block">Email <a href="mailto:">support@kodhier.com</a></td>
+                                <td>
+                                    <img src="http://91.211.246.254/assets/img/minishef.png" alt="Kodhier logo">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="content-block">
+                                    <h1 class="aligncenter">{0}</h1>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="content-block">
+                                    <h2 class="aligncenter">{1}.</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="content-block aligncenter">
+                                    <table class="invoice">
+                                        <tr>
+                                            <td>
+                                                <b>{9}: </b>{2}
+                                                <br>
+                                                <b>{10}: </b>{3}
+                                                <br>
+                                                <b>{11}: </b>{4}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table class="invoice-items">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="alignleft">{12}</th>
+                                                            <th class="aligncenter">{13}</th>
+                                                            <th class="aligncenter">{14}</th>
+                                                            <th class="alignright">{15}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {5}
+                                                    </tbody>
+                                                </table>
+                                                <table class="invoice-items">
+                                                    <tr class="total">
+                                                        <td class="alignright" width="75%">{6}</td>
+                                                        <td class="alignright">{7}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="content-block aligncenter">
+                                    Kodhier
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
-
+                <div class="footer">
+                    <table>
+                        <tr>
+                            <td class="aligncenter content-block">Email <a href="mailto:">support@kodhier.com</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

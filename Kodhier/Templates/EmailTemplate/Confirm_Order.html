@@ -51,18 +51,41 @@
                                         <td class="content-block aligncenter">
                                             <table class="invoice">
                                                 <tr>
-                                                    <td>{2}<br>{3}<br>{4}</td>
+                                                    <td>
+                                                        <b>Customer username: </b>{2}
+                                                    <br>
+                                                        <b>Order id: </b>{3}
+                                                    <br>
+                                                    <b>Order date: </b>{4}
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                            {5}
-                                                            <tr class="total">
-                                                                <td class="alignright" width="80%">{6}</td>
-                                                                <td class="alignright">{7}</td>
-                                                            </tr>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="alignleft">Order</th>
+                                                                    <th class="aligncenter">Quantity</th>
+                                                                    <th class="aligncenter">Unit price</th>
+                                                                    <th class="alignright">Subtotal</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="alignleft">5.1</td>
+                                                                    <td class="aligncenter">5.2</td>
+                                                                    <td class="aligncenter">5.3</td>
+                                                                    <td class="alignright">5.4</td>
+                                                                </tr>
+                                                            </tbody>
                                                         </table>
-                                                    </td>
+                                                        <table class="invoice-items" cellpadding="0" cellspacing="0">
+                                                <tr class="total">
+                                                    <td class="alignright" width="80%">{6}</td>
+                                                    <td class="alignright">{7}</td>
+                                                </tr>                                                
+                                            </table>
+                                        </td>
                                                 </tr>
                                             </table>
                                         </td>

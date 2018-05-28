@@ -116,7 +116,7 @@ namespace Kodhier.Tests
             var httpContext = new DefaultHttpContext() { User = m_User.Object };
             var manageCtrl =
                 new Controllers.ManageController(null, null, null, null, null, _context,
-                    new Mock<IMemoryCache>().Object, new Mock<IStringLocalizer<Controllers.ManageController>>().Object, null)
+                    new Mock<IMemoryCache>().Object, new Mock<IStringLocalizer<Controllers.ManageController>>().Object)
                 {
                     ControllerContext = new ControllerContext {HttpContext = httpContext},
                     TempData = new TempDataDictionary(httpContext, m_Data.Object)

@@ -11,7 +11,7 @@
     <button type="submit" class="btn btn-primary">Create new category</button>
 </form>
 
-<table class="table table-active">
+<table class="table table-inverse">
     <thead>
         <tr>
             <th>Name</th>
@@ -25,30 +25,30 @@
         <tr data-val="@item.Id">
             <td>
                 <p>@item.Description</p>
-                <p><a title="Remove" href="#" class="remove" data-val="@item.Id"><i class="zmdi zmdi-delete">Delete category?</i></a></p>
+                <p><a title="Remove" href="#" class="remove btn btn-outline-danger" data-val="@item.Id"><i class="zmdi zmdi-delete"> Delete category?</i></a></p>
             </td>
             <td>
-                <p><input type="number" class="create" placeholder="Price" /></p>
+                <p><input type="number" class="create form-control " placeholder="Price" /></p>
                 @foreach (var ppi in item.PizzaPriceInfos)
                 {
-                    <p><input type="number" value="@ppi.Price" data-val="@item.Id" data-g="@ppi.Id" /></p>
+                    <p><input type="number" value="@ppi.Price" data-val="@item.Id" data-g="@ppi.Id" class="form-control"/></p>
                 }
 
             </td>
             <td>
-                <p><input type="number" class="create" placeholder="Size" /></p>
+                <p><input type="number" class="create form-control" placeholder="Size" /></p>
                 @foreach (var ppi in item.PizzaPriceInfos)
                 {
-                    <p><input type="number" value="@ppi.Size" data-val="@item.Id" data-g="@ppi.Id" /></p>
+                    <p><input type="number" value="@ppi.Size" data-val="@item.Id" data-g="@ppi.Id" class="form-control" /></p>
                 }
             </td>
             <td>
-                <p><input type="button" class="add" value="Add new Price info" data-val="@item.Id" /></p>
+                <p><input type="button" class="add btn btn-outline-info" value="Add new Price info" data-val="@item.Id" class="form-control" /></p>
                 @foreach (var ppi in item.PizzaPriceInfos)
                 {
                     <p>
-                        <a title="Remove" href="#" class="removePpi" data-val="@ppi.Id">R</a>
-                        <a title="Edit" href="#" class="editPpi" data-val="@ppi.Id">E</a>
+                        <a title="Remove" href="#" class="removePpi btn btn-outline-danger" data-val="@ppi.Id">R</a>
+                        <a title="Edit" href="#" class="editPpi btn btn-outline-success" data-val="@ppi.Id">E</a>
                     </p>
                 }
             </td>

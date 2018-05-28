@@ -29,7 +29,7 @@
                     <th>Address</th>
                     <th>Phone nr.</th>
                     <th>Comment</th>
-                    <th>Color code</th>
+                    <th>Color tag</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -42,10 +42,9 @@
                 <td>@item.DeliveryAddress</td>
                 <td>@item.PhoneNumber</td>
                 <td>@item.Comment</td>
-                <td>
-                    <form asp-action="ChangeColor" method="post" style="display: inline-block;">
-                        <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />
-                        
+                <td class="formMinWidth">
+                    <form asp-action="ChangeColor" method="post" style="display: inline-block;" >
+                        <input type="hidden" name="id" value="@Html.DisplayFor(modelItem => item.Id)" />                        
                             <select name="Color" data-color="@item.DeliveryColor" asp-items="@(new SelectList(new[] { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }))" class="formTextColor form-control"></select>
                         
                     </form>

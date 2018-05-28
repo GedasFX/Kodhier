@@ -19,7 +19,7 @@
             <a class="nav-link active" asp-controller="Order" asp-action="History">@Localizer["Order history"]</a>
         </li>
         <div class="dropdown-divider"></div>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Delivery") || User.IsInRole("Chef"))
         {
             <li class="nav-itemDropdown">
                 <a class="nav-link active" href="/Admin">@Localizer["Admin cp"]</a>

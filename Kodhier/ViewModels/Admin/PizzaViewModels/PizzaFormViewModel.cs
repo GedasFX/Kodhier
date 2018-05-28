@@ -28,7 +28,7 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
 
         [Required]
         [Display(Name = "Price category")]
-        public int PriceCategoryId { get; set; }
+        public int? PriceCategoryId { get; set; }
 
         // For display
         public IEnumerable<PizzaPriceCategory> PriceCategories { get; set; }

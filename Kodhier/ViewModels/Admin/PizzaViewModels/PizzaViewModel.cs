@@ -16,5 +16,7 @@ namespace Kodhier.ViewModels.Admin.PizzaViewModels
 
         [Display(Name = "Lowest price")]
         public PizzaPriceInfo[] PriceInfo { get; set; }
+
+        public bool IsDepricated { get; set; }
     }
 }

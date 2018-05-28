@@ -29,12 +29,12 @@ namespace Kodhier.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var vm = _context.Pizzas
-                .Where(p => !p.IsDepricated)
                 .Select(r => new PizzaViewModel
                 {
                     Name = r.NameLt,
                     Description = r.DescriptionEn,
                     ImagePath = r.ImagePath,
+                    IsDepricated = r.IsDepricated,
                     PriceInfo = _context.PizzaPriceInfo
                         .Where(ppi => ppi.PriceCategoryId == r.PriceCategoryId)
                         .ToArray()

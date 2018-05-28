@@ -17,7 +17,7 @@ namespace Kodhier.Models
         public bool IsDepricated { get; set; }
 
         [ForeignKey("PriceCategory")]
-        public int PriceCategoryId { get; set; }
+        public int? PriceCategoryId { get; set; }
         public virtual PizzaPriceCategory PriceCategory { get; set; }
 
         public virtual List<Order> Orders { get; set; }

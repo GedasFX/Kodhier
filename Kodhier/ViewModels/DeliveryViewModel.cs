@@ -14,5 +14,6 @@ namespace Kodhier.ViewModels
 
         public string DeliveryAddress { get; set; }
         public ColorCode DeliveryColor { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

@@ -172,6 +172,7 @@ namespace Kodhier.Controllers
                 order.DeliveryAddress = model.ConfirmAddress;
                 order.DeliveryComment = model.Comment;
                 order.PaymentDate = DateTime.Now;
+                order.PhoneNumber = model.PhoneNumber;
             }
 
             user.Coins -= price;

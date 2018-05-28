@@ -1,8 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Access denied";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Access denied"];
 }
 
-<header>
-    <h2 class="text-danger">@ViewData["Title"]</h2>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
+
+<div class="col-md-12 col-sm-12">
+    <div class="modal-header text-danger">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-6 mx-auto">
+        <div class="main text-center text-danger">
+            @Localizer["You do not have access to this resource"].
+        </div>
+    </div>
+</div>

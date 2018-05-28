@@ -27,8 +27,8 @@
             }
             <div class="gap20">
                 <h4>Add additional role</h4>
-                <form asp-action="Create" asp-route-id="@Model.Username">
-                    <select asp-for="NewRole" asp-items="@(new SelectList(Model.AllRoles))"></select>
+                <form asp-action="Create" asp-route-id="@Model.Username" style="display: inline-block;">
+                    <select asp-for="NewRole" asp-items="@(new SelectList(Model.AllRoles))" class="formTextColor form-control"></select>
                     <input type="submit" class="btn btn-outline-success create-button" />
                 </form>
             </div>

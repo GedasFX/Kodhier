@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Confirm email";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Confirm email"];
 }
 <link rel="stylesheet" type="text/css" href="~/css/Profile.css" />
 
@@ -9,7 +11,7 @@
     </div>   
     <div class="col-md-6 mx-auto">
         <div class="main text-center">
-            Thank you for confirming your email.
+            @Localizer["Thank you for confirming your email."]
         </div>
     </div>
 </div>

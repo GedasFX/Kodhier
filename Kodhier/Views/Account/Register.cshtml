@@ -9,8 +9,7 @@
 <link rel="stylesheet" type="text/css" href="~/css/RegisterPage.css" />
 <div class="main">
     <header>
-        <div class="=icon"><img src="~/images/icon2.png" /></div>
-
+        <img src="~/images/icon2.png" />
         <h4>@Localizer["Create a new account"]</h4>
     </header>
 
@@ -39,15 +38,15 @@
             <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="@Localizer["Confirm password"]" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
-        <div class="checkbox">
+        <div>
             <input asp-for="SendEmailPromotional" />
             <label asp-for="SendEmailPromotional">@Localizer["Send promotional emails"]</label>
         </div>
-        <div class="checkbox">
+        <div>
             <input asp-for="SendEmailUpdate" />
             <label asp-for="SendEmailUpdate">@Localizer["Send order updates"]</label>
         </div>
-        <button type="submit" class="btn btn-default">@Localizer["Register"]</button>
+        <button type="submit" class="btn">@Localizer["Register"]</button>
     </form>
 </div>
 @section Scripts {

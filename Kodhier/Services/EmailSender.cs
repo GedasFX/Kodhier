@@ -5,46 +5,33 @@ using System.Threading.Tasks;
 
 namespace Kodhier.Services
 {
-    // This class is used by the application to send email for account confirmation and password reset.
-    // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            //From Address  
+            //Mailbox settings  
             const string fromAddress = "leitbugs.test@gmail.com";
             const string fromAdressTitle = "Kodhier";
-            //To Address  
-            var toAddress = email;
-            const string toAdressTitle = "Sveiki";
-            var bodyContent = message;
 
-            //Smtp Server  
+            //Smtp Server settings
             const string smtpServer = "smtp.gmail.com";
-            //Smtp Port Number  
             const int smtpPortNumber = 587;
 
-            var mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(new MailboxAddress
-            (fromAdressTitle,
-                fromAddress
-            ));
-            mimeMessage.To.Add(new MailboxAddress
-            (toAdressTitle,
-                toAddress
-            ));
-            mimeMessage.Subject = subject; //Subject
-            mimeMessage.Body = new TextPart("html")
+            var mimeMessage = new MimeMessage
             {
-                Text = bodyContent
+                Subject = subject,
+                Body = new TextPart("html") { Text = message }
             };
+
+            mimeMessage.From.Add(new MailboxAddress(fromAdressTitle, fromAddress));
+            mimeMessage.To.Add(new MailboxAddress(email, email));
+
             using (var client = new SmtpClient())
             {
                 client.Connect(smtpServer, smtpPortNumber, false);
                 client.Authenticate("leitbugs.test@gmail.com", "leitbugs123");
                 await client.SendAsync(mimeMessage);
-                Console.WriteLine("The mail has been sent successfully !!");
-                //Console.ReadLine();
+                Console.WriteLine($"An email was sent to {email} with subject: \"{subject}\".");
                 await client.DisconnectAsync(true);
             }
         }

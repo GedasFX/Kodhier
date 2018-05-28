@@ -51,7 +51,7 @@
                             <td data-th="Quantity">@item.Quantity</td>
                             <td data-th="Total price">@(item.Quantity * item.Price)</td>
                             <td data-th="Date ordered">@item.DateCreated</td>
-                            <td data-th="Order status">@item.Status</td>
+                            <td data-th="Order status">@Localizer[@item.Status.ToString()]</td>
                             <td class="actions" data-th="">
                                 <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-orderAgain">@Localizer["Order again"]</button></a>
                             </td>
@@ -97,7 +97,7 @@
                             <td data-th="Quantity">@item.Quantity</td>
                             <td data-th="Total price">@(item.Quantity * item.Price)</td>
                             <td data-th="Date ordered">@item.DateCreated</td>
-                            <td data-th="Order status">@item.Status</td>
+                            <td data-th="Order status">@Localizer[@item.Status.ToString()]</td>
                             <td class="actions" data-th="">
                                 <a asp-action="Create" asp-route-id="@item.Pizza.NameEn"><button type="button" class="btn btn-danger btn-orderAgain">@Localizer["Order again"]</button></a>
                             </td>

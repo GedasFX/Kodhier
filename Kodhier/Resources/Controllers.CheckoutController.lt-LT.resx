@@ -126,8 +126,17 @@
   <data name="Insufficient amount of coins in the balance." xml:space="preserve">
     <value>Nepakankamas pinigų likutis.</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Pavadinimas</value>
+  </data>
   <data name="Order could not be processed. Please try again." xml:space="preserve">
     <value>Užsakymas neįvykdytas. Bandykite dar kartą.</value>
+  </data>
+  <data name="Order ID" xml:space="preserve">
+    <value>Užsakymo nr.</value>
+  </data>
+  <data name="Payment date" xml:space="preserve">
+    <value>Mokėjimo data</value>
   </data>
   <data name="Pizza amount was successfully changed from {0} to {1}." xml:space="preserve">
     <value>Picos kiekis sėkmingai pakeistas iš {0} į {1}.</value>
@@ -144,17 +153,29 @@
   <data name="Pizza you were trying to edit was not found. Please try again." xml:space="preserve">
     <value>Picos, kurią bandėte pakeisti, nėra. Bandykite Dar kartą.</value>
   </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Kiekis</value>
+  </data>
   <data name="Quantity must be a positive whole number" xml:space="preserve">
-    <value>Kiekis privalo būti natūralus skaičius</value>
+    <value>Kiekis privalo būti teigiamas, sveikas skaičius</value>
   </data>
   <data name="Requested pizza was not found. Please try again." xml:space="preserve">
     <value>Tokios picos nėra. Bandykite dar kartą.</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Kaina</value>
   </data>
   <data name="Thank you for using Kodhier services" xml:space="preserve">
     <value>Dėkojame, kad naudojatės Kodhier paslaugomis</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Viso</value>
+  </data>
+  <data name="Unit price" xml:space="preserve">
+    <value>Vnt. kaina</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Vartotojo vardas</value>
   </data>
   <data name="Your email is not confirmed. Please confirm it before proceeding." xml:space="preserve">
     <value>Jūsų el. paštas nepatvirtintas. Prašome patvirtinti ir bandyti dar kartą.</value>

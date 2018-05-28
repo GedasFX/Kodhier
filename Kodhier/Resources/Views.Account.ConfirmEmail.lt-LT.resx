@@ -117,19 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="A reset password was requested. If it was you, proceed to click the link below to reset the password" xml:space="preserve">
-    <value>Buvo paprašytas slaptažodžio pakeitimas. Jei sutinkate, pauskite nuorodą žemiau</value>
+  <data name="Confirm email" xml:space="preserve">
+    <value>El. pašto patvirtinimas</value>
   </data>
-  <data name="Confirm reset" xml:space="preserve">
-    <value>Patvirtinti atstatymą</value>
-  </data>
-  <data name="Hello" xml:space="preserve">
-    <value>Sveiki</value>
-  </data>
-  <data name="Invalid username or password." xml:space="preserve">
-    <value>Neteisingas vartotojo vardas arba slaptažodis</value>
-  </data>
-  <data name="Password reset" xml:space="preserve">
-    <value>Slaptažodžio atkūrimas</value>
+  <data name="Thank you for confirming your email." xml:space="preserve">
+    <value>Dėkojame, kad patvirtinote el. paštą.</value>
   </data>
 </root>

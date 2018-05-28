@@ -159,4 +159,10 @@
   <data name="Username" xml:space="preserve">
     <value>Vartotojo vardas</value>
   </data>
+  <data name="Enter a location" xml:space="preserve">
+    <value>Įveskite adresą</value>
+  </data>
+  <data name="Ex: +37061212345" xml:space="preserve">
+    <value>Pvz: +37061212345</value>
+  </data>
 </root>

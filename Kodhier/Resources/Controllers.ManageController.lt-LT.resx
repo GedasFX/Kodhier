@@ -120,6 +120,9 @@
   <data name="Code has been succesfully redeemed. Added {0} to the acccount balance. New balance: {1}!" xml:space="preserve">
     <value>Kodas sėkmingai panaudotas. Jūs gavote {0}. Dabar Jūsų likutis: {1}!</value>
   </data>
+  <data name="Confirm email" xml:space="preserve">
+    <value>Patvirtinti el. paštą</value>
+  </data>
   <data name="Failed to use the code. Try again later." xml:space="preserve">
     <value>Nepavyko aktyvuoti kodo. Pabandykite vėliau.</value>
   </data>
@@ -129,8 +132,11 @@
   <data name="Provided code has already been used." xml:space="preserve">
     <value>Įvestas kodas yra panaudotas.</value>
   </data>
+  <data name="thank you for registering" xml:space="preserve">
+    <value>sveikiname užsiregisravus</value>
+  </data>
   <data name="Verification email sent. Please check your email." xml:space="preserve">
-    <value>Kodas išsiūstas. Pasitikrinkite el. paštą.</value>
+    <value>Kodas išsiųstas. Pasitikrinkite el. paštą.</value>
   </data>
   <data name="Your password has been changed." xml:space="preserve">
     <value>Slaptažodis pakeistas.</value>

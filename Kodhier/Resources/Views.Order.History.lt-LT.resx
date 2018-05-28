@@ -150,4 +150,22 @@
   <data name="Order again" xml:space="preserve">
     <value>Užsakyti dar kartą</value>
   </data>
+  <data name="Cooking" xml:space="preserve">
+    <value>Kepama</value>
+  </data>
+  <data name="Delivering" xml:space="preserve">
+    <value>Pristatoma</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Pristatyta</value>
+  </data>
+  <data name="Queued" xml:space="preserve">
+    <value>Laukiama</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Iškepta</value>
+  </data>
+  <data name="Unpaid" xml:space="preserve">
+    <value>Neapmokėta</value>
+  </data>
 </root>

@@ -71,3 +71,7 @@ option {
     color: white;
     cursor: pointer;
 }
+
+.formMaxWidth{
+    max-width: 100px;
+}

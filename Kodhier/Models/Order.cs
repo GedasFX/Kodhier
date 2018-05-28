@@ -15,6 +15,7 @@ namespace Kodhier.Models
         public string DeliveryComment { get; set; }
 
         public string DeliveryAddress { get; set; }
+        public string PhoneNumber { get; set; }
 
         public DateTime PlacementDate { get; set; }     // When user adds item to cart
         public DateTime? PaymentDate { get; set; }      // When user checks out

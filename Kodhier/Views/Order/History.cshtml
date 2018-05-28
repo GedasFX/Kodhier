@@ -53,7 +53,7 @@
                             <td data-th="Date ordered">@item.DateCreated</td>
                             <td data-th="Order status">@Localizer[@item.Status.ToString()]</td>
                             <td class="actions" data-th="">
-                                <a asp-action="Create" asp-route-id="@item.Pizza.NameLt"><button type="button" class="btn btn-danger btn-orderAgain">@Localizer["Order again"]</button></a>
+                                <a asp-action="Create" asp-route-id="@item.Pizza.NameEn"><button type="button" class="btn btn-danger btn-orderAgain">@Localizer["Order again"]</button></a>
                             </td>
                         </tr>
                     }
@@ -76,7 +76,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <table class="table table-hover table-dark table-condensed table-responsive">
+            <table class="table table-hover table-dark table-responsive">
                 <thead>
                     <tr>
                         <th style="width: 20%">@Localizer["Name"]</th>

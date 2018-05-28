@@ -38,7 +38,8 @@ namespace Kodhier.Areas.Admin.Controllers
                     Name = o.Pizza.NameEn,
                     ImagePath = o.Pizza.ImagePath,
                     DeliveryAddress = o.DeliveryAddress,
-                    DeliveryColor = o.DeliveryColor
+                    DeliveryColor = o.DeliveryColor,
+                    PhoneNumber = o.PhoneNumber
                 });
             return View(orders);
         }
